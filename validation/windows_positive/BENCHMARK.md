@@ -30,7 +30,7 @@ Use a fresh administrative Windows VM for each replica. Install the repository a
 `validation/windows_positive/requirements.txt`, then run from the repository root:
 
 ```powershell
-python validation/windows_positive/run.py --workdir C:\MCPBenchmark\work --reportdir C:\MCPBenchmark\report --tool-calls 64 --scan-repeats 3
+python validation/windows_positive/run.py --workdir C:\MCPBenchmark\work --reportdir C:\MCPBenchmark\report --tool-calls 64 --scan-repeats 3 --report-scan-limits
 python validation/windows_positive/benchmark.py summarize --reportdir C:\MCPBenchmark\report --replica 1 --output benchmark-1.json
 ```
 
@@ -44,7 +44,11 @@ The GitHub Actions `Windows memory benchmark` workflow performs the three captur
 It uploads only allowlisted counts, durations, environment/version information, image
 hashes, and validation flags. RAM, recovered messages, ground truth, process IDs,
 and arbitrary log text are excluded. Failed or missing captures cannot be silently
-dropped from the three-capture aggregate.
+dropped from the three-capture aggregate. Read errors and missing endpoints remain
+failures. `--report-scan-limits` allows bounded-search results to be measured, but
+marks them `completed_with_limits`, preserves every limit counter, and sets
+`full_endpoint_scans=false`; the aggregate reports how many captures were limited.
+The normal positive-validation command still rejects limited scans by default.
 
 ## Interpretation
 

@@ -83,6 +83,7 @@ def main():
     parser.add_argument("--reportdir", required=True, type=Path)
     parser.add_argument("--tool-calls", type=int, default=8)
     parser.add_argument("--scan-repeats", type=int, default=1)
+    parser.add_argument("--report-scan-limits", action="store_true")
     args = parser.parse_args()
     if not 1 <= args.tool_calls <= 512 or not 1 <= args.scan_repeats <= 5:
         parser.error("Require 1..512 tool calls and 1..5 scan repeats")
@@ -115,6 +116,7 @@ def main():
         "logical_cpus": os.cpu_count(),
         "tool_calls_per_case": args.tool_calls,
         "scan_repeats": args.scan_repeats,
+        "report_scan_limits": args.report_scan_limits,
         "timings_seconds": timings,
     }
     children, cases = [], []
@@ -273,18 +275,21 @@ def main():
         verification_started = time.perf_counter()
         artifacts, summaries = verify_exports(image, symbols, cache, config, exports)
         timings["native_byte_verification"] = time.perf_counter() - verification_started
+        # Persist diagnostics before deciding whether a scan can be scored.
+        write_json(report / "scan-summaries.json", summaries)
+        limited = False
         for summary in summaries.values():
+            if summary["error"] or summary["skipped_reason"] or summary["invalid_regions"]:
+                raise RuntimeError("An endpoint scan failed; inspect scan summaries")
             if (
-                summary["error"]
-                or summary["limits_hit"]
-                or summary["skipped_reason"]
+                summary["limits_hit"]
                 or summary["anchor_limit_hits"]
                 or summary["candidate_limit_hits"]
             ):
-                raise RuntimeError(
-                    "A selected endpoint scan was incomplete; inspect scan summaries"
-                )
-        write_json(report / "scan-summaries.json", summaries)
+                limited = True
+        manifest["scan_complete"] = not limited
+        if limited and not args.report_scan_limits:
+            raise RuntimeError("A selected endpoint scan was incomplete; inspect scan summaries")
         scores, publish_keys = [], set()
         for case in cases:
             mode = case["mode"]
@@ -326,7 +331,7 @@ def main():
             raise RuntimeError("No complete known tool request/response pair recovered")
         if any(s["incorrect_candidate_links"] for s in scores):
             raise RuntimeError("Incorrect candidate links observed in controlled traffic")
-        manifest["analysis_status"] = "passed"
+        manifest["analysis_status"] = "completed_with_limits" if limited else "passed"
         checkpoint("analysis-completed")
         print(json.dumps(result, ensure_ascii=True, indent=2), flush=True)
     except BaseException as exc:
@@ -354,7 +359,7 @@ def main():
         else:
             manifest["raw_memory_deleted"] = True
             write_json(report / "manifest.json", manifest)
-    manifest["status"] = "passed"
+    manifest["status"] = manifest["analysis_status"]
     timings["pipeline_total"] = time.perf_counter() - pipeline_started
     checkpoint("completed")
 

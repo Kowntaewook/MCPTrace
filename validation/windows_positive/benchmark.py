@@ -23,10 +23,29 @@ CASE_FIELDS = (
     "unverifiable_candidate_links",
 )
 ENVIRONMENT_FIELDS = ("platform", "python", "mcp_sdk", "volatility", "logical_cpus")
+COMPLETED = {"passed", "completed_with_limits"}
 
 
 def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def scan_diagnostics(scans):
+    return {
+        "processes": len(scans),
+        "limited_processes": sum(
+            bool(s["limits_hit"] or s["anchor_limit_hits"] or s["candidate_limit_hits"])
+            for s in scans.values()
+        ),
+        "error_processes": sum(bool(s["error"]) for s in scans.values()),
+        "skipped_processes": sum(bool(s["skipped_reason"]) for s in scans.values()),
+        **{
+            key: sum(s[key] for s in scans.values())
+            for key in ("invalid_regions", "anchor_limit_hits", "candidate_limit_hits")
+        },
+        "record_budget_processes": sum("max-records" in s["limits_hit"] for s in scans.values()),
+        "byte_budget_processes": sum("max-bytes" in s["limits_hit"] for s in scans.values()),
+    }
 
 
 def summarize_run(report, replica):
@@ -36,13 +55,18 @@ def summarize_run(report, replica):
     output = {
         "schema_version": 1,
         "replica": replica,
-        "status": "passed" if manifest.get("status") == "passed" else "failed",
+        "status": manifest["status"] if manifest.get("status") in COMPLETED else "failed",
         "commit": manifest.get("commit"),
         "environment": {key: manifest.get(key) for key in ENVIRONMENT_FIELDS},
         "tool_calls_per_case": manifest.get("tool_calls_per_case"),
         "scan_repeats": manifest.get("scan_repeats"),
+        "report_scan_limits": manifest.get("report_scan_limits", False),
     }
-    if output["status"] != "passed":
+    scan_path = report / "scan-summaries.json"
+    scans = read_json(scan_path) if scan_path.exists() else {}
+    if scans:
+        output["scan_diagnostics"] = scan_diagnostics(scans)
+    if output["status"] not in COMPLETED:
         return output
     for key in (
         "raw_memory_deleted",
@@ -52,17 +76,17 @@ def summarize_run(report, replica):
         if manifest.get(key) is not True:
             raise ValueError(f"Completed capture is missing validation: {key}")
     comparison = read_json(report / "comparison.json")
-    scans = read_json(report / "scan-summaries.json")
     if len(scans) != 4 or any(
-        s["error"]
-        or s["limits_hit"]
-        or s["skipped_reason"]
-        or s["anchor_limit_hits"]
-        or s["candidate_limit_hits"]
-        or s["invalid_regions"]
-        for s in scans.values()
+        s["error"] or s["skipped_reason"] or s["invalid_regions"] for s in scans.values()
     ):
         raise ValueError("Benchmark requires four complete endpoint scans")
+    limited = output["scan_diagnostics"]["limited_processes"] > 0
+    if limited and (
+        output["status"] != "completed_with_limits" or not output["report_scan_limits"]
+    ):
+        raise ValueError("Limited scans must be explicitly marked completed_with_limits")
+    if not limited and output["status"] != "passed":
+        raise ValueError("Completed status does not agree with scan diagnostics")
     cases = {}
     for case in comparison["cases"]:
         counts = {key: case[key] for key in CASE_FIELDS}
@@ -123,7 +147,7 @@ def summarize_run(report, replica):
             for c in manifest["cases"]
         },
         checks={
-            "full_endpoint_scans": True,
+            "full_endpoint_scans": not limited,
             "native_bytes_verified": True,
             "repeated_exports_identical": True,
             "image_hash_unchanged": True,
@@ -147,11 +171,18 @@ def aggregate_runs(runs):
     """Require the full predeclared sample; never silently discard a failed capture."""
     if len(runs) != 3 or {r["replica"] for r in runs} != {1, 2, 3}:
         raise ValueError("Require exactly replicas 1, 2, and 3")
-    if any(r["status"] != "passed" for r in runs):
+    if any(r["status"] not in COMPLETED for r in runs):
         raise ValueError("Cannot aggregate a failed capture as a successful benchmark")
     if len({r["capture_sha256"] for r in runs}) != 3:
         raise ValueError("Require three independently acquired images")
-    for key in ("schema_version", "commit", "environment", "tool_calls_per_case", "scan_repeats"):
+    for key in (
+        "schema_version",
+        "commit",
+        "environment",
+        "tool_calls_per_case",
+        "scan_repeats",
+        "report_scan_limits",
+    ):
         if any(r[key] != runs[0][key] for r in runs):
             raise ValueError(f"Incompatible benchmark conditions: {key}")
     modes = {}
@@ -173,6 +204,7 @@ def aggregate_runs(runs):
     return {
         "schema_version": 1,
         "independent_captures": 3,
+        "captures_with_scan_limits": sum(r["status"] == "completed_with_limits" for r in runs),
         "commit": runs[0]["commit"],
         "environment": runs[0]["environment"],
         "tool_calls_per_case": runs[0]["tool_calls_per_case"],

@@ -136,6 +136,23 @@ def test_failed_run_remains_a_failure_without_partial_metrics(tmp_path):
     summary = benchmark.summarize_run(tmp_path, 1)
     assert summary["status"] == "failed"
     assert "cases" not in summary
+    assert summary["scan_diagnostics"]["processes"] == 4
+
+
+def test_scan_limits_are_never_hidden_behind_a_passed_status(tmp_path):
+    manifest = report_files(tmp_path)
+    path = tmp_path / "scan-summaries.json"
+    scans = json.loads(path.read_text())
+    scans["0"]["candidate_limit_hits"] = 7
+    path.write_text(json.dumps(scans))
+    with pytest.raises(ValueError, match="explicitly marked"):
+        benchmark.summarize_run(tmp_path, 1)
+    manifest.update(status="completed_with_limits", report_scan_limits=True)
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    summary = benchmark.summarize_run(tmp_path, 1)
+    assert summary["status"] == "completed_with_limits"
+    assert not summary["checks"]["full_endpoint_scans"]
+    assert summary["scan_diagnostics"]["candidate_limit_hits"] == 7
 
 
 @pytest.mark.parametrize("problem", ["cleanup", "record_count", "timings"])
