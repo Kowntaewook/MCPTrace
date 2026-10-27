@@ -8,6 +8,7 @@ import ctypes
 import hashlib
 import importlib.metadata
 import json
+import os
 import platform
 import shutil
 import subprocess
@@ -40,12 +41,14 @@ def write_json(path, value):
 
 
 def command(args, stdout, stderr, timeout=300):
+    started = time.perf_counter()
     with stdout.open("wb") as out, stderr.open("wb") as err:
         completed = subprocess.run(args, stdout=out, stderr=err, timeout=timeout, check=False)
     if completed.returncode:
         raise RuntimeError(
             f"Command failed ({completed.returncode}); see {stdout.name}/{stderr.name}"
         )
+    return time.perf_counter() - started
 
 
 def physical_ram():
@@ -78,14 +81,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workdir", required=True, type=Path)
     parser.add_argument("--reportdir", required=True, type=Path)
+    parser.add_argument("--tool-calls", type=int, default=8)
+    parser.add_argument("--scan-repeats", type=int, default=1)
     args = parser.parse_args()
+    if not 1 <= args.tool_calls <= 512 or not 1 <= args.scan_repeats <= 5:
+        parser.error("Require 1..512 tool calls and 1..5 scan repeats")
     if sys.platform != "win32":
         parser.error("Run this acquisition harness on Windows as administrator")
     work, report = args.workdir.resolve(), args.reportdir.resolve()
     work.mkdir(parents=True, exist_ok=False)
     report.mkdir(parents=True, exist_ok=False)
     repo = Path(__file__).resolve().parents[2]
+    pipeline_started = time.perf_counter()
     image = work / "memory.raw"
+    timings = {"plugin_cli_seconds": []}
     manifest = {
         "status": "running",
         "stage": "preflight",
@@ -103,6 +112,10 @@ def main():
         "physical_ram_bytes": physical_ram(),
         "free_disk_bytes": shutil.disk_usage(work).free,
         "raw_memory_uploaded": False,
+        "logical_cpus": os.cpu_count(),
+        "tool_calls_per_case": args.tool_calls,
+        "scan_repeats": args.scan_repeats,
+        "timings_seconds": timings,
     }
     children, cases = [], []
 
@@ -144,6 +157,8 @@ def main():
                     str(output),
                     "--mode",
                     mode,
+                    "--tool-calls",
+                    str(args.tool_calls),
                 ],
                 stdout=subprocess.DEVNULL,
                 stderr=error_log,
@@ -160,7 +175,10 @@ def main():
                     raise TimeoutError(f"{output.name}: MCP workload did not become ready")
                 time.sleep(0.1)
             ready = json.loads((output / "ready.json").read_text(encoding="utf-8"))
-            if ready["tool_calls_completed"] != 8 or ready["logged_messages"] != 21:
+            if (
+                ready["tool_calls_completed"] != args.tool_calls
+                or ready["logged_messages"] != 5 + 2 * args.tool_calls
+            ):
                 raise RuntimeError("Incomplete MCP ground truth")
             cases.append(ready)
         pids = [c[key] for c in cases for key in ["client_pid", "server_pid"]]
@@ -169,7 +187,7 @@ def main():
         manifest["cases"] = cases
         manifest["capture_started_ns"] = time.time_ns()
         checkpoint("physical-ram-acquisition")
-        command(
+        timings["acquisition"] = command(
             [str(tool), "acquire", str(image)],
             report / "capture.txt",
             report / "capture.stderr",
@@ -203,7 +221,7 @@ def main():
             str(image),
         ]
         # Windows symbols can be fetched during info; subsequent steps are offline.
-        command(
+        timings["symbols_and_info"] = command(
             common + ["-r", "json", "windows.info.Info"],
             report / "info.json",
             report / "info.stderr",
@@ -225,10 +243,36 @@ def main():
             "--dump",
         ]
         manifest["plugin_command"] = trace_cmd
-        command(trace_cmd, work / "all-findings.json", report / "mcptrace.stderr")
-        checkpoint("byte-verification-and-ground-truth-comparison")
+        timings["plugin_cli_seconds"].append(
+            command(trace_cmd, work / "all-findings.json", report / "mcptrace.stderr")
+        )
         exports = [export / f"mcptrace.pid-{pid}.jsonl" for pid in pids]
+        expected_exports = {path.name: sha256(path) for path in exports}
+        for repeat in range(1, args.scan_repeats):
+            repeated_output = work / f"exports-{repeat + 1}"
+            repeated_output.mkdir()
+            repeated_cmd = trace_cmd.copy()
+            repeated_cmd[repeated_cmd.index("-o") + 1] = str(repeated_output)
+            repeated_cmd[repeated_cmd.index("--save-config") + 1] = str(
+                work / f"mcptrace-config-{repeat + 1}.json"
+            )
+            timings["plugin_cli_seconds"].append(
+                command(
+                    repeated_cmd,
+                    work / f"all-findings-{repeat + 1}.json",
+                    report / f"mcptrace-{repeat + 1}.stderr",
+                )
+            )
+            if any(
+                sha256(repeated_output / name) != digest
+                for name, digest in expected_exports.items()
+            ):
+                raise RuntimeError("Repeated scans of the same image produced different JSONL")
+        manifest["repeated_exports_identical"] = True
+        checkpoint("byte-verification-and-ground-truth-comparison")
+        verification_started = time.perf_counter()
         artifacts, summaries = verify_exports(image, symbols, cache, config, exports)
+        timings["native_byte_verification"] = time.perf_counter() - verification_started
         for summary in summaries.values():
             if (
                 summary["error"]
@@ -311,6 +355,7 @@ def main():
             manifest["raw_memory_deleted"] = True
             write_json(report / "manifest.json", manifest)
     manifest["status"] = "passed"
+    timings["pipeline_total"] = time.perf_counter() - pipeline_started
     checkpoint("completed")
 
 

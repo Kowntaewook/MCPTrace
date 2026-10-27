@@ -116,7 +116,8 @@ async def client(args):
                     "last message",
                 ]
                 server_pid = None
-                for sequence, text in enumerate(samples):
+                for sequence in range(args.tool_calls):
+                    text = samples[sequence % len(samples)]
                     result = await session.call_tool(
                         "echo_marker",
                         {"run_id": args.run_id, "sequence": sequence, "text": text},
@@ -159,7 +160,7 @@ async def client(args):
                     "run_id": args.run_id,
                     "client_pid": os.getpid(),
                     "server_pid": server_pid,
-                    "tool_calls_completed": len(samples),
+                    "tool_calls_completed": args.tool_calls,
                     "logged_messages": journal.count,
                     "retained_transport_frames": len(journal.frames),
                     "retained_unsent_controls": len(retained_decoys),
@@ -186,7 +187,10 @@ def main():
     parser.add_argument("--output", type=Path)
     parser.add_argument("--mode", choices=["natural", "retained"], default="natural")
     parser.add_argument("--hold-seconds", type=int, default=900)
+    parser.add_argument("--tool-calls", type=int, default=8)
     args = parser.parse_args()
+    if not 1 <= args.tool_calls <= 512:
+        parser.error("--tool-calls must be between 1 and 512")
     if args.role == "server":
         server(args.run_id)
     elif args.output is None:

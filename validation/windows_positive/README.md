@@ -57,3 +57,7 @@ GitHub Actions의 `Windows positive memory validation` 워크플로도 같은 �
 전체 실험은 실행 가능성을 확인한 것으로 기록되므로 **반드시 natural/retained 수치를 나눠 읽어야 합니다.**
 실제로 수행한 Windows Server 2022 캡처와 조건별 수치는
 [양성 검증 보고서](../../docs/windows-positive-memory-validation.md)에 기록했습니다.
+
+`--tool-calls`로 조건별 도구 호출 수를, `--scan-repeats`로 동일 이미지의 CLI 분석 반복 수를
+지정할 수 있습니다. 기본값은 기존 검증과 같은 8회/1회입니다. 별도 VM 3개에서 64회 호출과
+3회 분석을 수행하는 [반복 벤치마크 절차](BENCHMARK.md)도 제공합니다.
