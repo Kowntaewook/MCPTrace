@@ -282,8 +282,8 @@ def main():
             raise RuntimeError("No complete known tool request/response pair recovered")
         if any(s["incorrect_candidate_links"] for s in scores):
             raise RuntimeError("Incorrect candidate links observed in controlled traffic")
-        manifest["status"] = "passed"
-        checkpoint("completed")
+        manifest["analysis_status"] = "passed"
+        checkpoint("analysis-completed")
         print(json.dumps(result, ensure_ascii=True, indent=2), flush=True)
     except BaseException as exc:
         manifest["status"] = "failed"
@@ -291,16 +291,27 @@ def main():
         write_json(report / "manifest.json", manifest)
         raise
     finally:
-        for proc, output, error_log in children:
-            (output / "stop").touch()
-            try:
-                proc.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                proc.kill()
-                proc.wait()
-            error_log.close()
-        # This file was created by this run and is never an uploaded artifact.
-        image.unlink(missing_ok=True)
+        try:
+            for proc, output, error_log in children:
+                (output / "stop").touch()
+                try:
+                    proc.wait(timeout=5)
+                except subprocess.TimeoutExpired:
+                    proc.kill()
+                    proc.wait()
+                error_log.close()
+            # This file was created by this run and is never an uploaded artifact.
+            image.unlink(missing_ok=True)
+        except BaseException as exc:
+            manifest["status"] = "failed"
+            manifest["cleanup_failure"] = f"{type(exc).__name__}: {exc}"
+            write_json(report / "manifest.json", manifest)
+            raise
+        else:
+            manifest["raw_memory_deleted"] = True
+            write_json(report / "manifest.json", manifest)
+    manifest["status"] = "passed"
+    checkpoint("completed")
 
 
 if __name__ == "__main__":

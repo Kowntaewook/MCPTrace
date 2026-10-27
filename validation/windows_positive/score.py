@@ -6,6 +6,7 @@ import base64
 import hashlib
 import json
 from collections import Counter
+from contextlib import contextmanager
 
 
 def canonical(message):
@@ -97,57 +98,75 @@ def score_case(metadata, truth, artifacts, decoys=()):
     }
 
 
+@contextmanager
+def managed_context():
+    """Close native memory layers even if verification raises an exception."""
+    from volatility3.framework import contexts
+
+    context = contexts.Context()
+    try:
+        yield context
+    finally:
+        # Layers are added after their dependencies, so remove dependents first.
+        for name in reversed(list(context.layers)):
+            context.layers.del_layer(name)
+
+
 def verify_exports(image, symbols, cache, config_file, exports):
     """Re-read every exported artifact with native Windows process layers."""
     import volatility3.plugins
     import volatility3.symbols
     from volatility3 import framework
-    from volatility3.framework import automagic, constants, contexts, interfaces, plugins
+    from volatility3.framework import automagic, constants, interfaces, plugins
     from volatility3.plugins.windows import pslist
 
     constants.CACHE_PATH = str(cache.resolve())
     constants.OFFLINE = True
     volatility3.symbols.__path__ = [str(symbols.resolve()), *constants.SYMBOL_BASEPATHS]
-    context = contexts.Context()
-    framework.import_files(volatility3.plugins, True)
-    config = json.loads(config_file.read_text(encoding="utf-8"))
-    config["kernel.layer_name.memory_layer.location"] = image.resolve().as_uri()
-    context.config.splice("plugins.PsList", interfaces.configuration.HierarchicalDict(config))
-    magics = automagic.choose_automagic(automagic.available(context), pslist.PsList)
-    plugin = plugins.construct_plugin(context, magics, pslist.PsList, "plugins", None, None)
-    processes = {
-        int(p.UniqueProcessId): p
-        for p in pslist.PsList.list_processes(context, kernel_module_name=plugin.config["kernel"])
-    }
-    artifacts, summaries = [], {}
-    for path in exports:
-        rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
-        header, *records, summary = rows
-        pid = header["pid"]
-        if header["target_os"] != "windows" or header["region_kind"] != "vad":
-            raise ValueError("Wrong OS/region metadata")
-        if summary["displayed_records"] != len(records):
-            raise ValueError("JSONL count mismatch")
-        proc = processes[pid]
-        layer = context.layers[proc.add_process_layer()]
-        vads = {int(v.get_start()): int(v.get_end()) + 1 for v in proc.get_vad_root().traverse()}
-        for record in records:
-            raw = base64.b64decode(record["raw_base64"], validate=True)
-            start, address = record["vad_start"], record["virtual_address"]
-            if (
-                record["type"] != "artifact"
-                or record["pid"] != pid
-                or record["target_os"] != "windows"
-                or record["region_kind"] != "vad"
-                or record["region_start"] != start
-                or not raw
-                or len(raw) != record["byte_length"]
-                or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]
-                or start not in vads
-                or not start <= address < address + len(raw) <= vads[start]
-                or layer.read(address, len(raw), pad=False) != raw
-            ):
-                raise ValueError(f"PID {pid}: exported bytes/hash/address/VAD do not agree")
-        artifacts.extend(records)
-        summaries[str(pid)] = summary
-    return artifacts, summaries
+    with managed_context() as context:
+        framework.import_files(volatility3.plugins, True)
+        config = json.loads(config_file.read_text(encoding="utf-8"))
+        config["kernel.layer_name.memory_layer.location"] = image.resolve().as_uri()
+        context.config.splice("plugins.PsList", interfaces.configuration.HierarchicalDict(config))
+        magics = automagic.choose_automagic(automagic.available(context), pslist.PsList)
+        plugin = plugins.construct_plugin(context, magics, pslist.PsList, "plugins", None, None)
+        processes = {
+            int(p.UniqueProcessId): p
+            for p in pslist.PsList.list_processes(
+                context, kernel_module_name=plugin.config["kernel"]
+            )
+        }
+        artifacts, summaries = [], {}
+        for path in exports:
+            rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+            header, *records, summary = rows
+            pid = header["pid"]
+            if header["target_os"] != "windows" or header["region_kind"] != "vad":
+                raise ValueError("Wrong OS/region metadata")
+            if summary["displayed_records"] != len(records):
+                raise ValueError("JSONL count mismatch")
+            proc = processes[pid]
+            layer = context.layers[proc.add_process_layer()]
+            vads = {
+                int(v.get_start()): int(v.get_end()) + 1 for v in proc.get_vad_root().traverse()
+            }
+            for record in records:
+                raw = base64.b64decode(record["raw_base64"], validate=True)
+                start, address = record["vad_start"], record["virtual_address"]
+                if (
+                    record["type"] != "artifact"
+                    or record["pid"] != pid
+                    or record["target_os"] != "windows"
+                    or record["region_kind"] != "vad"
+                    or record["region_start"] != start
+                    or not raw
+                    or len(raw) != record["byte_length"]
+                    or hashlib.sha256(raw).hexdigest() != record["raw_sha256"]
+                    or start not in vads
+                    or not start <= address < address + len(raw) <= vads[start]
+                    or layer.read(address, len(raw), pad=False) != raw
+                ):
+                    raise ValueError(f"PID {pid}: exported bytes/hash/address/VAD do not agree")
+            artifacts.extend(records)
+            summaries[str(pid)] = summary
+        return artifacts, summaries

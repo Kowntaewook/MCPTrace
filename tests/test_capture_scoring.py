@@ -71,3 +71,26 @@ def test_candidate_link_scoring_keeps_typed_ids():
 def test_repeated_ground_truth_events_require_explicit_alignment():
     with pytest.raises(ValueError, match="distinct logical messages"):
         scoring.score_case(METADATA, [*TRUTH, {"message": REQUEST}], [])
+
+
+@pytest.mark.parametrize("fail", [False, True])
+def test_native_image_handle_is_closed_before_cleanup(tmp_path, fail):
+    from volatility3.framework.layers.physical import FileLayer
+
+    image = tmp_path / "memory.raw"
+    image.write_bytes(b"test memory bytes")
+    try:
+        with scoring.managed_context() as context:
+            context.config["test.location"] = image.as_uri()
+            layer = FileLayer(context, "test", "memory")
+            context.layers.add_layer(layer)
+            assert layer.read(0, 4) == b"test"
+            stream = layer._file
+            if fail:
+                raise ValueError("verification failed")
+    except ValueError as exc:
+        assert fail and str(exc) == "verification failed"
+    assert stream.closed
+    assert not context.layers
+    # Windows rejects unlink while FileLayer still holds the file open.
+    image.unlink()
