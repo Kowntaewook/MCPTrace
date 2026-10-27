@@ -1,0 +1,2 @@
+# Separate from the plugin's runtime dependencies.
+mcp==1.26.0
