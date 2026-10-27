@@ -40,7 +40,7 @@ WinPmem은 제작자가 제공한 서명된 실행 파일을 사용하고 SHA-25
 수행합니다. 실패를 성공/건너뛰기로 처리하지 않습니다.
 
 GitHub Actions의 `Windows positive memory validation` 워크플로도 같은 하네스를 실행합니다.
-초기 검증 브랜치의 push로 실행하고, 기본 브랜치에 반영한 뒤에는 workflow_dispatch로 실행할 수 있습니다.
+기본 브랜치에 반영한 뒤 Actions 화면에서 workflow_dispatch로 수동 실행할 수 있습니다.
 실제 덤프는 일회용 VM 안에서만 분석하고 종료 시 삭제합니다. 전체 RAM이나 미분류 후보 원문은
 업로드하지 않으며 정답 메시지·대조군과 일치한 아티팩트, 측정값, 수집/분석 로그만 7일 보관합니다.
 
@@ -55,4 +55,5 @@ GitHub Actions의 `Windows positive memory validation` 워크플로도 같은 �
 성공 조건은 실제 통신한 도구 요청·응답 한 쌍 이상이 동일 PID에서 복구되고, 내보낸 원문이
 재읽기 대조를 통과하며, 정답과 대조할 수 있는 연결에 오류가 없는 것입니다. `retained`만 성공해도
 전체 실험은 실행 가능성을 확인한 것으로 기록되므로 **반드시 natural/retained 수치를 나눠 읽어야 합니다.**
-현재 문서는 실행 절차이며, 실제 실행 결과는 실행한 Actions 기록과 결과 보고서로 확인합니다.
+실제로 수행한 Windows Server 2022 캡처와 조건별 수치는
+[양성 검증 보고서](../../docs/windows-positive-memory-validation.md)에 기록했습니다.

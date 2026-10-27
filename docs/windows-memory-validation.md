@@ -112,6 +112,8 @@ vol -q --offline --cache-path cache -s symbols -f evidence/Win11Dump.mem -r json
 vol -q --offline --cache-path cache -s symbols -p plugins -f evidence/Win11Dump.mem -o output/win11 -r json windows.mcptrace.MCPTrace --pid 3244 6524 6248 2180 --dump > output/win11/findings.json 2> output/win11/stderr.txt
 ```
 
-후속 검증에는 실제 MCP 호출과 정답 메시지를 기록한 Windows 덤프가 필요합니다.
+후속으로 실제 MCP 호출과 정답 메시지를 기록한
+[Windows Server 2022 RAM 양성 검증](windows-positive-memory-validation.md)을 수행했습니다.
+이는 다른 OS 빌드에서의 별도 실험입니다.
 이번 결과만으로 Windows의 MCP 복원 성능, 다른 Windows 빌드 호환성, 정밀도·재현율을
 주장하지 않습니다. 원본 덤프·심볼·메모리 내용은 저장소에 커밋하지 않습니다.

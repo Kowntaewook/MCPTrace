@@ -2,11 +2,6 @@ name: Windows positive memory validation
 
 on:
   workflow_dispatch:
-  push:
-    branches: ['test/windows-mcp-positive']
-    paths:
-      - 'validation/windows_positive/**'
-      - '.github/workflows/windows-positive-memory.yml'
 
 permissions:
   contents: read

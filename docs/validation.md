@@ -4,7 +4,9 @@
 공개 Linux 이미지 2개에 대한 실행 결과는 [실제 RAM 검증 기록](real-memory-validation.md)에
 별도로 기록했습니다. MCP 활동 샘플은 누락된 VMware 메타데이터를 대신해 추정한 물리 메모리
 배치를 적용했습니다. [Windows 11 실제 이미지 검증](windows-memory-validation.md)도 수행했으나,
-그 이미지에서는 MCP 후보가 나오지 않았습니다. 전체 메시지 기준 성능 평가는 아직 수행하지 않았습니다.
+그 이미지에서는 MCP 후보가 나오지 않았습니다. 이후
+[Windows Server 2022의 실제 MCP 통신·RAM 양성 검증](windows-positive-memory-validation.md)에서
+정답이 있는 메시지 복원을 확인했습니다. 일반적인 복원 성능 평가는 아직 수행하지 않았습니다.
 
 ## 자동 검증
 
@@ -25,6 +27,7 @@ CI는 Ubuntu/Windows 분석 호스트와 Python 3.10/3.12 조합을 구성합니
 | 어댑터 | 실제 TreeGrid, 프로세스별 제한·요약, 뒤쪽 VAD/VMA 읽기 오류 이후 기존 증거 보존 |
 | Linux 태스크 | 실제 PID 필터, 프로세스 간 ID 비연결, 사용자 주소 공간 없음, 레이어 생성 실패, active_mm 대체 사용 금지 |
 | 출력 | 실제 Volatility CLI 파일 핸들러, JSONL 원문 왕복·해시, 기존 파일 비덮어쓰기 |
+| 검증 하네스 | 논리 메시지/복사본/비전송 대조군 분리, PID/typed ID별 후보 연결 대조, Windows 파일 핸들 정리 |
 | 로딩 | 새 CLI 프로세스에서 -p 경로로 Windows/Linux 플러그인 검색 및 도움말 생성 |
 
 `tests/test_plugin.py`의 EPROCESS/VAD, `tests/test_linux_plugin.py`의 task_struct/mm/VMA 열거 객체와
