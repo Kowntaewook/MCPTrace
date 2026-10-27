@@ -111,7 +111,9 @@ class Artifact:
     obj: dict | None = None
     mcp: bool = False
     pid: int = 0
-    vad_start: int = 0
+    region_start: int = 0
+    region_kind: str = ""
+    target_os: str = ""
     relation: str = "not-applicable"
     candidate_addresses: list[int] = field(default_factory=list)
     candidate_count: int = 0
@@ -138,9 +140,11 @@ class Artifact:
         return hashlib.sha256(self.raw).hexdigest()
 
     def to_dict(self) -> dict:
-        return {
+        result = {
             "pid": self.pid,
-            "vad_start": self.vad_start,
+            "target_os": self.target_os,
+            "region_start": self.region_start,
+            "region_kind": self.region_kind,
             "virtual_address": self.address,
             "encoding": self.encoding,
             "state": self.state,
@@ -159,6 +163,10 @@ class Artifact:
             "candidate_addresses_truncated": self.candidate_count > len(self.candidate_addresses),
             "findings": self.findings,
         }
+        if self.region_kind in {"vad", "vma"}:
+            # Preserve the Windows JSONL field; Linux must not claim a VAD address.
+            result[f"{self.region_kind}_start"] = self.region_start
+        return result
 
 
 @dataclass
@@ -167,6 +175,8 @@ class ScanStats:
     unreadable_bytes: int = 0
     anchor_limit_hits: int = 0
     candidate_limit_hits: int = 0
+    regions_scanned: int = 0
+    invalid_regions: int = 0
 
 
 def _object_end(data: bytes, start: int, step: int, limit: int) -> int | None:
@@ -272,7 +282,7 @@ def scan_chunks(
     include_partial: bool = False,
     stats: ScanStats | None = None,
 ) -> Iterator[Artifact]:
-    """Carve contiguous virtual bytes, flushing at gaps and at every VAD boundary.
+    """Carve contiguous virtual bytes, flushing at gaps and mapping boundaries.
 
     Keep two windows so a late jsonrpc member and a chunk-spanning object survive.
     No bytes are invented for unreadable pages. Addresses are process virtual addresses.
