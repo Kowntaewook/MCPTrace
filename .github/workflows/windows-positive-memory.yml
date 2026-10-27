@@ -1,0 +1,39 @@
+name: Windows positive memory validation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-positive-memory-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  capture-and-compare:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install pinned plugin and SDK
+        run: python -m pip install -e . -r validation/windows_positive/requirements.txt
+      - name: Capture real MCP endpoint RAM and compare
+        shell: pwsh
+        run: |
+          python validation/windows_positive/run.py --workdir "$env:RUNNER_TEMP/mcptrace-positive-work" --reportdir "$env:RUNNER_TEMP/mcptrace-positive-report"
+      - name: Upload measurements and known test messages only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: windows-positive-memory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mcptrace-positive-report/
+          if-no-files-found: warn
+          retention-days: 7
