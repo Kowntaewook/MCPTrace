@@ -2,6 +2,9 @@
 
 from collections.abc import Iterator
 
+from volatility3.framework import exceptions
+from volatility3.framework.layers.intel import Intel
+
 from mcptrace.core import ScanStats
 
 
@@ -19,6 +22,7 @@ def readable_chunks(
     offset = start
     while offset < end:
         amount = min(chunk_bytes, end - offset)
+        next_offset = offset + amount
         try:
             data = layer.read(offset, amount, pad=False)
             if len(data) != amount:
@@ -30,24 +34,40 @@ def readable_chunks(
             run = bytearray()
             while page < offset + amount:
                 page_amount = min(4096 - page % 4096, offset + amount - page)
+                advance = page_amount
                 try:
                     part = layer.read(page, page_amount, pad=False)
                     if len(part) != page_amount:
                         raise invalid_address(layer.name, page, "Short read")
-                except invalid_address:
+                except invalid_address as exc:
                     if run:
                         yield run_start, bytes(run)
                         run.clear()
-                    stats.unreadable_bytes += page_amount
+                    # Intel faults identify the size of an absent page-table
+                    # branch. Skip that branch, possibly beyond this read chunk,
+                    # but never beyond the caller's VAD/VMA range or byte budget.
+                    # Do not apply this to physical backing failures: part of a
+                    # large mapped page can still be readable in a truncated dump.
+                    if (
+                        isinstance(layer, Intel)
+                        and isinstance(exc, exceptions.PagedInvalidAddressException)
+                        and exc.layer_name == layer.name
+                        and page <= exc.invalid_address < page + page_amount
+                        and 12 <= exc.invalid_bits <= 48
+                    ):
+                        block_size = 1 << exc.invalid_bits
+                        advance = min(end - page, block_size - page % block_size)
+                    stats.unreadable_bytes += advance
                 else:
                     if not run:
                         run_start = page
                     run.extend(part)
                     stats.bytes_read += len(part)
-                page += page_amount
+                page += advance
             if run:
                 yield run_start, bytes(run)
+            next_offset = max(next_offset, page)
         else:
             stats.bytes_read += len(data)
             yield offset, data
-        offset += amount
+        offset = next_offset
