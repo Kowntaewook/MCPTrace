@@ -20,13 +20,12 @@ from mcptrace.memory import readable_chunks
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def plugin_module():
-    import volatility3.plugins.windows
-
-    plugin_path = str(ROOT / "plugins" / "windows")
-    if plugin_path not in volatility3.plugins.windows.__path__:
-        volatility3.plugins.windows.__path__.insert(0, plugin_path)
-    return importlib.import_module("volatility3.plugins.windows.mcptrace")
+def plugin_module(target="windows"):
+    namespace = importlib.import_module(f"volatility3.plugins.{target}")
+    plugin_path = str(ROOT / "plugins" / target)
+    if plugin_path not in namespace.__path__:
+        namespace.__path__.insert(0, plugin_path)
+    return importlib.import_module(f"volatility3.plugins.{target}.mcptrace")
 
 
 class GappedLayer(BufferDataLayer):
@@ -126,12 +125,13 @@ def test_suspicious_only_without_policy_fails(adapter):
         plugin.run()
 
 
-def test_cli_plugin_discovery_and_help():
+@pytest.mark.parametrize("target", ["windows", "linux"])
+def test_cli_plugin_discovery_and_help(target):
     executable = Path(sysconfig.get_path("scripts")) / (
         "vol.exe" if sys.platform == "win32" else "vol"
     )
     result = subprocess.run(
-        [str(executable), "-p", str(ROOT / "plugins"), "windows.mcptrace.MCPTrace", "-h"],
+        [str(executable), "-p", str(ROOT / "plugins"), f"{target}.mcptrace.MCPTrace", "-h"],
         capture_output=True,
         text=True,
         timeout=60,
@@ -177,10 +177,13 @@ def test_export_uses_real_cli_handler_and_roundtrips_raw_evidence(adapter, tmp_p
         json.loads(line) for line in (tmp_path / "mcptrace.pid-42.jsonl").read_text().splitlines()
     ]
     assert exported[0]["type"] == "metadata"
+    assert exported[0]["target_os"] == "windows"
     assert exported[-1]["type"] == "scan-summary"
     artifacts = [item for item in exported if item["type"] == "artifact"]
     assert len(artifacts) == 2
     for item in artifacts:
+        assert item["vad_start"] == item["region_start"]
+        assert item["region_kind"] == "vad" and "vma_start" not in item
         raw = base64.b64decode(item["raw_base64"])
         assert hashlib.sha256(raw).hexdigest() == item["raw_sha256"]
         assert json.loads(raw.decode(item["encoding"])) == item["message"]

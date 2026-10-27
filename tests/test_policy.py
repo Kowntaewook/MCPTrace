@@ -110,3 +110,53 @@ def test_duplicate_rule_ids_rejected():
     spec = rule("contains", "x")
     with pytest.raises(ValueError):
         validate_policy({"version": 1, "rules": [spec, copy.deepcopy(spec)]})
+
+
+@pytest.mark.parametrize(
+    "value,matched",
+    [
+        ("/srv/cases/a.txt", False),
+        ("/srv/cases", False),
+        ("/srv/cases/", False),
+        ("/srv/cases/./a", False),
+        ("/srv/cases/sub/../a", False),
+        ("/srv/cases2/a", True),
+        ("/srv/cases/../secret", True),
+        ("/etc/shadow", True),
+        ("/SRV/CASES/a", True),
+        (r"/srv/cases\..\secret", True),
+        (r"/srv/cases/a\b", False),
+    ],
+)
+def test_posix_path_semantics_are_independent_of_analysis_host(value, matched):
+    findings = run_rule(value, "posix_path_outside", ["/srv/cases"])
+    assert bool(findings) == matched
+    if matched:
+        assert findings[0]["status"] == "policy-match"
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        "relative",
+        "~/cases/a",
+        "$HOME/a",
+        "/srv/$CASE/a",
+        "//server/share",
+        "/srv/cases/*.txt",
+        "/srv/cases/a\0b",
+    ],
+)
+def test_unresolved_posix_paths_are_not_evaluated(value):
+    assert run_rule(value, "posix_path_outside", ["/srv/cases"])[0]["status"] == "not-evaluated"
+
+
+@pytest.mark.parametrize("root", ["cases", "~/cases", "//server/share", "/$HOME", "/srv/*"])
+def test_invalid_posix_allowlist_is_rejected(root):
+    with pytest.raises(ValueError, match="POSIX"):
+        validate_policy({"version": 1, "rules": [rule("posix_path_outside", [root])]})
+
+
+def test_posix_root_and_multiple_allowed_roots():
+    assert run_rule("/etc/shadow", "posix_path_outside", ["/"]) == []
+    assert run_rule("/tmp/cases/a", "posix_path_outside", ["/srv/cases", "/tmp/cases"]) == []

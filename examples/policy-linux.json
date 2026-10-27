@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "FILE-OUTSIDE-CASE",
+      "description": "read_file 요청의 POSIX 경로가 분석자가 지정한 사건 폴더 밖에 있음",
+      "severity": "medium",
+      "tool": "read_file",
+      "argument": "/path",
+      "operator": "posix_path_outside",
+      "value": ["/srv/cases"]
+    },
+    {
+      "id": "URL-OUTSIDE-ALLOWLIST",
+      "description": "fetch 요청의 URL 호스트가 분석자의 허용목록에 없음",
+      "severity": "medium",
+      "tool": "fetch",
+      "argument": "/url",
+      "operator": "url_host_not_in",
+      "value": ["api.example.test"]
+    }
+  ]
+}

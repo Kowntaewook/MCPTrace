@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mcptrace"
-version = "0.1.0"
-description = "Evidence-preserving MCP artifact analysis for Volatility 3 on Windows"
+version = "0.2.0"
+description = "Evidence-preserving MCP artifact analysis for Windows and Linux with Volatility 3"
 requires-python = ">=3.10"
 dependencies = ["volatility3==2.28.2"]
 

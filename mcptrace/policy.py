@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 import ntpath
+import posixpath
 import re
 from urllib.parse import urlsplit
 
 from mcptrace.core import Artifact
 
-OPERATORS = {"equals", "contains", "url_host_not_in", "windows_path_outside"}
+OPERATORS = {"equals", "contains", "url_host_not_in", "windows_path_outside", "posix_path_outside"}
 
 
 def validate_policy(document: object) -> list[dict]:
@@ -57,6 +58,10 @@ def validate_policy(document: object) -> list[dict]:
                 _absolute_windows(v) is None for v in value
             ):
                 raise ValueError("Allowed Windows paths must be absolute, without variables")
+            if rule["operator"] == "posix_path_outside" and any(
+                _absolute_posix(v) is None for v in value
+            ):
+                raise ValueError("Allowed POSIX paths must be absolute, without variables or globs")
             if rule["operator"] == "url_host_not_in" and any(_host(v) is None for v in value):
                 raise ValueError("Allowed URL hosts must be host names, without ports or wildcards")
     return rules
@@ -107,6 +112,16 @@ def _absolute_windows(value: str) -> str | None:
     return ntpath.normcase(ntpath.normpath(value))
 
 
+def _absolute_posix(value: str) -> str | None:
+    # Always use target POSIX semantics, including when the analysis host is Windows.
+    # A leading // is implementation-defined by POSIX; do not silently rewrite it.
+    if not value.startswith("/") or value.startswith("//"):
+        return None
+    if any(ord(c) < 32 for c in value) or any(c in value for c in "$*?["):
+        return None
+    return posixpath.normpath(value)
+
+
 def _check(value: str, rule: dict) -> bool | None:
     operator, expected = rule["operator"], rule["value"]
     if operator == "equals":
@@ -124,13 +139,15 @@ def _check(value: str, rule: dict) -> bool | None:
             return host not in {_host(v) for v in expected}
         except ValueError:
             return None
-    path = _absolute_windows(value)
+    normalize = _absolute_posix if operator == "posix_path_outside" else _absolute_windows
+    path_module = posixpath if operator == "posix_path_outside" else ntpath
+    path = normalize(value)
     if path is None:
         return None
     for allowed in expected:
-        root = _absolute_windows(allowed)
+        root = normalize(allowed)
         try:
-            if root is not None and ntpath.commonpath([path, root]) == root:
+            if root is not None and path_module.commonpath([path, root]) == root:
                 return False
         except ValueError:  # Different drives.
             pass

@@ -1,30 +1,36 @@
 # 검증 범위
 
-이 문서는 실제 Windows 호환성 검증을 수행했다는 보고서가 아닙니다.
+이 문서는 실제 Windows/Linux 호환성 검증을 수행했다는 보고서가 아닙니다.
 현재 테스트는 알려진 바이트를 메모리 레이어에 넣어 추출 결과와 비교합니다.
 
 ## 자동 검증
 
 로컬 검증 환경: Linux, Python 3.12, Volatility 3 패키지 2.28.2.
 CI는 Ubuntu/Windows 분석 호스트와 Python 3.10/3.12 조합을 구성합니다.
-CI에서 Windows 호스트를 사용하더라도 테스트 데이터는 합성 버퍼입니다.
+각 CI 조합에서 Windows와 Linux **양쪽 분석 어댑터**를 검사하며, 테스트 데이터는 합성 버퍼입니다.
+분석 호스트가 Ubuntu라는 사실 자체가 Linux 메모리 이미지 호환성 검증을 의미하지는 않습니다.
 
 | 영역 | 검증 내용 |
 | --- | --- |
 | 원문 보존 | UTF-8/UTF-16LE, 한글·이모지, 실제 주소·원문·SHA-256 일치 |
 | 파싱 | 문자열 내부 중괄호·이스케이프·중첩, 뒤에 배치된 jsonrpc 멤버, 모든 청크 분할 위치 |
 | 손상 | 중복 키, 잘못된 인코딩, 비정상 JSON-RPC ID, 비유한 숫자 거부; 조각에서 필드 추정 금지 |
-| 메모리 경계 | 실제 BufferDataLayer 위의 누락 페이지 시뮬레이션, 인접 VAD 비결합 |
+| 메모리 경계 | 실제 BufferDataLayer 위의 누락 페이지 시뮬레이션, 인접 VAD/VMA 비결합, Linux vm_end 배제 |
 | 후보 연결 | PID와 숫자/문자열 ID 분리, 복사본 보존, ID 충돌, 부동소수점 반올림으로 인한 오병합 방지 |
-| 정책 | 디렉터리 경계, URL 사용자 정보·가짜 접미사, JSON Pointer, 미지원 입력·잘못된 규칙 |
-| 어댑터 | 실제 TreeGrid, 프로세스별 제한·요약, 뒤쪽 VAD 읽기 오류 이후 기존 증거 보존 |
+| 정책 | Windows/POSIX 경로 경계·대소문자·구분자, URL 사용자 정보·가짜 접미사, JSON Pointer, 미지원 입력·잘못된 규칙 |
+| 어댑터 | 실제 TreeGrid, 프로세스별 제한·요약, 뒤쪽 VAD/VMA 읽기 오류 이후 기존 증거 보존 |
+| Linux 태스크 | 실제 PID 필터, 프로세스 간 ID 비연결, 사용자 주소 공간 없음, 레이어 생성 실패, active_mm 대체 사용 금지 |
 | 출력 | 실제 Volatility CLI 파일 핸들러, JSONL 원문 왕복·해시, 기존 파일 비덮어쓰기 |
-| 로딩 | 새 CLI 프로세스에서 -p 경로로 플러그인 검색 및 도움말 생성 |
+| 로딩 | 새 CLI 프로세스에서 -p 경로로 Windows/Linux 플러그인 검색 및 도움말 생성 |
 
-`tests/test_plugin.py`의 EPROCESS/VAD 열거 객체와 커널 모듈은 테스트용 대역입니다.
+`tests/test_plugin.py`의 EPROCESS/VAD, `tests/test_linux_plugin.py`의 task_struct/mm/VMA 열거 객체와
+커널 모듈은 테스트용 대역입니다.
 Volatility의 Context, BufferDataLayer, TreeGrid, CLI 파일 핸들러는 실제 구현을 사용합니다.
 따라서 CLI 검색·어댑터 출력까지는 검증하지만 커널 심볼 해석, 실제 페이지 테이블 변환, OS 빌드 호환성은
 이 테스트만으로 입증할 수 없습니다.
+
+Windows의 기존 `VADStart`/`vad_start` 출력은 회귀 검사하며 Linux 출력은 `VMAStart`/`vma_start`를
+사용하는지 확인합니다. JSONL 메타데이터·아티팩트·요약에는 분석 대상 OS를 기록합니다.
 
 ## 실제 Windows 11 x64 이미지 확인 절차
 
@@ -43,3 +49,24 @@ Volatility의 Context, BufferDataLayer, TreeGrid, CLI 파일 핸들러는 실제
 재현 자료에는 명령 전체, MCPTrace 커밋, Python/Volatility 버전, OS 빌드, 정책 파일 및 그 해시,
 입력 이미지 해시, 표준 오류 로그, JSONL을 포함합니다. 실제 증거·메모리 덤프는 저장소에 커밋하지 않습니다.
 실제 이미지 결과가 확보되기 전에는 특정 클라이언트 지원, 정밀도·재현율, 세션 복원 성공률을 표시하지 않습니다.
+
+## 실제 Linux x86-64 이미지 확인 절차
+
+1. 격리된 VM의 배포판, `uname -a`, 커널 빌드 정보와 MCP 클라이언트·서버 버전, 프로세스 PID를 기록합니다.
+   정상 호출·정책에 해당하는 호출·반복 ID·문자열 ID·긴 응답을 실행하고 기준 JSON을 별도 보존합니다.
+2. 메모리를 수집하고 수집 도구·버전·시각·이미지 SHA-256과 수집 지연 시간을 기록합니다.
+3. `banners.Banners`로 커널 배너를 확인하고 해당 빌드에 맞는 ISF 심볼을 준비합니다. 같은 커널 버전명만
+   같고 빌드가 다른 심볼을 호환된다고 가정하지 않습니다. `linux.pslist.PsList`와 `linux.proc.Maps`가
+   이미지에서 정상 동작하는지 확인합니다.
+4. 같은 이미지와 심볼을 사용해 `linux.mcptrace.MCPTrace --pid <PID> --dump`를 실행합니다.
+   필요하면 `examples/policy-linux.json`을 실제 도구·인자·프로세스 경로에 맞게 수정합니다.
+5. `VMAStart`, `VirtualAddress`, 바이트 길이를 해당 프로세스의 VMA/레이어와 대조합니다.
+   `vm_end`는 포함하지 않으며 아티팩트가 VMA 경계를 넘어 생성되지 않았는지 확인합니다.
+6. 원문 바이트·해시·요청 ID·복사본·모호한 연결을 기준 자료와 비교합니다. 로그/캐시에 들어간 JSON도
+   후보가 될 수 있으므로 실제 통신과 별도로 분류합니다.
+7. 대표 태스크만 분석되는지, 사용자 주소 공간이 없는 태스크의 `skipped_reason`, 누락된 페이지,
+   크기·후보 제한과 검사 오류가 요약에 표시되는지 확인합니다.
+
+기존 mmap 기반 커널과 Maple Tree 기반 커널은 각각 별도의 실제 이미지 검증이 필요합니다.
+현재는 Volatility 2.28.2의 `get_vma_iter()` API를 이용하는 구현과 합성 어댑터 테스트까지 수행했습니다.
+컨테이너 PID 네임스페이스 매핑, ARM/32비트, swap 복원, 힙 객체 재조립은 이번 검증 범위 밖입니다.
