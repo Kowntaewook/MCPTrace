@@ -2,11 +2,6 @@ name: Windows memory benchmark
 
 on:
   workflow_dispatch:
-  push:
-    branches: ['test/windows-memory-benchmark']
-    paths:
-      - 'validation/windows_positive/**'
-      - '.github/workflows/windows-memory-benchmark.yml'
 
 permissions:
   contents: read

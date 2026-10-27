@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "independent_captures": 3,
+  "captures_with_scan_limits": 2,
+  "commit": "d59f51e118480cb3be08ef96b04f94d8328bcc89",
+  "environment": {
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "python": "3.12.10",
+    "mcp_sdk": "1.26.0",
+    "volatility": "2.28.2",
+    "logical_cpus": 4
+  },
+  "tool_calls_per_case": 64,
+  "scan_repeats_per_capture": 3,
+  "modes": {
+    "natural": {
+      "totals": {
+        "expected_logical_messages": 399,
+        "distinct_expected_messages_found": 179,
+        "expected_tool_pairs": 192,
+        "complete_tool_pairs_any_endpoint": 55,
+        "artifact_records": 485,
+        "records_matching_logged_traffic": 485,
+        "distinct_unsent_controls_found": 0,
+        "records_matching_unsent_controls": 0,
+        "unmatched_artifact_records": 0,
+        "evaluated_candidate_links": 800,
+        "incorrect_candidate_links": 0,
+        "unverifiable_candidate_links": 0
+      },
+      "logical_message_coverage": 0.44862155388471175,
+      "messages_found_per_capture": {
+        "n": 3,
+        "mean": 59.666666666666664,
+        "median": 58,
+        "min": 55,
+        "max": 66
+      },
+      "tool_pairs_per_capture": {
+        "n": 3,
+        "mean": 18.333333333333332,
+        "median": 19,
+        "min": 15,
+        "max": 21
+      }
+    },
+    "retained": {
+      "totals": {
+        "expected_logical_messages": 399,
+        "distinct_expected_messages_found": 399,
+        "expected_tool_pairs": 192,
+        "complete_tool_pairs_any_endpoint": 192,
+        "artifact_records": 854,
+        "records_matching_logged_traffic": 851,
+        "distinct_unsent_controls_found": 3,
+        "records_matching_unsent_controls": 3,
+        "unmatched_artifact_records": 0,
+        "evaluated_candidate_links": 1680,
+        "incorrect_candidate_links": 0,
+        "unverifiable_candidate_links": 0
+      },
+      "logical_message_coverage": 1.0,
+      "messages_found_per_capture": {
+        "n": 3,
+        "mean": 133,
+        "median": 133,
+        "min": 133,
+        "max": 133
+      },
+      "tool_pairs_per_capture": {
+        "n": 3,
+        "mean": 64,
+        "median": 64,
+        "min": 64,
+        "max": 64
+      }
+    }
+  },
+  "plugin_cli_seconds": {
+    "n": 9,
+    "mean": 53.94062956666671,
+    "median": 53.95398000000006,
+    "min": 53.317625600000156,
+    "max": 54.475639200000046
+  },
+  "per_capture_cli_median_seconds": {
+    "n": 3,
+    "mean": 53.88407783333334,
+    "median": 54.121342500000026,
+    "min": 53.36027970000009,
+    "max": 54.170611299999905
+  },
+  "artifact_records_byte_verified": 1339,
+  "artifact_bytes_verified": 562402,
+  "runs": [
+    {
+      "schema_version": 1,
+      "replica": 1,
+      "status": "passed",
+      "commit": "d59f51e118480cb3be08ef96b04f94d8328bcc89",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "mcp_sdk": "1.26.0",
+        "volatility": "2.28.2",
+        "logical_cpus": 4
+      },
+      "tool_calls_per_case": 64,
+      "scan_repeats": 3,
+      "report_scan_limits": true,
+      "scan_diagnostics": {
+        "processes": 4,
+        "limited_processes": 0,
+        "error_processes": 0,
+        "skipped_processes": 0,
+        "invalid_regions": 0,
+        "anchor_limit_hits": 0,
+        "candidate_limit_hits": 0,
+        "record_budget_processes": 0,
+        "byte_budget_processes": 0
+      },
+      "cases": {
+        "natural": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 66,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 21,
+          "artifact_records": 173,
+          "records_matching_logged_traffic": 173,
+          "distinct_unsent_controls_found": 0,
+          "records_matching_unsent_controls": 0,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 328,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 14
+        },
+        "retained": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 133,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 64,
+          "artifact_records": 299,
+          "records_matching_logged_traffic": 298,
+          "distinct_unsent_controls_found": 1,
+          "records_matching_unsent_controls": 1,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 620,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 64
+        }
+      },
+      "capture_sha256": "177c6afd7886aa05c05408c74f8c108caafa6cfbfb181c73f90afe81be931aa8",
+      "physical_ram_bytes": 17174360064,
+      "image_logical_bytes": 20401094656,
+      "artifact_records_byte_verified": 472,
+      "artifact_bytes_verified": 189113,
+      "scan_totals": {
+        "bytes_read": 193032192,
+        "unreadable_bytes": 17689243648,
+        "regions_scanned": 576,
+        "candidate_records": 472
+      },
+      "timings_seconds": {
+        "acquisition": 39.56291780000001,
+        "symbols_and_info": 117.4078207,
+        "native_byte_verification": 10.376795300000026,
+        "pipeline_total": 427.56338089999997,
+        "plugin_cli": [
+          54.121342500000026,
+          54.475639200000046,
+          53.95398000000006
+        ]
+      },
+      "ready_to_capture_seconds": {
+        "natural": 0.0543968,
+        "retained": 0.0543968
+      },
+      "checks": {
+        "full_endpoint_scans": true,
+        "native_bytes_verified": true,
+        "repeated_exports_identical": true,
+        "image_hash_unchanged": true,
+        "raw_memory_deleted": true
+      }
+    },
+    {
+      "schema_version": 1,
+      "replica": 2,
+      "status": "completed_with_limits",
+      "commit": "d59f51e118480cb3be08ef96b04f94d8328bcc89",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "mcp_sdk": "1.26.0",
+        "volatility": "2.28.2",
+        "logical_cpus": 4
+      },
+      "tool_calls_per_case": 64,
+      "scan_repeats": 3,
+      "report_scan_limits": true,
+      "scan_diagnostics": {
+        "processes": 4,
+        "limited_processes": 1,
+        "error_processes": 0,
+        "skipped_processes": 0,
+        "invalid_regions": 0,
+        "anchor_limit_hits": 0,
+        "candidate_limit_hits": 4,
+        "record_budget_processes": 0,
+        "byte_budget_processes": 0
+      },
+      "cases": {
+        "natural": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 58,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 19,
+          "artifact_records": 150,
+          "records_matching_logged_traffic": 150,
+          "distinct_unsent_controls_found": 0,
+          "records_matching_unsent_controls": 0,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 228,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 14
+        },
+        "retained": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 133,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 64,
+          "artifact_records": 273,
+          "records_matching_logged_traffic": 272,
+          "distinct_unsent_controls_found": 1,
+          "records_matching_unsent_controls": 1,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 496,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 64
+        }
+      },
+      "capture_sha256": "a533b6ca43572eafa8dac01fd36fd9b585fe67bda122ff25bc1b8bb3147b67e6",
+      "physical_ram_bytes": 17174360064,
+      "image_logical_bytes": 20401094656,
+      "artifact_records_byte_verified": 423,
+      "artifact_bytes_verified": 194685,
+      "scan_totals": {
+        "bytes_read": 221855744,
+        "unreadable_bytes": 17660420096,
+        "regions_scanned": 576,
+        "candidate_records": 423
+      },
+      "timings_seconds": {
+        "acquisition": 38.52607280000001,
+        "symbols_and_info": 116.74145750000002,
+        "native_byte_verification": 11.414818200000013,
+        "pipeline_total": 428.09518140000006,
+        "plugin_cli": [
+          54.38048649999996,
+          53.882765600000084,
+          54.170611299999905
+        ]
+      },
+      "ready_to_capture_seconds": {
+        "natural": 0.0827794,
+        "retained": 0.0827794
+      },
+      "checks": {
+        "full_endpoint_scans": false,
+        "native_bytes_verified": true,
+        "repeated_exports_identical": true,
+        "image_hash_unchanged": true,
+        "raw_memory_deleted": true
+      }
+    },
+    {
+      "schema_version": 1,
+      "replica": 3,
+      "status": "completed_with_limits",
+      "commit": "d59f51e118480cb3be08ef96b04f94d8328bcc89",
+      "environment": {
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "python": "3.12.10",
+        "mcp_sdk": "1.26.0",
+        "volatility": "2.28.2",
+        "logical_cpus": 4
+      },
+      "tool_calls_per_case": 64,
+      "scan_repeats": 3,
+      "report_scan_limits": true,
+      "scan_diagnostics": {
+        "processes": 4,
+        "limited_processes": 1,
+        "error_processes": 0,
+        "skipped_processes": 0,
+        "invalid_regions": 0,
+        "anchor_limit_hits": 0,
+        "candidate_limit_hits": 3,
+        "record_budget_processes": 0,
+        "byte_budget_processes": 0
+      },
+      "cases": {
+        "natural": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 55,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 15,
+          "artifact_records": 162,
+          "records_matching_logged_traffic": 162,
+          "distinct_unsent_controls_found": 0,
+          "records_matching_unsent_controls": 0,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 244,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 12
+        },
+        "retained": {
+          "expected_logical_messages": 133,
+          "distinct_expected_messages_found": 133,
+          "expected_tool_pairs": 64,
+          "complete_tool_pairs_any_endpoint": 64,
+          "artifact_records": 282,
+          "records_matching_logged_traffic": 281,
+          "distinct_unsent_controls_found": 1,
+          "records_matching_unsent_controls": 1,
+          "unmatched_artifact_records": 0,
+          "evaluated_candidate_links": 564,
+          "incorrect_candidate_links": 0,
+          "unverifiable_candidate_links": 0,
+          "best_single_pid_tool_pairs": 64
+        }
+      },
+      "capture_sha256": "ff0627c99a912c71b7c905e30f0cba894bffefa9cfdc5fdc4a40a083349616e3",
+      "physical_ram_bytes": 17174360064,
+      "image_logical_bytes": 20401094656,
+      "artifact_records_byte_verified": 444,
+      "artifact_bytes_verified": 178604,
+      "scan_totals": {
+        "bytes_read": 211656704,
+        "unreadable_bytes": 17670619136,
+        "regions_scanned": 576,
+        "candidate_records": 444
+      },
+      "timings_seconds": {
+        "acquisition": 39.40428389999988,
+        "symbols_and_info": 178.97452040000007,
+        "native_byte_verification": 10.353987799999686,
+        "pipeline_total": 487.8709704999999,
+        "plugin_cli": [
+          53.802935700000035,
+          53.36027970000009,
+          53.317625600000156
+        ]
+      },
+      "ready_to_capture_seconds": {
+        "natural": 0.0931878,
+        "retained": 0.0931878
+      },
+      "checks": {
+        "full_endpoint_scans": false,
+        "native_bytes_verified": true,
+        "repeated_exports_identical": true,
+        "image_hash_unchanged": true,
+        "raw_memory_deleted": true
+      }
+    }
+  ]
+}

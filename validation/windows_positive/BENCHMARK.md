@@ -58,3 +58,5 @@ traffic. Mean/min/max describe only these three captures. Logging changes memory
 and retained frames are a favorable control. No general recall, detection precision,
 latency/pressure survival curve, or Windows 11/Linux benchmark is established by
 this Windows Server 2022 SDK/stdio experiment.
+
+Measured results: [Windows RAM benchmark](../../docs/windows-memory-benchmark.md).
