@@ -225,8 +225,8 @@ def _carve_buffer(
             anchor = match.start()
             low = bisect.bisect_left(starts, max(0, anchor - maximum + 1))
             high = bisect.bisect_right(starts, anchor)
-            if high - low > 64:
-                stats.candidate_limit_hits += 1
+            limited = high - low > 64
+            if limited:
                 low = high - 64
             found = False
             for index in range(high - 1, low - 1, -1):
@@ -254,6 +254,8 @@ def _carve_buffer(
                     found = True
                     break
             if not found:
+                if limited:
+                    stats.candidate_limit_hits += 1
                 unmatched.append(anchor)
         yield from complete.values()
         if partial:

@@ -169,6 +169,16 @@ def test_backtrack_limit_is_observable():
     assert stats.candidate_limit_hits > 0
 
 
+@pytest.mark.parametrize("encoding", ["utf-8", "utf-16-le"])
+def test_dense_successful_messages_do_not_report_backtrack_exhaustion(encoding):
+    objects = [request(rid=i) for i in range(133)]
+    raw = "\n".encode(encoding).join(encode(obj, encoding) for obj in objects)
+    stats = ScanStats()
+    records = list(scan_chunks([(0, raw)], stats=stats))
+    assert [r.obj for r in records] == objects
+    assert stats.candidate_limit_hits == 0
+
+
 def test_candidate_addresses_are_bounded_without_dropping_artifacts():
     req = carve(request())
     responses = [carve({"jsonrpc": "2.0", "id": 1, "result": {}}) for _ in range(300)]
