@@ -84,6 +84,7 @@ def main():
     parser.add_argument("--tool-calls", type=int, default=8)
     parser.add_argument("--scan-repeats", type=int, default=1)
     parser.add_argument("--report-scan-limits", action="store_true")
+    parser.add_argument("--baseline-root", type=Path, help="Baseline checkout for same-RAM comparison")
     args = parser.parse_args()
     if not 1 <= args.tool_calls <= 512 or not 1 <= args.scan_repeats <= 5:
         parser.error("Require 1..512 tool calls and 1..5 scan repeats")
@@ -331,6 +332,31 @@ def main():
             raise RuntimeError("No complete known tool request/response pair recovered")
         if any(s["incorrect_candidate_links"] for s in scores):
             raise RuntimeError("Incorrect candidate links observed in controlled traffic")
+        if args.baseline_root is not None:
+            from compare_variants import compare_variants
+
+            checkpoint("paired-main-vs-pr-comparison")
+            comparison = compare_variants(
+                baseline_root=args.baseline_root.resolve(),
+                candidate_root=repo,
+                template=trace_cmd,
+                work=work,
+                report=report,
+                image=image,
+                symbols=symbols,
+                cache=cache,
+                cases=cases,
+                pids=pids,
+                image_sha256=manifest["image_sha256"],
+                candidate_sha=manifest["commit"],
+            )
+            if sha256(image) != manifest["image_sha256"]:
+                raise RuntimeError("RAM image changed during baseline/candidate comparison")
+            manifest["variant_comparison"] = {
+                "same_image": comparison["same_image"],
+                "identical_evidence_records": comparison["identical_evidence_records"],
+                "baseline_revision": comparison["variants"]["baseline"]["revision"],
+            }
         manifest["analysis_status"] = "completed_with_limits" if limited else "passed"
         checkpoint("analysis-completed")
         print(json.dumps(result, ensure_ascii=True, indent=2), flush=True)
