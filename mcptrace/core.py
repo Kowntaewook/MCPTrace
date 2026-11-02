@@ -77,8 +77,7 @@ def _modern_response(result: object) -> bool:
     ):
         return True
     if kind == "input_required" and (
-        isinstance(result.get("inputRequests"), dict)
-        or isinstance(result.get("requestState"), str)
+        isinstance(result.get("inputRequests"), dict) or isinstance(result.get("requestState"), str)
     ):
         return True
     meta = result.get("_meta")
