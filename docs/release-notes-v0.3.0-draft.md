@@ -1,0 +1,60 @@
+# MCPTrace v0.3.0 — Release Notes (DRAFT: NOT RELEASED)
+
+MCPTrace is a Volatility 3 plugin for extracting MCP/JSON-RPC forensic
+candidates from Windows and Linux memory dumps while preserving their
+original bytes and addresses.
+
+## What's new
+
+- **Expanded protocol candidate recognition:** selected 2026-07-28 MCP
+  methods and response shapes, including `server/discover`,
+  `subscriptions/listen`, `tasks/update`, and multi-round-trip
+  `input_required` results.
+- **Legacy compatibility and fewer false positives:** historical
+  initialization remains supported, while generic Language Server Protocol
+  `initialize` requests are no longer labeled MCP solely by method name.
+- **Declared protocol version:** JSONL artifact exports now include
+  `declared_protocol_version` when an explicit supported envelope is present;
+  version is not inferred merely from the method name.
+- **Scanner fast path:** skip collecting JSON object starts in memory windows
+  that do not contain a literal JSON-RPC version marker.
+- **Regression tests:** additional positive and negative test cases; existing
+  CI runs lint, formatting, and pytest on Windows and Ubuntu.
+
+## Real-RAM regression comparison
+
+On three independently acquired Windows Server 2022 RAM images running the
+Python MCP SDK 1.26.0 over stdio, the previous and updated versions produced
+the **same 1,291 raw evidence fingerprints**, with identical logical-message
+coverage: 160/399 messages and 41/192 tool-call pairs in natural conditions,
+and 399/399 messages in the retained-frame control.
+
+Six CLI timing samples per revision produced a median of 50.94 seconds
+(pre-PR) versus 50.38 seconds (candidate). The capture-specific differences
+were inconsistent, so **this release does not claim a demonstrated speed-up
+or memory reduction**. The median process peak working set was 104.66 MiB
+(pre-PR) versus 104.92 MiB (candidate).
+
+See [full methods, limits and measurements](pr8-ram-comparison-2026-11-02.md).
+
+## Important limitations
+
+MCPTrace extracts forensic candidates; a recovered MCP-shaped object is not
+proof of transmission, session membership, successful tool execution, or
+malicious activity. Classification is heuristic, not full per-version MCP
+schema validation. The measured dataset is a small historical SDK/stdio
+fixture and does not establish 2026-07-28 real-client recovery rates.
+
+## Install
+
+```bash
+git clone https://github.com/Kowntaewook/MCPTrace.git
+cd MCPTrace
+python -m pip install .
+```
+
+See the [README](../README.md) for Windows/Linux usage and JSONL exports.
+
+Feedback, independent reproductions, and contributions are welcome.
+
+Repository: https://github.com/Kowntaewook/MCPTrace

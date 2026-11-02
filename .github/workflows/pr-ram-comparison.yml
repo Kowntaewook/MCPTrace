@@ -1,0 +1,57 @@
+name: PR same-image Windows RAM comparison
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-memory-compare-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  paired-capture:
+    runs-on: windows-2022
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        replica: [1, 2, 3]
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - name: Checkout candidate revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Checkout exact pre-PR baseline
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: 1c582831d2d237f185689b3544f4370c70abcd81
+          path: baseline
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Install Volatility, MCP SDK and Windows peak working set monitor
+        run: |
+          python -m pip install -e . -r validation/windows_positive/requirements.txt "psutil>=6,<8"
+      - name: Capture real RAM and compare both revisions on identical image
+        shell: pwsh
+        run: |
+          python validation/windows_positive/run.py --workdir "$env:RUNNER_TEMP/paired-work" --reportdir "$env:RUNNER_TEMP/paired-report" --tool-calls 64 --scan-repeats 1 --report-scan-limits --baseline-root "$env:GITHUB_WORKSPACE/baseline"
+      - name: Print safe numeric comparison
+        shell: pwsh
+        run: |
+          python -c "import json, pathlib; d=json.loads((pathlib.Path(r'$env:RUNNER_TEMP/paired-report/variant-comparison.json')).read_text()); print('PAIR_METRICS='+json.dumps(d, separators=(',',':')))"
+      - name: Upload numeric measurements only (never raw RAM or recovered content)
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: paired-memory-${{ github.run_id }}-${{ matrix.replica }}
+          path: ${{ runner.temp }}/paired-report/variant-comparison.json
+          if-no-files-found: error
+          retention-days: 30
