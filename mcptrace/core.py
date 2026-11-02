@@ -11,9 +11,10 @@ import re
 from collections import defaultdict
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
+from itertools import chain
 from typing import Any
 
-MCP_METHODS = frozenset(
+LEGACY_MCP_METHODS = frozenset(
     "initialize tools/list tools/call resources/list resources/read resources/subscribe "
     "resources/unsubscribe resources/templates/list prompts/list prompts/get "
     "completion/complete logging/setLevel sampling/createMessage roots/list elicitation/create "
@@ -24,6 +25,67 @@ MCP_METHODS = frozenset(
     "notifications/roots/list_changed notifications/elicitation/complete "
     "notifications/tasks/status".split()
 )
+
+# Keep legacy methods for analysis of older memory images. The 2026-07-28
+# protocol uses stateless discovery and subscriptions; tasks are an extension.
+MODERN_MCP_METHODS = frozenset(
+    "server/discover subscriptions/listen tasks/update "
+    "notifications/subscriptions/acknowledged notifications/tasks".split()
+)
+MCP_METHODS = LEGACY_MCP_METHODS | MODERN_MCP_METHODS
+
+
+def _version_label(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value) is not None
+
+
+def _modern_request_version(params: object) -> str:
+    """Only trust the explicit version together with the capabilities envelope."""
+    if not isinstance(params, dict):
+        return ""
+    meta = params.get("_meta")
+    if not isinstance(meta, dict):
+        return ""
+    version = meta.get("io.modelcontextprotocol/protocolVersion")
+    capabilities = meta.get("io.modelcontextprotocol/clientCapabilities")
+    if _version_label(version) and isinstance(capabilities, dict):
+        return version
+    return ""
+
+
+def _legacy_initialize(params: object) -> bool:
+    # LSP also has an initialize request, but its parameters do not contain
+    # the MCP protocolVersion/capabilities/clientInfo combination.
+    return (
+        isinstance(params, dict)
+        and _version_label(params.get("protocolVersion"))
+        and isinstance(params.get("capabilities"), dict)
+        and isinstance(params.get("clientInfo"), dict)
+    )
+
+
+def _modern_response(result: object) -> bool:
+    if not isinstance(result, dict):
+        return False
+    kind = result.get("resultType")
+    if (
+        kind == "complete"
+        and isinstance(result.get("supportedVersions"), list)
+        and bool(result["supportedVersions"])
+        and all(_version_label(version) for version in result["supportedVersions"])
+        and isinstance(result.get("capabilities"), dict)
+    ):
+        return True
+    if kind == "input_required" and isinstance(result.get("inputRequests"), list):
+        return True
+    meta = result.get("_meta")
+    server = meta.get("io.modelcontextprotocol/serverInfo") if isinstance(meta, dict) else None
+    return (
+        kind in {"complete", "input_required", "task"}
+        and isinstance(server, dict)
+        and isinstance(server.get("name"), str)
+        and isinstance(server.get("version"), str)
+    )
 
 
 def _patterns(encoding: str) -> tuple[re.Pattern, re.Pattern]:
@@ -83,7 +145,14 @@ def classify(obj: Any) -> tuple[str, bool] | None:
         if "id" in obj and not _valid_id(obj["id"]):
             return None
         kind = "request" if "id" in obj else "notification"
-        return kind, obj["method"] in MCP_METHODS
+        params = obj.get("params")
+        method = obj["method"]
+        if method == "initialize":
+            # Do not classify unrelated LSP initialize calls as MCP.
+            mcp = _legacy_initialize(params) or bool(_modern_request_version(params))
+        else:
+            mcp = method in MCP_METHODS or bool(_modern_request_version(params))
+        return kind, mcp
     if ("result" in obj) == ("error" in obj):
         return None
     if "id" not in obj or not (_valid_id(obj["id"]) or obj["id"] is None):
@@ -98,7 +167,7 @@ def classify(obj: Any) -> tuple[str, bool] | None:
     mcp_shape = isinstance(result, dict) and any(
         isinstance(result.get(key), list) for key in ("tools", "content", "resources", "prompts")
     )
-    return "response", mcp_shape
+    return "response", mcp_shape or _modern_response(result)
 
 
 @dataclass
@@ -136,6 +205,17 @@ class Artifact:
         return ""
 
     @property
+    def protocol_version(self) -> str:
+        """Explicitly declared version; never infer it from the method name."""
+        params = (self.obj or {}).get("params")
+        modern = _modern_request_version(params)
+        if modern:
+            return modern
+        if self.method == "initialize" and _legacy_initialize(params):
+            return params["protocolVersion"]
+        return ""
+
+    @property
     def sha256(self) -> str:
         return hashlib.sha256(self.raw).hexdigest()
 
@@ -150,6 +230,7 @@ class Artifact:
             "state": self.state,
             "kind": self.kind,
             "mcp_candidate": self.mcp,
+            "declared_protocol_version": self.protocol_version,
             "request_id": self.request_id,
             "method": self.method,
             "tool": self.tool,
@@ -214,11 +295,17 @@ def _carve_buffer(
 ) -> Iterator[Artifact]:
     for encoding, (anchors, starts_pattern) in PATTERNS.items():
         step = 1 if encoding == "utf-8" else 2
+        anchor_matches = anchors.finditer(data)
+        first_match = next(anchor_matches, None)
+        if first_match is None:
+            # Typical memory windows have no JSON-RPC anchor. Avoid collecting
+            # thousands of unrelated object starts in those windows.
+            continue
         starts = [m.start() for m in starts_pattern.finditer(data)]
         parsed: dict[int, Artifact | None] = {}
         complete: dict[int, Artifact] = {}
         unmatched: list[int] = []
-        for count, match in enumerate(anchors.finditer(data)):
+        for count, match in enumerate(chain((first_match,), anchor_matches)):
             if count >= 20000:
                 stats.anchor_limit_hits += 1
                 break
