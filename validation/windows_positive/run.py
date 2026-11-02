@@ -84,7 +84,9 @@ def main():
     parser.add_argument("--tool-calls", type=int, default=8)
     parser.add_argument("--scan-repeats", type=int, default=1)
     parser.add_argument("--report-scan-limits", action="store_true")
-    parser.add_argument("--baseline-root", type=Path, help="Baseline checkout for same-RAM comparison")
+    parser.add_argument(
+        "--baseline-root", type=Path, help="Baseline checkout for same-RAM comparison"
+    )
     args = parser.parse_args()
     if not 1 <= args.tool_calls <= 512 or not 1 <= args.scan_repeats <= 5:
         parser.error("Require 1..512 tool calls and 1..5 scan repeats")
