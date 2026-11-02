@@ -1,0 +1,80 @@
+name: Publish MCPTrace v0.3.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - pyproject.toml
+      - mcptrace/__init__.py
+      - plugins/windows/mcptrace.py
+      - plugins/linux/mcptrace.py
+      - .github/workflows/release-v0.3.0.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m ruff check .
+      - run: python -m ruff format --check .
+      - run: python -m pytest -q
+
+  publish:
+    name: Create v0.3.0 tag and GitHub Release
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - name: Verify all version metadata before tagging
+        run: |
+          python - <<'PY'
+          import tomllib
+          from pathlib import Path
+          project = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          assert project["project"]["version"] == "0.3.0"
+          package = Path("mcptrace/__init__.py").read_text(encoding="utf-8")
+          assert '__version__ = "0.3.0"' in package
+          for os_name in ("windows", "linux"):
+              adapter = Path("plugins", os_name, "mcptrace.py").read_text(encoding="utf-8")
+              assert "_version = (0, 3, 0)" in adapter
+          notes = Path("docs/releases/v0.3.0.md")
+          assert notes.is_file() and "DRAFT: NOT RELEASED" not in notes.read_text()
+          PY
+      - name: Publish immutable release tag and notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view v0.3.0 --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "v0.3.0 already released; nothing to change."
+            exit 0
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/v0.3.0" >/dev/null 2>&1; then
+            echo "::error::Tag v0.3.0 exists without a release; refusing to overwrite."
+            exit 1
+          fi
+          gh release create v0.3.0 --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "MCPTrace v0.3.0 — Protocol Recognition & Scanning Improvements" --notes-file docs/releases/v0.3.0.md --latest
+          echo "Published https://github.com/$GITHUB_REPOSITORY/releases/tag/v0.3.0" >> "$GITHUB_STEP_SUMMARY"
