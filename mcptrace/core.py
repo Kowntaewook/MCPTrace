@@ -76,7 +76,10 @@ def _modern_response(result: object) -> bool:
         and isinstance(result.get("capabilities"), dict)
     ):
         return True
-    if kind == "input_required" and isinstance(result.get("inputRequests"), list):
+    if kind == "input_required" and (
+        isinstance(result.get("inputRequests"), dict)
+        or isinstance(result.get("requestState"), str)
+    ):
         return True
     meta = result.get("_meta")
     server = meta.get("io.modelcontextprotocol/serverInfo") if isinstance(meta, dict) else None
