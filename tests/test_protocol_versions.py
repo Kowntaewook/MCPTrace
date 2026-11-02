@@ -70,7 +70,6 @@ def test_modern_response_and_methods():
     assert classify(msg) == ("response", True)
 
 
-
 def test_input_required_matches_official_map_shape():
     msg = {
         "jsonrpc": "2.0",
