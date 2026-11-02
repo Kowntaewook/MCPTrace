@@ -70,6 +70,40 @@ def test_modern_response_and_methods():
     assert classify(msg) == ("response", True)
 
 
+
+def test_input_required_matches_official_map_shape():
+    msg = {
+        "jsonrpc": "2.0",
+        "id": 2,
+        "result": {
+            "resultType": "input_required",
+            "inputRequests": {
+                "github_login": {"method": "elicitation/create", "params": {"mode": "form"}}
+            },
+            "requestState": "opaque-state",
+        },
+    }
+    assert classify(msg) == ("response", True)
+    (record,) = carve(msg)
+    assert record.mcp
+
+
+def test_input_required_request_state_only_and_invalid_list():
+    state_only = {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {"resultType": "input_required", "requestState": "opaque-state"},
+    }
+    assert classify(state_only) == ("response", True)
+
+    incorrect_shape = {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {"resultType": "input_required", "inputRequests": []},
+    }
+    assert classify(incorrect_shape) == ("response", False)
+
+
 def test_unrelated_metadata_not_mcp():
     msg = {
         "jsonrpc": "2.0",
