@@ -18,7 +18,7 @@ import sys
 import time
 from pathlib import Path
 
-from score import canonical, score_case, verify_exports
+from score import score_case, verify_exports
 
 
 def _read_json(path: Path):
@@ -79,12 +79,10 @@ def _score(cases, work, artifacts):
     by_mode = {}
     for case in cases:
         folder = work / case["mode"]
-        truth = [_read_json_line for _read_json_line in (
+        truth = [
             json.loads(line)
-            for line in (folder / "ground-truth.jsonl").read_text(
-                encoding="utf-8"
-            ).splitlines()
-        )]
+            for line in (folder / "ground-truth.jsonl").read_text(encoding="utf-8").splitlines()
+        ]
         decoys = []
         control = folder / "unsent-controls.json"
         if control.exists():
