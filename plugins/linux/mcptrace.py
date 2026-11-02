@@ -12,7 +12,7 @@ class MCPTrace(MCPTraceMixin, interfaces.plugins.PluginInterface):
     """Extract MCP/JSON-RPC candidates and policy findings from Linux VMAs."""
 
     _required_framework_version = (2, 28, 0)
-    _version = (0, 2, 0)
+    _version = (0, 3, 0)
     _target_os = "linux"
     _region_kind = "vma"
 
