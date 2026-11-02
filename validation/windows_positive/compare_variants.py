@@ -43,9 +43,7 @@ def _scan(root: Path, template: list[str], directory: Path, timeout=300):
     peak = 0
     with (directory / "stdout.json").open("wb") as stdout:
         with (directory / "stderr.txt").open("wb") as stderr:
-            with subprocess.Popen(
-                cmd, cwd=root, env=env, stdout=stdout, stderr=stderr
-            ) as proc:
+            with subprocess.Popen(cmd, cwd=root, env=env, stdout=stdout, stderr=stderr) as proc:
                 worker = psutil.Process(proc.pid)
                 while proc.poll() is None:
                     if time.perf_counter() - started > timeout:
@@ -62,8 +60,7 @@ def _scan(root: Path, template: list[str], directory: Path, timeout=300):
     elapsed = time.perf_counter() - started
     if status:
         raise RuntimeError(
-            f"Comparison scanner failed with exit code {status}; "
-            "review temporary runner logs"
+            f"Comparison scanner failed with exit code {status}; review temporary runner logs"
         )
     if not peak:
         raise RuntimeError("No valid process peak working set measurement")
@@ -86,10 +83,7 @@ def _score(cases, work, artifacts):
         decoys = []
         control = folder / "unsent-controls.json"
         if control.exists():
-            decoys = [
-                json.loads(base64.b64decode(item))
-                for item in _read_json(control)
-            ]
+            decoys = [json.loads(base64.b64decode(item)) for item in _read_json(control)]
         result = score_case(case, truth, artifacts, decoys)
         by_mode[case["mode"]] = {
             "expected_messages": result["expected_logical_messages"],
@@ -147,8 +141,7 @@ def compare_variants(
         pids_and_hashes = None
         for run in runs:
             per_process = {
-                pid: (run["export_directory"] / f"mcptrace.pid-{pid}.jsonl")
-                for pid in pids
+                pid: (run["export_directory"] / f"mcptrace.pid-{pid}.jsonl") for pid in pids
             }
             current = {
                 pid: hashlib.sha256(file.read_bytes()).hexdigest()
@@ -161,19 +154,13 @@ def compare_variants(
     results = {}
     fingerprints = {}
     for variant, run in exports.items():
-        export_paths = [
-            run["export_directory"] / f"mcptrace.pid-{pid}.jsonl"
-            for pid in pids
-        ]
-        artifacts, summaries = verify_exports(
-            image, symbols, cache, run["config"], export_paths
-        )
+        export_paths = [run["export_directory"] / f"mcptrace.pid-{pid}.jsonl" for pid in pids]
+        artifacts, summaries = verify_exports(image, symbols, cache, run["config"], export_paths)
         for summary in summaries.values():
             if summary["error"] or summary["skipped_reason"] or summary["invalid_regions"]:
                 raise RuntimeError(f"{variant}: incomplete or erroneous process scan")
         fingerprints[variant] = {
-            (record["pid"], record["virtual_address"], record["raw_sha256"])
-            for record in artifacts
+            (record["pid"], record["virtual_address"], record["raw_sha256"]) for record in artifacts
         }
         results[variant] = {
             "revision": baseline_sha if variant == "baseline" else candidate_sha,
