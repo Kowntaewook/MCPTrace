@@ -1,5 +1,7 @@
 # MCPTrace
 
+**Release:** [v0.3.0](https://github.com/Kowntaewook/MCPTrace/releases/tag/v0.3.0) · [Release notes](docs/releases/v0.3.0.md)
+
 MCPTrace is a **Volatility 3 plugin for extracting MCP/JSON-RPC message candidates
 from Windows and Linux memory dumps**. It examines process memory for requests,
 responses, notifications, tool names, and call arguments, then records the recovered
