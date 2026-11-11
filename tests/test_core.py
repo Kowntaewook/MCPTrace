@@ -74,6 +74,7 @@ def test_gap_is_not_filled_or_joined():
     records = list(scan_chunks(chunks, include_partial=True))
     assert records and all(r.state == "fragment" for r in records)
     assert all(r.obj is None and r.request_id is None and not r.tool for r in records)
+    assert all(r.protocol_hint == "fragment" for r in records)
 
 
 @pytest.mark.parametrize(

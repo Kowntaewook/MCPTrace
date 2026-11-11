@@ -136,9 +136,39 @@ def _valid_id(value: Any) -> bool:
     return type(value) in (str, int)
 
 
-def classify(obj: Any) -> tuple[str, bool] | None:
+def _lsp_workspace_params(params: object) -> bool:
+    if not isinstance(params, dict):
+        return False
+    meta = params.get("_meta")
+    has_capabilities = isinstance(params.get("capabilities"), dict) or (
+        isinstance(meta, dict)
+        and isinstance(meta.get("io.modelcontextprotocol/clientCapabilities"), dict)
+    )
+    if not has_capabilities:
+        return False
+    root = "rootUri" in params and (params["rootUri"] is None or isinstance(params["rootUri"], str))
+    folders = "workspaceFolders" in params and (
+        params["workspaceFolders"] is None or isinstance(params["workspaceFolders"], list)
+    )
+    return root or folders
+
+
+@dataclass(frozen=True)
+class Classification:
+    kind: str
+    mcp: bool
+    protocol_hint: str
+    reasons: tuple[str, ...]
+
+
+def classify_with_evidence(
+    obj: Any, *, content_length_frame: bool = False
+) -> Classification | None:
     if not isinstance(obj, dict) or obj.get("jsonrpc") != "2.0":
         return None
+    reasons = ["jsonrpc-2.0"]
+    if content_length_frame:
+        reasons.append("content-length-frame")
     if "method" in obj:
         if not isinstance(obj["method"], str) or "result" in obj or "error" in obj:
             return None
@@ -150,11 +180,42 @@ def classify(obj: Any) -> tuple[str, bool] | None:
         params = obj.get("params")
         method = obj["method"]
         if method == "initialize":
-            # Do not classify unrelated LSP initialize calls as MCP.
-            mcp = _legacy_initialize(params) or bool(_modern_request_version(params))
-        else:
-            mcp = method in MCP_METHODS or bool(_modern_request_version(params))
-        return kind, mcp
+            legacy = _legacy_initialize(params)
+            modern = bool(_modern_request_version(params))
+            workspace = _lsp_workspace_params(params)
+            if legacy:
+                reasons.append("mcp-legacy-initialize-envelope")
+            if modern:
+                reasons.append("mcp-versioned-meta-envelope")
+            if workspace:
+                reasons.append("lsp-workspace-params")
+            if (legacy or modern) and workspace:
+                reasons.append("conflicting-initialize-signals")
+                return Classification(kind, False, "ambiguous", tuple(reasons))
+            if legacy or modern:
+                return Classification(kind, True, "mcp-candidate", tuple(reasons))
+            # The framing alone is not proof of LSP: HTTP and nonstandard
+            # clients may also leave Content-Length headers in memory.
+            framed_initialize = (
+                content_length_frame
+                and isinstance(params, dict)
+                and isinstance(params.get("capabilities"), dict)
+            )
+            if framed_initialize:
+                reasons.append("initialize-capabilities-with-content-length")
+            if workspace or framed_initialize:
+                return Classification(kind, False, "lsp-candidate", tuple(reasons))
+            return Classification(kind, False, "generic-json-rpc", tuple(reasons))
+        known_method = method in MCP_METHODS
+        modern = bool(_modern_request_version(params))
+        if known_method:
+            reasons.append("known-mcp-method")
+        if modern:
+            reasons.append("mcp-versioned-meta-envelope")
+        mcp = known_method or modern
+        return Classification(
+            kind, mcp, "mcp-candidate" if mcp else "generic-json-rpc", tuple(reasons)
+        )
     if ("result" in obj) == ("error" in obj):
         return None
     if "id" not in obj or not (_valid_id(obj["id"]) or obj["id"] is None):
@@ -169,7 +230,21 @@ def classify(obj: Any) -> tuple[str, bool] | None:
     mcp_shape = isinstance(result, dict) and any(
         isinstance(result.get(key), list) for key in ("tools", "content", "resources", "prompts")
     )
-    return "response", mcp_shape or _modern_response(result)
+    modern_shape = _modern_response(result)
+    if mcp_shape:
+        reasons.append("mcp-response-list-shape")
+    if modern_shape:
+        reasons.append("mcp-modern-response-shape")
+    mcp = mcp_shape or modern_shape
+    return Classification(
+        "response", mcp, "mcp-candidate" if mcp else "generic-json-rpc", tuple(reasons)
+    )
+
+
+def classify(obj: Any) -> tuple[str, bool] | None:
+    """Compatibility helper for callers that only need request kind and MCP candidacy."""
+    classification = classify_with_evidence(obj)
+    return (classification.kind, classification.mcp) if classification else None
 
 
 @dataclass
@@ -181,6 +256,8 @@ class Artifact:
     kind: str
     obj: dict | None = None
     mcp: bool = False
+    protocol_hint: str = "unclassified"
+    classification_reasons: tuple[str, ...] = ()
     pid: int = 0
     region_start: int = 0
     region_kind: str = ""
@@ -232,6 +309,8 @@ class Artifact:
             "state": self.state,
             "kind": self.kind,
             "mcp_candidate": self.mcp,
+            "protocol_hint": self.protocol_hint,
+            "classification_reasons": list(self.classification_reasons),
             "declared_protocol_version": self.protocol_version,
             "request_id": self.request_id,
             "method": self.method,
@@ -292,6 +371,22 @@ def _object_end(data: bytes, start: int, step: int, limit: int) -> int | None:
     return None
 
 
+CONTENT_LENGTH_HEADER = re.compile(
+    rb"(?:Content-Type: [^\r\n]{1,128}\r\n)?"
+    rb"Content-Length: ([0-9]+)\r\n"
+    rb"(?:Content-Type: [^\r\n]{1,128}\r\n)?\r\n$",
+    re.IGNORECASE,
+)
+
+
+def _content_length_frame(data: bytes, start: int, length: int) -> bool:
+    # Only report a header directly before the recovered bytes and agreeing
+    # with their exact byte count. Do not infer a transport from this alone.
+    header = data[max(0, start - 512) : start]
+    match = CONTENT_LENGTH_HEADER.search(header)
+    return bool(match and int(match.group(1)) == length)
+
+
 def _carve_buffer(
     data: bytes, base: int, maximum: int, partial: bool, stats: ScanStats
 ) -> Iterator[Artifact]:
@@ -329,13 +424,23 @@ def _carve_buffer(
                         raw = data[start:end]
                         try:
                             obj = strict_loads(raw.decode(encoding, errors="strict"))
-                            classification = classify(obj)
+                            classification = classify_with_evidence(
+                                obj,
+                                content_length_frame=_content_length_frame(data, start, len(raw)),
+                            )
                         except (ValueError, UnicodeError, RecursionError):
                             classification = None
                         if classification:
-                            kind, mcp = classification
                             parsed[start] = Artifact(
-                                base + start, encoding, raw, "complete", kind, obj, mcp
+                                base + start,
+                                encoding,
+                                raw,
+                                "complete",
+                                classification.kind,
+                                obj,
+                                classification.mcp,
+                                classification.protocol_hint,
+                                classification.reasons,
                             )
                 record = parsed[start]
                 if record and record.address + len(record.raw) > base + anchor:
@@ -363,7 +468,14 @@ def _carve_buffer(
                 raw = data[anchor:end]
                 if raw:
                     # Raw fragment only: no guessed ID, arguments, or repaired JSON.
-                    yield Artifact(base + anchor, encoding, raw, "fragment", "fragment")
+                    yield Artifact(
+                        base + anchor,
+                        encoding,
+                        raw,
+                        "fragment",
+                        "fragment",
+                        protocol_hint="fragment",
+                    )
 
 
 def scan_chunks(
@@ -455,6 +567,7 @@ def relevant_records(records: list[Artifact], include_rpc: bool = False) -> list
         for r in records
         if include_rpc
         or r.mcp
+        or r.protocol_hint == "ambiguous"
         or r.state == "fragment"
         or (r.kind == "response" and (r.pid, type(r.request_id), r.request_id) in ids)
     ]

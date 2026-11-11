@@ -165,6 +165,8 @@ class MCPTraceMixin:
             _json(record.findings),
             _json(record.raw.decode(record.encoding, errors="backslashreplace")),
             record.sha256,
+            record.protocol_hint,
+            _json(list(record.classification_reasons)),
         )
 
     @staticmethod
@@ -184,6 +186,8 @@ class MCPTraceMixin:
             "",
             "",
             _json(summary),
+            "",
+            "",
             "",
         )
 
@@ -295,6 +299,8 @@ class MCPTraceMixin:
                 ("Findings", str),
                 ("Raw", str),
                 ("SHA256", str),
+                ("ProtocolHint", str),
+                ("ClassificationReasons", str),
             ],
             self._generator(rules),
         )

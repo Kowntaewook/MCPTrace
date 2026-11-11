@@ -94,12 +94,18 @@ def rows_of(plugin):
 def test_adapter_treegrid_with_real_framework_and_policy(adapter):
     plugin, _ = adapter
     plugin.config["policy"] = str(ROOT / "examples" / "policy.json")
+    assert [column.name for column in plugin.run().columns][-2:] == [
+        "ProtocolHint",
+        "ClassificationReasons",
+    ]
     rows = rows_of(plugin)
     artifacts = [row for row in rows if row[5] != "scan-summary"]
     assert len(artifacts) == 2
     assert {row[4] for row in artifacts} == {"utf-8", "utf-16-le"}
     assert all(row[0] == 42 and row[10] == "candidate-only" for row in artifacts)
     assert json.loads(artifacts[0][12])[0]["status"] == "policy-match"
+    assert all(row[15] == "mcp-candidate" for row in artifacts)
+    assert "known-mcp-method" in json.loads(artifacts[0][16])
     assert json.loads(rows[-1][13])["candidate_records"] == 2
 
 
@@ -108,6 +114,54 @@ def test_limit_is_in_summary(adapter):
     plugin.config["max-records"] = 1
     rows = rows_of(plugin)
     assert json.loads(rows[-1][13])["limits_hit"] == ["max-records"]
+
+
+def test_lsp_evidence_visible_only_with_include_rpc(adapter):
+    plugin, proc = adapter
+    message = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {"clientInfo": {"name": "editor"}, "capabilities": {}, "rootUri": None},
+    }
+    raw = encode(message)
+    header = f"Content-Length: {len(raw)}\r\n\r\n".encode()
+    memory = b"\0" * 32 + header + raw + b"\0" * 32
+    plugin.context.layers.add_layer(BufferDataLayer(plugin.context, "lsp", "lsp", memory))
+    proc.add_process_layer = lambda: "lsp"
+    proc.get_vad_root = lambda: SimpleNamespace(
+        traverse=lambda: iter([SimpleNamespace(get_start=lambda: 0, get_size=lambda: len(memory))])
+    )
+
+    assert len(rows_of(plugin)) == 1  # scan summary only
+    plugin.config["include-rpc"] = True
+    rows = rows_of(plugin)
+    assert len(rows) == 2 and rows[0][15] == "lsp-candidate"
+    assert {"lsp-workspace-params", "content-length-frame"} <= set(json.loads(rows[0][16]))
+
+
+def test_conflicting_initialize_evidence_is_visible_by_default(adapter):
+    plugin, proc = adapter
+    message = {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "initialize",
+        "params": {
+            "protocolVersion": "2025-11-25",
+            "clientInfo": {"name": "editor"},
+            "capabilities": {},
+            "workspaceFolders": [],
+        },
+    }
+    memory = encode(message)
+    plugin.context.layers.add_layer(BufferDataLayer(plugin.context, "conflict", "conflict", memory))
+    proc.add_process_layer = lambda: "conflict"
+    proc.get_vad_root = lambda: SimpleNamespace(
+        traverse=lambda: iter([SimpleNamespace(get_start=lambda: 0, get_size=lambda: len(memory))])
+    )
+    rows = rows_of(plugin)
+    assert len(rows) == 2 and rows[0][15] == "ambiguous"
+    assert "conflicting-initialize-signals" in json.loads(rows[0][16])
 
 
 def test_suspicious_only_retains_summary(adapter):
@@ -187,6 +241,8 @@ def test_export_uses_real_cli_handler_and_roundtrips_raw_evidence(adapter, tmp_p
         raw = base64.b64decode(item["raw_base64"])
         assert hashlib.sha256(raw).hexdigest() == item["raw_sha256"]
         assert json.loads(raw.decode(item["encoding"])) == item["message"]
+        assert item["protocol_hint"] == "mcp-candidate"
+        assert item["classification_reasons"]
 
 
 def test_export_collision_reports_actual_filename(adapter, tmp_path):

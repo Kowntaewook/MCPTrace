@@ -17,6 +17,7 @@ an external AI API.
 
 - Extract UTF-8 and UTF-16LE JSON-RPC artifacts from readable process memory.
 - Identify MCP-related methods and response shapes, including `tools/call` names and arguments.
+- Show the observed MCP/LSP classification signals and flag conflicting `initialize` evidence.
 - Preserve original bytes and addresses for later verification against the image.
 - Suggest request/response relationships using the same PID and typed request ID.
 - Apply optional, analyst-defined rules to tool arguments, such as path or URL checks.
@@ -39,6 +40,15 @@ characters, braces inside strings, and messages spanning contiguous read chunks.
 JSON with duplicate keys or unsupported identifiers is rejected rather than silently
 reinterpreted. MCP relevance is determined from known method names, response shapes,
 and associated request IDs; it is not full MCP schema validation.
+
+The `ProtocolHint` and `ClassificationReasons` columns explain why an artifact
+was labeled `mcp-candidate`, `lsp-candidate`, `ambiguous`, or `generic-json-rpc`.
+JSONL exports carry the same information as `protocol_hint` and
+`classification_reasons`. A matching `Content-Length` header is reported as
+context, not treated as proof of LSP: HTTP and other transports can leave the
+same header in memory. Ambiguous objects are shown by default so their conflicting
+signals remain reviewable; use `--include-rpc` to inspect LSP and generic JSON-RPC
+artifacts as well. None of these hints proves transmission or execution.
 
 Missing memory is kept missing. The reader does not fill gaps with zeroes or join
 bytes across separate VADs/VMAs. With `--include-partial`, unparsed fragments can be
