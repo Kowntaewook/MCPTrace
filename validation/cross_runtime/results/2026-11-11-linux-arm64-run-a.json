@@ -1,0 +1,505 @@
+{
+  "validation_scope": "live Linux process virtual memory; not full RAM or Volatility",
+  "host": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+  "python": "3.12.3",
+  "node": "v22.14.0",
+  "dotnet": "10.0.404",
+  "cases": [
+    {
+      "runtime": "node",
+      "pid": 38980,
+      "logged_messages": 13,
+      "distinct_logged_messages": 13,
+      "distinct_logged_messages_found": 13,
+      "logical_message_coverage": 1.0,
+      "artifact_records": 43,
+      "mcp_candidate_records": 40,
+      "unmatched_mcp_candidate_records": 0,
+      "encodings": [
+        "utf-8"
+      ],
+      "sse_response_messages": 6,
+      "per_message": [
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "initialize",
+          "id": 0,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 0,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "notifications/initialized",
+          "id": null,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/list",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 2,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 2,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 3,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 3,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 4,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 4,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 5,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "sse",
+          "method": "response",
+          "id": 5,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        }
+      ],
+      "scanned_bytes": 138657792,
+      "private_writable_maps": 173,
+      "read_errors": 0,
+      "truncated_at_256_mib": false,
+      "artifacts_reverified_at_virtual_address": 43,
+      "sse_prefixed_artifact_records": 21,
+      "content_length_framed_artifact_records": 0,
+      "anchor_limit_hits": 0,
+      "candidate_limit_hits": 0
+    },
+    {
+      "runtime": "dotnet",
+      "pid": 38992,
+      "logged_messages": 13,
+      "distinct_logged_messages": 13,
+      "distinct_logged_messages_found": 7,
+      "logical_message_coverage": 0.5384615384615384,
+      "artifact_records": 15,
+      "mcp_candidate_records": 13,
+      "unmatched_mcp_candidate_records": 0,
+      "encodings": [
+        "utf-16-le",
+        "utf-8"
+      ],
+      "sse_response_messages": 0,
+      "per_message": [
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "initialize",
+          "id": 1,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "notifications/initialized",
+          "id": null,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/list",
+          "id": 2,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 2,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 3,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 3,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 4,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 4,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 5,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 5,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 6,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 6,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        }
+      ],
+      "scanned_bytes": 100130816,
+      "private_writable_maps": 59,
+      "read_errors": 0,
+      "truncated_at_256_mib": false,
+      "artifacts_reverified_at_virtual_address": 15,
+      "sse_prefixed_artifact_records": 0,
+      "content_length_framed_artifact_records": 0,
+      "anchor_limit_hits": 0,
+      "candidate_limit_hits": 0
+    },
+    {
+      "runtime": "dotnet-modern",
+      "pid": 39005,
+      "logged_messages": 12,
+      "distinct_logged_messages": 12,
+      "distinct_logged_messages_found": 7,
+      "logical_message_coverage": 0.5833333333333334,
+      "artifact_records": 15,
+      "mcp_candidate_records": 15,
+      "unmatched_mcp_candidate_records": 0,
+      "encodings": [
+        "utf-16-le",
+        "utf-8"
+      ],
+      "sse_response_messages": 0,
+      "per_message": [
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "server/discover",
+          "id": 1,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/list",
+          "id": 2,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 2,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 3,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 3,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 4,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 4,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 5,
+          "found": false,
+          "encodings": []
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 5,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "client-to-server",
+          "framing": "json",
+          "method": "tools/call",
+          "id": 6,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "json",
+          "method": "response",
+          "id": 6,
+          "found": true,
+          "encodings": [
+            "utf-16-le",
+            "utf-8"
+          ]
+        }
+      ],
+      "scanned_bytes": 91959296,
+      "private_writable_maps": 57,
+      "read_errors": 0,
+      "truncated_at_256_mib": false,
+      "artifacts_reverified_at_virtual_address": 15,
+      "sse_prefixed_artifact_records": 0,
+      "content_length_framed_artifact_records": 0,
+      "anchor_limit_hits": 0,
+      "candidate_limit_hits": 0
+    },
+    {
+      "runtime": "lsp-control",
+      "pid": 39018,
+      "logged_messages": 2,
+      "distinct_logged_messages": 2,
+      "distinct_logged_messages_found": 2,
+      "logical_message_coverage": 1.0,
+      "artifact_records": 16,
+      "mcp_candidate_records": 0,
+      "unmatched_mcp_candidate_records": 0,
+      "encodings": [
+        "utf-8"
+      ],
+      "sse_response_messages": 0,
+      "per_message": [
+        {
+          "direction": "client-to-server",
+          "framing": "content-length",
+          "method": "initialize",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        },
+        {
+          "direction": "server-to-client",
+          "framing": "content-length",
+          "method": "response",
+          "id": 1,
+          "found": true,
+          "encodings": [
+            "utf-8"
+          ]
+        }
+      ],
+      "scanned_bytes": 83660800,
+      "private_writable_maps": 42,
+      "read_errors": 0,
+      "truncated_at_256_mib": false,
+      "artifacts_reverified_at_virtual_address": 16,
+      "sse_prefixed_artifact_records": 0,
+      "content_length_framed_artifact_records": 6,
+      "anchor_limit_hits": 0,
+      "candidate_limit_hits": 0
+    }
+  ]
+}

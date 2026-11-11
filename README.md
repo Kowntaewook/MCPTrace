@@ -1,6 +1,8 @@
 # MCPTrace
 
-**Release:** [v0.3.0](https://github.com/Kowntaewook/MCPTrace/releases/tag/v0.3.0) · [Release notes](docs/releases/v0.3.0.md)
+**Latest release:** [v0.3.0](https://github.com/Kowntaewook/MCPTrace/releases/tag/v0.3.0) · [Release notes](docs/releases/v0.3.0.md)
+
+**Current source:** post-v0.3.0 development; the changes below have not been tagged as a new release.
 
 MCPTrace is a **Volatility 3 plugin for extracting MCP/JSON-RPC message candidates
 from Windows and Linux memory dumps**. It examines process memory for requests,
@@ -17,6 +19,7 @@ an external AI API.
 
 - Extract UTF-8 and UTF-16LE JSON-RPC artifacts from readable process memory.
 - Identify MCP-related methods and response shapes, including `tools/call` names and arguments.
+- Show the observed MCP/LSP classification signals and flag conflicting `initialize` evidence.
 - Preserve original bytes and addresses for later verification against the image.
 - Suggest request/response relationships using the same PID and typed request ID.
 - Apply optional, analyst-defined rules to tool arguments, such as path or URL checks.
@@ -39,6 +42,15 @@ characters, braces inside strings, and messages spanning contiguous read chunks.
 JSON with duplicate keys or unsupported identifiers is rejected rather than silently
 reinterpreted. MCP relevance is determined from known method names, response shapes,
 and associated request IDs; it is not full MCP schema validation.
+
+The `ProtocolHint` and `ClassificationReasons` columns explain why an artifact
+was labeled `mcp-candidate`, `lsp-candidate`, `ambiguous`, or `generic-json-rpc`.
+JSONL exports carry the same information as `protocol_hint` and
+`classification_reasons`. A matching `Content-Length` header is reported as
+context, not treated as proof of LSP: HTTP and other transports can leave the
+same header in memory. Ambiguous objects are shown by default so their conflicting
+signals remain reviewable; use `--include-rpc` to inspect LSP and generic JSON-RPC
+artifacts as well. None of these hints proves transmission or execution.
 
 Missing memory is kept missing. The reader does not fill gaps with zeroes or join
 bytes across separate VADs/VMAs. With `--include-partial`, unparsed fragments can be
@@ -233,7 +245,7 @@ are excluded. The search bound itself is unchanged, and genuine limit events rem
 visible in the output. Initial failed attempts and the correction are documented in
 the benchmark report.
 
-The measured implementation passed **135 automated tests**, Ruff checks, and CI on
+The v0.3.0 measured implementation passed **135 automated tests**, Ruff checks, and CI on
 Windows and Ubuntu with Python 3.10 and 3.12. Tests cover parsing, exact-byte preservation,
 memory gaps, typed-ID correlation, platform adapters, exports, and benchmark reporting.
 
@@ -242,6 +254,40 @@ Both JSONL exports remained byte-identical and retained all 41 artifacts. That s
 uses an inferred physical-memory layout because its VMware metadata was unavailable;
 it is a conditional validation result, not a Linux recovery-rate benchmark. Details
 are recorded in the [Linux RAM validation report](docs/real-memory-validation.md).
+
+## Post-v0.3.0 development validation
+
+The current source exposes `ProtocolHint` and `ClassificationReasons` for MCP/LSP
+candidate review. Shared `initialize` fields are assessed alongside a date-shaped
+`protocolVersion`, LSP workspace fields, and matching `Content-Length` framing.
+Conflicting MCP/LSP signals are shown as ambiguous. The
+[classification notes](docs/protocol-candidate-updates.md) describe the evidence
+rules and their limits.
+
+Two local Linux ARM64 **process-memory** snapshots used official Node and .NET
+MCP clients and a separate LSP framing control. The fractions below count
+distinct logged messages found in each paused process; they are not general
+recovery rates or full RAM/Volatility measurements.
+
+| Client / transport | Snapshot 1 | Snapshot 2 |
+| --- | ---: | ---: |
+| Node SDK / Streamable HTTP with SSE responses | 13/13 | 13/13 |
+| .NET SDK / 2025-11-25 | 7/13 | 7/13 |
+| .NET SDK / 2026-07-28 | 8/12 | 7/12 |
+| LSP / Content-Length control | 2/2 | 2/2 |
+
+An independent probe found the complete wire payload of every carved Node and
+.NET message in the same scanned maps. None of the missing .NET requests had
+its **exact** wire payload there, so these snapshots contain no confirmed
+scanner miss under that test. A differently serialized copy could still have
+existed. The scanner's UTF-16LE search was already supported; these results
+did not justify an additional encoding or carving change. See the
+[cross-runtime report and machine-readable results](docs/cross-runtime-memory-validation.md).
+
+The current source passed **156 local automated tests** and Ruff checks. The
+new classifier has not been rerun on the earlier acquired Windows RAM images,
+and this process-memory study does not establish Windows recovery or runtime
+performance.
 
 ## Scope and limitations
 
@@ -266,4 +312,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Validation scope and procedures](docs/validation.md)
 - [Windows positive MCP traffic validation](docs/windows-positive-memory-validation.md)
 - [Windows 11 public-image validation](docs/windows-memory-validation.md)
+- [Node/.NET process-memory validation and exact-wire probe](docs/cross-runtime-memory-validation.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)
