@@ -1,5 +1,8 @@
 # 검증 범위
 
+Node·.NET·Streamable HTTP/SSE와 LSP 대조군의 로컬 프로세스 메모리 검증은
+[별도 보고서](cross-runtime-memory-validation.md)에 기록했습니다.
+
 이 문서는 자동 테스트의 범위와 실제 이미지 검증 절차를 설명합니다.
 공개 Linux 이미지 2개에 대한 실행 결과는 [실제 RAM 검증 기록](real-memory-validation.md)에
 별도로 기록했습니다. MCP 활동 샘플은 누락된 VMware 메타데이터를 대신해 추정한 물리 메모리
