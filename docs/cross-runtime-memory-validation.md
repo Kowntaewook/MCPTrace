@@ -36,15 +36,31 @@ text. The Node case shows the scanner can start at a JSON object after an SSE
 `data: ` prefix when that frame remains in memory. The LSP control shows that
 the recovered `initialize` messages were not labeled as MCP.
 
-The harness now has a follow-up wire-presence probe: it records each complete
-HTTP JSON payload and searches the same paused process maps for those exact
-bytes in UTF-8 and UTF-16LE. It reports a confirmed scanner miss only when a
-complete payload is independently present but its logical message is not
-carved. The two reports linked below predate this probe, so they cannot be
-used to label any of the missing .NET requests as scanner misses. Absence of
-an exact wire payload in a future run would not rule out a differently
-serialized in-memory copy. No scanner encoding or recovery behavior was
-changed on the basis of the existing measurements.
+## Follow-up exact-wire probe (two more snapshots)
+
+The harness now records each complete HTTP JSON payload and searches the same
+paused process maps for those exact bytes in UTF-8 and UTF-16LE. It reports a
+confirmed scanner miss only when a complete payload is independently present
+but its logical message is not carved. Two additional snapshots used this
+probe with the current classifier:
+
+| Case | Third snapshot: carved / logged | Fourth snapshot: carved / logged | Exact wire present but not carved |
+| --- | ---: | ---: | ---: |
+| Node SDK, Streamable HTTP with SSE responses | 13/13 | 13/13 | 0 in both |
+| .NET SDK, 2025-11-25 | 7/13 | 7/13 | 0 in both |
+| .NET SDK, 2026-07-28 | 8/12 | 7/12 | 0 in both |
+| LSP Content-Length control | 2/2 | 2/2 | Not probed |
+
+For every Node and .NET message carved in these snapshots, its exact wire
+payload was also found independently; none of the missing .NET requests had an
+exact wire payload in the scanned maps. All 89 carved artifact records in each
+run were reread at their virtual addresses. Neither run reported a
+read error, 256 MiB truncation, anchor or candidate limit hit, or an unmatched
+MCP candidate in the controlled traffic. The LSP control remained free of MCP
+labels. These results do **not** establish that the missing requests had been
+reclaimed: a differently serialized in-memory copy could still have existed.
+They also do not establish a general scanner false-negative rate. No encoding
+or carving change was justified by these samples.
 
 The Node HTTP server uses the official TypeScript SDK for the Node case. The
 .NET cases use the official C# client SDK and a small local HTTP peer; the
@@ -56,4 +72,6 @@ This is not a full physical RAM acquisition or Volatility end-to-end run, and
 does not cover Windows, UTF-16BE, longer sessions, or broader client samples.
 
 Machine-readable evidence: [first snapshot](../validation/cross_runtime/results/2026-11-11-linux-arm64-run-a.json),
-[second snapshot](../validation/cross_runtime/results/2026-11-11-linux-arm64-run-b.json).
+[second snapshot](../validation/cross_runtime/results/2026-11-11-linux-arm64-run-b.json),
+[third snapshot with wire probe](../validation/cross_runtime/results/2026-11-11-linux-arm64-wire-probe.json),
+[fourth snapshot with wire probe](../validation/cross_runtime/results/2026-11-11-linux-arm64-wire-probe-b.json).

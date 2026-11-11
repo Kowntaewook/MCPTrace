@@ -41,3 +41,6 @@ The earlier scan optimization was measured in the
 classification change has not been rerun on those physical RAM images. The
 local process-memory controls and unit tests above do not establish a
 Windows RAM recovery rate or scanner runtime for this change.
+Two further paused Linux process-memory snapshots with the current classifier
+and an independent exact-wire probe are documented in the
+[cross-runtime validation report](cross-runtime-memory-validation.md).
