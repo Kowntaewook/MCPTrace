@@ -2,8 +2,13 @@
 
 import base64
 import json
+import os
+
+import pytest
 
 from validation.cross_runtime import run
+
+pytestmark = pytest.mark.skipif(not hasattr(os, "pread"), reason="Linux process-memory harness")
 
 
 def test_exact_wire_probe_uses_the_scanned_bytes(tmp_path, monkeypatch):
