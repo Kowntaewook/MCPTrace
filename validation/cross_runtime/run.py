@@ -7,6 +7,7 @@ Volatility end-to-end validation and must not be reported as one.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import os
@@ -48,15 +49,26 @@ def readable_private_maps(pid: int):
             yield start, end
 
 
-def scan_process(pid: int) -> tuple[list, dict]:
+def scan_process(pid: int, traffic_rows: list[dict]) -> tuple[list, dict, list[list[str]]]:
     maps = list(readable_private_maps(pid))
     fd = os.open(f"/proc/{pid}/mem", os.O_RDONLY)
     stats = ScanStats()
     read_bytes = read_errors = 0
+    wire_encodings: list[set[str]] = [set() for _ in traffic_rows]
+    needles: list[tuple[int, str, bytes]] = []
+    for index, row in enumerate(traffic_rows):
+        if "wire_base64" not in row:
+            continue
+        wire = base64.b64decode(row["wire_base64"], validate=True)
+        if wire:
+            needles.append((index, "utf-8", wire))
+            needles.append((index, "utf-16-le", wire.decode("utf-8").encode("utf-16-le")))
+    overlap = max((len(needle) for _, _, needle in needles), default=1) - 1
 
     def chunks():
         nonlocal read_bytes, read_errors
         for start, end in maps:
+            tail = b""
             for address in range(start, end, BLOCK):
                 if read_bytes >= MAX_SCAN_BYTES:
                     return
@@ -64,8 +76,14 @@ def scan_process(pid: int) -> tuple[list, dict]:
                     data = os.pread(fd, min(BLOCK, end - address), address)
                 except OSError:
                     read_errors += 1
+                    tail = b""
                     continue
                 read_bytes += len(data)
+                window = tail + data
+                for index, encoding, needle in needles:
+                    if encoding not in wire_encodings[index] and needle in window:
+                        wire_encodings[index].add(encoding)
+                tail = window[-overlap:] if overlap else b""
                 yield address, data
 
     try:
@@ -80,19 +98,24 @@ def scan_process(pid: int) -> tuple[list, dict]:
         ]
     finally:
         os.close(fd)
-    return artifacts, {
-        "scanned_bytes": read_bytes,
-        "private_writable_maps": len(maps),
-        "read_errors": read_errors,
-        "truncated_at_256_mib": read_bytes >= MAX_SCAN_BYTES,
-        "artifacts_reverified_at_virtual_address": verified,
-        "sse_prefixed_artifact_records": sum(prefix.endswith(b"data: ") for prefix in prefixes),
-        "content_length_framed_artifact_records": sum(
-            re.search(rb"Content-Length: \d+\r\n\r\n$", prefix) is not None for prefix in prefixes
-        ),
-        "anchor_limit_hits": stats.anchor_limit_hits,
-        "candidate_limit_hits": stats.candidate_limit_hits,
-    }
+    return (
+        artifacts,
+        {
+            "scanned_bytes": read_bytes,
+            "private_writable_maps": len(maps),
+            "read_errors": read_errors,
+            "truncated_at_256_mib": read_bytes >= MAX_SCAN_BYTES,
+            "artifacts_reverified_at_virtual_address": verified,
+            "sse_prefixed_artifact_records": sum(prefix.endswith(b"data: ") for prefix in prefixes),
+            "content_length_framed_artifact_records": sum(
+                re.search(rb"Content-Length: \d+\r\n\r\n$", prefix) is not None
+                for prefix in prefixes
+            ),
+            "anchor_limit_hits": stats.anchor_limit_hits,
+            "candidate_limit_hits": stats.candidate_limit_hits,
+        },
+        [sorted(encodings) for encodings in wire_encodings],
+    )
 
 
 def traffic_since(path: Path, offset: int) -> list[dict]:
@@ -116,7 +139,7 @@ def run_client(
             truth_rows = traffic_since(traffic, offset)
             os.kill(proc.pid, signal.SIGSTOP)
             try:
-                artifacts, scan = scan_process(proc.pid)
+                artifacts, scan, wire_encodings = scan_process(proc.pid, truth_rows)
             finally:
                 os.kill(proc.pid, signal.SIGCONT)
             expected = {canonical(row["message"]) for row in truth_rows}
@@ -129,6 +152,12 @@ def run_client(
                     "method": row["message"].get("method", "response"),
                     "id": row["message"].get("id"),
                     "found": canonical(row["message"]) in matched,
+                    "wire_exact_encodings": (
+                        wire_encodings[index] if "wire_base64" in row else None
+                    ),
+                    "confirmed_scan_miss": (
+                        bool(wire_encodings[index]) and canonical(row["message"]) not in matched
+                    ),
                     "encodings": sorted(
                         {
                             item.encoding
@@ -137,7 +166,7 @@ def run_client(
                         }
                     ),
                 }
-                for row in truth_rows
+                for index, row in enumerate(truth_rows)
             ]
             return {
                 "runtime": label,
@@ -147,6 +176,8 @@ def run_client(
                 "distinct_logged_messages_found": len(matched),
                 "logical_message_coverage": len(matched) / len(expected) if expected else None,
                 "artifact_records": len(artifacts),
+                "wire_probed_messages": sum("wire_base64" in row for row in truth_rows),
+                "confirmed_scan_misses": sum(row["confirmed_scan_miss"] for row in per_message),
                 "mcp_candidate_records": sum(item.mcp for item in artifacts),
                 "unmatched_mcp_candidate_records": sum(
                     item.mcp and canonical(item.obj) not in expected

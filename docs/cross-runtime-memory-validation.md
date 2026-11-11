@@ -36,6 +36,16 @@ text. The Node case shows the scanner can start at a JSON object after an SSE
 `data: ` prefix when that frame remains in memory. The LSP control shows that
 the recovered `initialize` messages were not labeled as MCP.
 
+The harness now has a follow-up wire-presence probe: it records each complete
+HTTP JSON payload and searches the same paused process maps for those exact
+bytes in UTF-8 and UTF-16LE. It reports a confirmed scanner miss only when a
+complete payload is independently present but its logical message is not
+carved. The two reports linked below predate this probe, so they cannot be
+used to label any of the missing .NET requests as scanner misses. Absence of
+an exact wire payload in a future run would not rule out a differently
+serialized in-memory copy. No scanner encoding or recovery behavior was
+changed on the basis of the existing measurements.
+
 The Node HTTP server uses the official TypeScript SDK for the Node case. The
 .NET cases use the official C# client SDK and a small local HTTP peer; the
 2026 discovery and result shapes follow the protocol specification, but this

@@ -24,12 +24,13 @@ function logBody(direction, bytes) {
   const body = bytes.toString('utf8');
   const framing = body.trim().startsWith('{') ? 'json' : 'sse';
   if (body.trim().startsWith('{')) {
-    journal({ direction, framing, message: JSON.parse(body) });
+    journal({ direction, framing, message: JSON.parse(body), wire_base64: bytes.toString('base64') });
     return;
   }
   for (const line of body.split(/\r?\n/)) {
     if (line.startsWith('data: ')) {
-      journal({ direction, framing, message: JSON.parse(line.slice(6)) });
+      const payload = Buffer.from(line.slice(6), 'utf8');
+      journal({ direction, framing, message: JSON.parse(line.slice(6)), wire_base64: payload.toString('base64') });
     }
   }
 }

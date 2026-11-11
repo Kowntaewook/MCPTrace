@@ -17,11 +17,17 @@ plugin. It uses no GitHub Actions.
   `initialize` request/response messages, including `clientInfo`,
   `capabilities`, `rootUri`, and `workspaceFolders`.
 
-The HTTP server logs the exact logical JSON objects it receives or sends.
+The HTTP server logs the exact logical JSON objects and their wire payload bytes.
 The scanner pauses each client with SIGSTOP, scans readable private writable
 maps via `/proc/<pid>/mem`, and independently rereads each carved byte sequence
 at its virtual address. It counts distinct logical messages separately from
-memory copies. The 256 MiB scan cap and any unreadable pages are reported.
+memory copies. While the client remains paused, the harness also searches those
+same maps for each full wire payload as UTF-8 and UTF-16LE bytes. A
+`confirmed_scan_miss` means a complete exact wire payload was present in a
+scanned map but the scanner did not return that logical JSON-RPC message. An
+absent exact payload cannot prove that no differently serialized copy remained.
+The LSP control does not use this wire probe. The 256 MiB scan cap and any
+unreadable pages are reported.
 
 ## Run on Linux
 
@@ -43,7 +49,7 @@ PYTHONPATH=. python3 validation/cross_runtime/run.py \
 
 Use a new `--workdir` for each run. Omit `--dotnet` and `--dotnet-client` to
 run only the Node MCP and LSP control cases. The report includes per-message
-matches and framing evidence. Test marker strings are synthetic; the report
-does not include process dumps.
+matches, wire presence, and framing evidence. Test marker strings are synthetic;
+the report does not include process dumps or raw wire payloads.
 
 Measured results and limitations: [cross-runtime validation report](../../docs/cross-runtime-memory-validation.md).
