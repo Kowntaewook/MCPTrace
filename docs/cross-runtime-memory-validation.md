@@ -75,3 +75,34 @@ Machine-readable evidence: [first snapshot](../validation/cross_runtime/results/
 [second snapshot](../validation/cross_runtime/results/2026-11-11-linux-arm64-run-b.json),
 [third snapshot with wire probe](../validation/cross_runtime/results/2026-11-11-linux-arm64-wire-probe.json),
 [fourth snapshot with wire probe](../validation/cross_runtime/results/2026-11-11-linux-arm64-wire-probe-b.json).
+
+## Follow-up: x86-64 physical RAM and Volatility (2026-11-14)
+
+The [physical RAM experiment](../validation/linux_x64_http_ram/README.md)
+reused the pinned Node and .NET HTTP fixtures in an Ubuntu x86-64 QEMU guest.
+Nine fresh client processes per case were captured at 0, 5, and 30 seconds
+after host readiness detection. The host ran Volatility 3 and MCPTrace on each
+2 GiB ELF RAM image, targeting the client PID only. A separate server process
+recorded actual HTTP JSON bodies and SSE payloads.
+
+| Case | Transmitted messages | Exact wire payloads in client RAM | Logical messages carved | Confirmed scan misses |
+| --- | ---: | ---: | ---: | ---: |
+| Node SDK, Streamable HTTP with SSE responses | 117 | 117 | 117 | 0 |
+| .NET SDK, 2025-11-25 | 117 | 66 | 66 | 0 |
+| .NET SDK, 2026-07-28 | 108 | 70 | 70 | 0 |
+
+The Node server sent 54 SSE responses. Across the .NET cases, 108 complete
+wire payloads also appeared as UTF-16LE; they overlap the UTF-8-present
+messages. All 655 exported artifact records were reread at their reported
+virtual addresses. No run hit a scanner limit or produced an artifact
+semantically unmatched to the server traffic log. The 89 transmitted messages
+without an exact wire payload in readable client VMAs are not confirmed
+scanner misses; alternate in-memory representations remain possible. The
+nominal 0-second captures followed host readiness detection, whose latency
+from client launch was bounded only by 2.83–6.94 seconds. This controlled
+fixture does not establish general recovery or false-negative rates, and the
+.NET peer is not the official C# server SDK.
+
+[Machine-readable per-capture results](../validation/linux_x64_http_ram/results/2026-11-14-qemu-http-sdk.json)
+include image hashes, source hashes, timings, readable-byte counts, and scan
+limits. Raw RAM images and traffic logs were not committed.

@@ -310,6 +310,18 @@ possible. Readiness polling added up to 7.53 seconds from client launch to
 detection, so the 0-second group is not an instantaneous post-call capture.
 See the [official SDK RAM experiment and numeric result](validation/linux_x64_official/README.md).
 
+The Node/.NET HTTP follow-up then ran **27 Linux x86-64 physical RAM captures**:
+three fresh clients per 0, 5, and 30 second delay for each runtime/protocol
+case. Of 342 transmitted messages, an independent probe found 253 complete
+wire payloads in readable client memory and MCPTrace carved all 253. Those
+logical messages produced 655 address-verified artifact records, with no
+confirmed scan miss, unmatched artifact, or scan limit hit. Node with official
+client and server SDKs accounted for 117/117; the official C# client with a
+purpose-built local HTTP peer accounted for 66/117 on 2025-11-25 and 70/108
+on 2026-07-28. These fractions describe exact wire presence in this fixture,
+not general recovery rates. The .NET cases also had 108 overlapping UTF-16LE
+wire copies. See the [HTTP physical RAM procedure and numeric result](validation/linux_x64_http_ram/README.md).
+
 The current source passed **160 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
@@ -340,4 +352,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Windows 11 public-image validation](docs/windows-memory-validation.md)
 - [Node/.NET process-memory validation and exact-wire probe](docs/cross-runtime-memory-validation.md)
 - [Official Python SDK in Linux x86-64 physical RAM](validation/linux_x64_official/README.md)
+- [Node/.NET HTTP/SSE in Linux x86-64 physical RAM](validation/linux_x64_http_ram/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)
