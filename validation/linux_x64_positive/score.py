@@ -40,6 +40,14 @@ def process_context(symbols: Path, cache: Path, config: Path):
     try:
         framework.import_files(volatility3.plugins, True)
         configuration = json.loads(config.read_text())
+        locations = [
+            value
+            for key, value in configuration.items()
+            if key.endswith(".memory_layer.base_layer.location")
+        ]
+        if len(locations) != 1:
+            raise ValueError("saved configuration must identify exactly one RAM image")
+        context.config["automagic.LayerStacker.single_location"] = locations[0]
         context.config.splice(
             "plugins.PsList", interfaces.configuration.HierarchicalDict(configuration)
         )

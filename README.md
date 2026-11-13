@@ -297,9 +297,22 @@ existed. The scanner's UTF-16LE search was already supported; these results
 did not justify an additional encoding or carving change. See the
 [cross-runtime report and machine-readable results](docs/cross-runtime-memory-validation.md).
 
-The current source passed **156 local automated tests** and Ruff checks. The
+An additional **Linux x86-64 physical RAM** experiment used the official Python
+MCP SDK (`mcp==1.26.0`) with no deliberate client-side frame journal. A separate
+stdio proxy recorded actual transmissions. Across nine fresh client processes
+captured at 0, 5, and 30 seconds after host readiness detection, 117 messages
+were transmitted. An independent exact-wire probe found 32 complete UTF-8
+payloads in the readable client VMAs, and MCPTrace carved all 32, producing 50
+address-verified artifact records. There were no confirmed scan misses or
+unmatched artifacts in this fixture. The other 85 messages lacked an exact wire
+copy in the scanned client memory; differently serialized copies remain
+possible. Readiness polling added up to 7.53 seconds from client launch to
+detection, so the 0-second group is not an instantaneous post-call capture.
+See the [official SDK RAM experiment and numeric result](validation/linux_x64_official/README.md).
+
+The current source passed **160 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
-and this process-memory study does not establish Windows recovery or runtime
+and these small controlled studies do not establish Windows recovery or runtime
 performance.
 
 ## Scope and limitations
@@ -326,4 +339,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Windows positive MCP traffic validation](docs/windows-positive-memory-validation.md)
 - [Windows 11 public-image validation](docs/windows-memory-validation.md)
 - [Node/.NET process-memory validation and exact-wire probe](docs/cross-runtime-memory-validation.md)
+- [Official Python SDK in Linux x86-64 physical RAM](validation/linux_x64_official/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)

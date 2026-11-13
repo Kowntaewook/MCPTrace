@@ -63,3 +63,23 @@ shows why recovered RAM objects cannot establish transmission.
 [Machine-readable numeric result](../validation/linux_x64_positive/results/2026-11-13-qemu-ubuntu.json)
 contains the image and symbol hashes, per-process scan summaries, and scoring
 denominators. Raw RAM and message exports are not committed.
+
+## Follow-up: official Python SDK without a client frame journal
+
+On 2026-11-14, a separate [official SDK experiment](../validation/linux_x64_official/README.md)
+used `mcp==1.26.0` client and server processes in a Linux x86-64 QEMU VM
+configured with matching kernel symbols. A separate stdio proxy logged actual
+transmitted bytes, while nine fresh SDK client processes held no deliberate
+frame journal. Three
+physical RAM captures each were taken at 0, 5, and 30 seconds after the host
+detected readiness. Of 117 transmitted messages, an independent exact-wire
+probe found 32 full UTF-8 payloads in readable client VMAs. MCPTrace carved
+all 32 as logical messages, with 50 address-verified artifact records and no
+confirmed scan miss. The remaining 85 were absent as exact wire payloads in
+those VMAs. This is a conditional observation on one fixture, not general
+recovery recall; differently serialized copies and unreadable bytes remain.
+The host readiness poll also adds latency to the nominal delay values.
+
+The [machine-readable result](../validation/linux_x64_official/results/2026-11-14-qemu-ubuntu-sdk.json)
+records each image hash, capture timing, readable-wire count, and scan limit.
+Raw RAM and wire logs were not committed.
