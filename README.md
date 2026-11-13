@@ -24,6 +24,7 @@ an external AI API.
 - Suggest request/response relationships using the same PID and typed request ID.
 - Apply optional, analyst-defined rules to tool arguments, such as path or URL checks.
 - Export artifacts and per-process summaries, including unreadable bytes, errors, and search limits.
+- Summarize exported JSONL as a case report that checks raw-byte hashes and shows scan limitations.
 
 The current analysis targets are **Windows x64** and **Linux x86-64**. The plugin
 name refers to the operating system in the memory image, independently of the OS
@@ -127,6 +128,18 @@ the plugin name. This is separate from the per-process JSONL exports produced by
 ```sh
 vol -p plugins -f windows.raw -r json windows.mcptrace.MCPTrace --pid 4242 > findings.json
 ```
+
+To create a content-minimized case summary from JSONL exports:
+
+```sh
+python -m mcptrace.report output-linux/mcptrace.pid-4242.jsonl --output case-report.json
+```
+
+The report checks exported raw-byte hashes and lengths, lists classification
+signals and scan limitations, and omits message bodies and arguments. It does
+not assign timestamps or prove that a recovered message was sent or executed.
+See [the no-Windows validation record](docs/no-windows-validation-2026-11-13.md)
+for the paired controlled-buffer comparison and its limits.
 
 ## Common options
 

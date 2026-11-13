@@ -2,6 +2,9 @@
 
 Node·.NET·Streamable HTTP/SSE와 LSP 대조군의 로컬 프로세스 메모리 검증은
 [별도 보고서](cross-runtime-memory-validation.md)에 기록했습니다.
+[Linux x86-64 QEMU 실제 RAM 양성 검증](../validation/linux_x64_positive/README.md)과
+[Windows PC 없이 수행한 동일 버퍼 버전 비교](no-windows-validation-2026-11-13.md)도
+별도로 기록했습니다.
 
 이 문서는 자동 테스트의 범위와 실제 이미지 검증 절차를 설명합니다.
 공개 Linux 이미지 2개에 대한 실행 결과는 [실제 RAM 검증 기록](real-memory-validation.md)에

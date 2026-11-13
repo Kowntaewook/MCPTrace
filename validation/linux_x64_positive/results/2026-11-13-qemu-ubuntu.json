@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "status": "completed_with_limits",
+  "scope": "one purpose-built retained stdio exchange in QEMU Linux x86-64 physical RAM",
+  "analysis_host": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "python": "3.13.2",
+  "volatility3": "2.28.2",
+  "scan_options": {
+    "max_object_bytes": 65536,
+    "max_records": 10000,
+    "max_bytes": 0
+  },
+  "image_sha256": "e73169dc9ff040d6a1b1704459c04501c95646e09e6c1c4f019a5fbbadb033d3",
+  "image_bytes": 1627523139,
+  "symbol_sha256": "18dd41722ad7d3b411d442065e6fafa3c177960e3e19ea484b391dfb1526e55b",
+  "truth_sha256": "c3103da203e52a8ce64137ab89ff4e9f3a7e007b3d39daf1de8ba39cbfed810b",
+  "kernel_banner": "Linux version 6.8.0-146-generic (buildd@lcy02-amd64-111) (x86_64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #146-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep  3 16:12:30 UTC 2026 (Ubuntu 6.8.0-146.146-generic 6.8.12)",
+  "artifact_records": 62,
+  "artifacts_reread_at_virtual_addresses": 62,
+  "unique_raw_hashes": 24,
+  "unmatched_artifact_records": 0,
+  "directions": {
+    "sent": {
+      "expected": 6,
+      "found_by_message": 6,
+      "found_as_exact_wire_bytes": 6
+    },
+    "received": {
+      "expected": 5,
+      "found_by_message": 5,
+      "found_as_exact_wire_bytes": 5
+    },
+    "unsent": {
+      "expected": 1,
+      "found_by_message": 1,
+      "found_as_exact_wire_bytes": 1
+    }
+  },
+  "repeated_exports_identical": true,
+  "scans": [
+    {
+      "pid": 699,
+      "summary": {
+        "type": "scan-summary",
+        "bytes_read": 17772544,
+        "unreadable_bytes": 7311360,
+        "anchor_limit_hits": 0,
+        "candidate_limit_hits": 2,
+        "regions_scanned": 80,
+        "invalid_regions": 0,
+        "candidate_records": 47,
+        "relevant_records": 47,
+        "displayed_records": 47,
+        "limits_hit": [],
+        "error": null,
+        "skipped_reason": null,
+        "target_os": "linux",
+        "scope": "readable bytes exposed by pslist process VMA layers",
+        "absence_is_not_proof": true
+      },
+      "export_sha256": "5f6c4469207cc5b29bd3983d5ffbd43374b440270eca88d563b5efb3098629d3"
+    },
+    {
+      "pid": 701,
+      "summary": {
+        "type": "scan-summary",
+        "bytes_read": 17711104,
+        "unreadable_bytes": 7368704,
+        "anchor_limit_hits": 0,
+        "candidate_limit_hits": 0,
+        "regions_scanned": 80,
+        "invalid_regions": 0,
+        "candidate_records": 15,
+        "relevant_records": 15,
+        "displayed_records": 15,
+        "limits_hit": [],
+        "error": null,
+        "skipped_reason": null,
+        "target_os": "linux",
+        "scope": "readable bytes exposed by pslist process VMA layers",
+        "absence_is_not_proof": true
+      },
+      "export_sha256": "0adb2028ed1b4dbbf582dd223645d5bf68973af0124bcaa7e27d7841ecac89bd"
+    }
+  ],
+  "limitations": "Retained Python bytes make this an easy positive case, not a population recovery rate. The peer is purpose-built, not an official MCP SDK. A recovered unsent control demonstrates that memory presence does not prove transmission. Scan limits and unreadable bytes remain visible."
+}
