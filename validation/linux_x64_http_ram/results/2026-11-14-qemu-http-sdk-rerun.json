@@ -30,7 +30,8 @@
         "bytes": 758735847,
         "github_asset_id": 744404769,
         "github_asset_digest": "sha256:3aac5392dee8a037024ce89b33fea060e8e2b5679697e67d437b04fbf453e922",
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d0-r1-ram.elf.zst"
       },
       "scan_unreadable_bytes": 11736358912,
       "scan_candidate_limit_hits": 0,
@@ -68,7 +69,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 536870912,
         "part_count": 5,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d0-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11740065792,
       "scan_candidate_limit_hits": 0,
@@ -106,7 +108,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 536870912,
         "part_count": 5,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d0-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11749941248,
       "scan_candidate_limit_hits": 0,
@@ -144,7 +147,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d5-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11744714752,
       "scan_candidate_limit_hits": 0,
@@ -182,7 +186,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d5-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11744727040,
       "scan_candidate_limit_hits": 0,
@@ -220,7 +225,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d5-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11750121472,
       "scan_candidate_limit_hits": 0,
@@ -258,7 +264,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d30-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11748626432,
       "scan_candidate_limit_hits": 0,
@@ -296,7 +303,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d30-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11742543872,
       "scan_candidate_limit_hits": 0,
@@ -334,7 +342,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-node-d30-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 11750453248,
       "scan_candidate_limit_hits": 0,
@@ -372,7 +381,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d0-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7230267392,
       "scan_candidate_limit_hits": 0,
@@ -410,7 +420,8 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "github_draft_and_private_local"
+        "storage_status": "github_release_and_private_local",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d0-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7229882368,
       "scan_candidate_limit_hits": 0,
@@ -446,7 +457,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745780365,
+        "github_asset_digest": "sha256:dce7b78568addf2050ffcc00276310adc8df68e7461fdeace1a5f2d46e68da74",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d0-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7229263872,
       "scan_candidate_limit_hits": 0,
@@ -482,7 +496,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745780684,
+        "github_asset_digest": "sha256:9abc8da2766475857dd6590e5d5e01f1116826f9623db3c87c1de217a569fa3e",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d5-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7227482112,
       "scan_candidate_limit_hits": 0,
@@ -518,7 +535,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745781313,
+        "github_asset_digest": "sha256:d502b4dcf4eff604a3c738202b4c99daa3010d23c3d11444805b3b1e6db3080d",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d5-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7228506112,
       "scan_candidate_limit_hits": 0,
@@ -554,7 +574,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745781934,
+        "github_asset_digest": "sha256:9f59ee7d50fadc75e9fae6247707624d4926c876ee506f86d8a66a8d14501f09",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d5-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7228506112,
       "scan_candidate_limit_hits": 0,
@@ -590,7 +613,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745782543,
+        "github_asset_digest": "sha256:c152656b416cb86aeddd688f68cb760e5cf8dd1a2f8c09a84f5d95568a68ab6b",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d30-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7227211776,
       "scan_candidate_limit_hits": 0,
@@ -626,7 +652,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745783332,
+        "github_asset_digest": "sha256:01a585a9cc4940f72852974216b481db5230e8d76e0b02f3979e211c4f3bd3e0",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d30-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7227932672,
       "scan_candidate_limit_hits": 0,
@@ -662,7 +691,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745784042,
+        "github_asset_digest": "sha256:15c6dff60e0962f633d966ac2bffb8f66695e87cd28a9d6ad5af3832d13c19b5",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-legacy-d30-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7303331840,
       "scan_candidate_limit_hits": 0,
@@ -698,7 +730,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745784670,
+        "github_asset_digest": "sha256:d27e2d347f1ca2f7653c789dbbc05858f8b8c7767152bb31549701cf6ecc9699",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d0-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7230013440,
       "scan_candidate_limit_hits": 0,
@@ -734,7 +769,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745785203,
+        "github_asset_digest": "sha256:ab6489ea73b31c89c527a6fb4658ca8592af633957f36f01faeb93d02188fadc",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d0-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7229288448,
       "scan_candidate_limit_hits": 0,
@@ -770,7 +808,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745785716,
+        "github_asset_digest": "sha256:cd48fb15f54cca57a9b74d82c313f75f7ef35c8429f768f329124ceb441e9e71",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d0-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7229796352,
       "scan_candidate_limit_hits": 0,
@@ -806,7 +847,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745786202,
+        "github_asset_digest": "sha256:7e610ff2526567d062bc438328cc85be2a8be937834bb7ab378be7e8b942015f",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d5-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7228583936,
       "scan_candidate_limit_hits": 0,
@@ -842,7 +886,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745786616,
+        "github_asset_digest": "sha256:44f0d467c6cc4b43f90671f70cd60b2f844d007759b069641883b4bb7745b81b",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d5-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7227494400,
       "scan_candidate_limit_hits": 0,
@@ -878,7 +925,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745787043,
+        "github_asset_digest": "sha256:a602319dd5f932f51873a22f919a60c43a7c9e813f11b5e0b655417771ebdb63",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d5-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7228252160,
       "scan_candidate_limit_hits": 0,
@@ -915,7 +965,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745787457,
+        "github_asset_digest": "sha256:7a0414ef7a4f326193569aaed6c4be56f4e543a7c5036e929983dac998bdc334",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d30-r1-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7303327744,
       "scan_candidate_limit_hits": 0,
@@ -951,7 +1004,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745787946,
+        "github_asset_digest": "sha256:c8a5becc98fa81a4452b61e437735e4efea4d3b48b59a7a519031f96cac510ef",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d30-r2-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7226626048,
       "scan_candidate_limit_hits": 0,
@@ -987,7 +1043,10 @@
         "base_image_sha256": "d5d1145f0a9a86cd7a7e8200816dec12ecb132cd0fa85b7bf23b93e3870770ea",
         "chunk_bytes": 134217728,
         "part_count": 17,
-        "storage_status": "private_local_pending_publication"
+        "storage_status": "github_release_and_private_local",
+        "github_asset_id": 745788407,
+        "github_asset_digest": "sha256:4c0961768df64a76ad5975e7b71d00aaf6fff319579629ce83d91e854530643d",
+        "url": "https://github.com/Kowntaewook/MCPTrace/releases/download/evidence-http-ram-2026-11-14/mcptrace-dotnet-modern-d30-r3-ram.elf.patch.tar"
       },
       "scan_unreadable_bytes": 7227662336,
       "scan_candidate_limit_hits": 0,
@@ -1170,12 +1229,12 @@
     "confirmed_scan_misses": 0,
     "unmatched_artifact_records": 0,
     "all_27_archive_files_have_matching_local_size_and_sha256": true,
-    "all_11_existing_draft_assets_have_matching_remote_size_and_sha256": true,
     "all_26_patches_reconstructed_to_captured_ram_sha256": true,
     "host_timing_metadata_unavailable_capture_count": 1,
     "original_27_raw_ram_images_available": false,
     "new_raw_ram_images_committed_to_git": false,
-    "raw_traffic_logs_committed": false
+    "raw_traffic_logs_committed": false,
+    "all_27_release_assets_have_matching_remote_size_and_sha256": true
   },
   "environment": {
     "run_date": "2026-11-14",
@@ -1217,12 +1276,11 @@
   "archive_release": {
     "repository": "Kowntaewook/MCPTrace",
     "tag": "evidence-http-ram-2026-11-14",
-    "draft_release_id": 444446522,
-    "status": "draft_pending_publication_approval",
     "full_image_run_id": "node-d0-r1",
-    "uploaded_asset_count": 11,
+    "uploaded_asset_count": 27,
     "private_local_asset_count": 27,
-    "pending_upload_asset_count": 16
+    "release_id": 444446522,
+    "url": "https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14"
   },
   "private_bundle_directory_name": "MCPTrace-evidence-private-2026-11-14",
   "prior_numeric_result": "validation/linux_x64_http_ram/results/2026-11-14-qemu-http-sdk.json",

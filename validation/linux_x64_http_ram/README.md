@@ -93,8 +93,9 @@ The delays begin when the host detects the client's readiness file, not at the
 exact end of the last call. Each per-run score records an upper bound from
 client launch to detection. Each capture starts a fresh client; the guest VM
 is reused. Without archiving, the runner deletes each RAM image after scoring.
-With archiving, it deletes an image only after its release asset is verified;
-the first raw image is retained locally as the patch base until the rerun ends.
+With archiving, it deletes an image only after its local archive is verified;
+release mode additionally verifies the uploaded asset before deletion.
+The first raw image is retained locally as the patch base until the rerun ends.
 Raw RAM, traffic logs, exported message bytes, and temporary SSH material stay
 outside the repository. Only content-minimized numeric results are committed.
 
@@ -170,6 +171,8 @@ timing fields are `null` with an explanation in the manifest.
 The new evidence has one full compressed RAM image and 26 lossless patch tar
 files. All 27 assets were checked locally for size and SHA-256; each patch was
 reconstructed against the full base image and matched its captured RAM hash.
-The complete 27-asset bundle is retained privately. Eleven assets are also in
-a draft GitHub Release; publication of the remaining 16 and the release is
-pending explicit approval because physical RAM can contain sensitive material.
+The complete 27-asset bundle is retained privately and is also available in
+the [RAM evidence release](https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14).
+Each release asset's size and SHA-256 matches the locally verified file. The
+bundle contains raw physical RAM from a temporary isolated VM and may include
+ephemeral guest SSH host keys and a .NET development certificate.

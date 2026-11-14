@@ -328,8 +328,9 @@ verified at their reported virtual addresses; there were no confirmed scan
 misses or unmatched artifacts. The first experiment's 27 RAM images had already
 been deleted. The new 27 images have distinct hashes and were preserved as one
 full compressed image plus 26 lossless patch assets, each locally reconstructed
-and hash-checked. The complete bundle is private; 11 assets are staged in a
-draft release and publication of the remaining 16 awaits approval. See the
+and hash-checked. All 27 assets are available in the
+[RAM evidence release](https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14),
+and a local copy is retained privately. See the
 [rerun procedure and numeric manifest](validation/linux_x64_http_ram/README.md).
 
 The current source passed **161 local automated tests** and Ruff checks. The
