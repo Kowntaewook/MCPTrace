@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "case": "jsonrpc-linux-negative",
+  "scope": "live Linux process virtual memory; not physical RAM or Volatility",
+  "host": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+  "pid": 9205,
+  "process_command_sha256": "d7111f45ba1f85f53a709d91db60ff54c2dc96767a1a26f18881f4aca9654d01",
+  "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+  "snapshot_sha256": "3b4d0681e818e4e534d145e5f24984929874a72c6963895b91238742be069273",
+  "logged_messages": 2,
+  "distinct_logged_messages": 2,
+  "distinct_logged_messages_carved": 2,
+  "exact_wire_present_messages": 2,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 4,
+  "mcp_candidate_records": 0,
+  "classification_records": {
+    "generic-json-rpc": 4
+  },
+  "unmatched_mcp_candidate_records": 0,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "method": "account/query",
+      "id": 7,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 7,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    }
+  ],
+  "scanned_bytes": 52944896,
+  "private_writable_maps": 50,
+  "read_errors": 0,
+  "truncated_at_256_mib": false,
+  "artifacts_reverified_at_virtual_address": 4,
+  "sse_prefixed_artifact_records": 0,
+  "content_length_framed_artifact_records": 0,
+  "anchor_limit_hits": 0,
+  "candidate_limit_hits": 0
+}

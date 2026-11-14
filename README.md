@@ -333,6 +333,16 @@ and hash-checked. All 27 assets are available in the
 and a local copy is retained privately. See the
 [rerun procedure and numeric manifest](validation/linux_x64_http_ram/README.md).
 
+An additional live-host check used the official MCP Inspector client on
+macOS ARM64 and Linux ARM64 with both HTTP and stdio. Of 36 transmitted MCP
+messages across four client captures, 22 complete wire payloads remained in
+the scanned process memory; MCPTrace carved all 22, with no confirmed scan
+miss. Two LSP and two generic JSON-RPC client captures produced no MCP-labeled
+records. This is process virtual memory evidence, not physical RAM or a
+general detection-rate estimate. The eight original captures are stored
+privately; [method and numeric reports](validation/real_host/README.md) are in
+the repository.
+
 The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
@@ -364,4 +374,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Node/.NET process-memory validation and exact-wire probe](docs/cross-runtime-memory-validation.md)
 - [Official Python SDK in Linux x86-64 physical RAM](validation/linux_x64_official/README.md)
 - [Node/.NET HTTP/SSE in Linux x86-64 physical RAM](validation/linux_x64_http_ram/README.md)
+- [Real MCP Inspector hosts on macOS and Linux](validation/real_host/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)

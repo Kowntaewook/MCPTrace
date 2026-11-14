@@ -15,6 +15,7 @@ import platform
 import re
 import signal
 import socket
+import struct
 import subprocess
 import time
 from pathlib import Path
@@ -49,7 +50,9 @@ def readable_private_maps(pid: int):
             yield start, end
 
 
-def scan_process(pid: int, traffic_rows: list[dict]) -> tuple[list, dict, list[list[str]]]:
+def scan_process(
+    pid: int, traffic_rows: list[dict], capture_path: Path | None = None
+) -> tuple[list, dict, list[list[str]]]:
     maps = list(readable_private_maps(pid))
     fd = os.open(f"/proc/{pid}/mem", os.O_RDONLY)
     stats = ScanStats()
@@ -64,6 +67,11 @@ def scan_process(pid: int, traffic_rows: list[dict]) -> tuple[list, dict, list[l
             needles.append((index, "utf-8", wire))
             needles.append((index, "utf-16-le", wire.decode("utf-8").encode("utf-16-le")))
     overlap = max((len(needle) for _, _, needle in needles), default=1) - 1
+    capture_stream = (
+        os.fdopen(os.open(capture_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600), "wb")
+        if capture_path
+        else None
+    )
 
     def chunks():
         nonlocal read_bytes, read_errors
@@ -79,6 +87,9 @@ def scan_process(pid: int, traffic_rows: list[dict]) -> tuple[list, dict, list[l
                     tail = b""
                     continue
                 read_bytes += len(data)
+                if capture_stream is not None:
+                    capture_stream.write(struct.pack("<QI", address, len(data)))
+                    capture_stream.write(data)
                 window = tail + data
                 for index, encoding, needle in needles:
                     if encoding not in wire_encodings[index] and needle in window:
@@ -98,6 +109,8 @@ def scan_process(pid: int, traffic_rows: list[dict]) -> tuple[list, dict, list[l
         ]
     finally:
         os.close(fd)
+        if capture_stream is not None:
+            capture_stream.close()
     return (
         artifacts,
         {

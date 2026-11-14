@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "case": "inspector-linux-http",
+  "scope": "live Linux process virtual memory; not physical RAM or Volatility",
+  "host": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+  "pid": 9773,
+  "process_command_sha256": "bd30dbdd4f329981de7e8a4aa8b9fe590191a7b8c7f4e28f47900ba7820451b4",
+  "traffic_sha256": "95e91df4a68efae7ea76f9a70b8327759f18cf848d9406fb653a0d6afbba6b7b",
+  "snapshot_sha256": "1347bffcba676c95156a1ac1dbebf1a107b9d19db03dcabc2a3794ac7148a658",
+  "logged_messages": 9,
+  "distinct_logged_messages": 9,
+  "distinct_logged_messages_carved": 4,
+  "exact_wire_present_messages": 4,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 12,
+  "mcp_candidate_records": 11,
+  "classification_records": {
+    "mcp-candidate": 11,
+    "generic-json-rpc": 1
+  },
+  "unmatched_mcp_candidate_records": 0,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "method": "initialize",
+      "id": 0,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 0,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "notifications/initialized",
+      "id": null,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/list",
+      "id": 1,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 1,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/list",
+      "id": 2,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 2,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/call",
+      "id": 3,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 3,
+      "exact_wire_in_scanned_memory": true,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    }
+  ],
+  "scanned_bytes": 143790080,
+  "private_writable_maps": 127,
+  "read_errors": 0,
+  "truncated_at_256_mib": false,
+  "artifacts_reverified_at_virtual_address": 12,
+  "sse_prefixed_artifact_records": 6,
+  "content_length_framed_artifact_records": 0,
+  "anchor_limit_hits": 0,
+  "candidate_limit_hits": 0
+}

@@ -56,8 +56,17 @@ async function serve() {
   }
   const web = http.createServer(async (req, res) => {
     try {
-      if (req.url !== '/mcp' || req.method !== 'POST') {
+      if (req.url !== '/mcp' || !['POST', 'GET', 'DELETE'].includes(req.method)) {
         res.writeHead(404).end();
+        return;
+      }
+      if (req.method !== 'POST') {
+        const transport = sessions.get(req.headers['mcp-session-id']);
+        if (!transport) {
+          res.writeHead(404).end();
+          return;
+        }
+        await transport.handleRequest(req, res);
         return;
       }
       const bodyBytes = Buffer.concat(await Array.fromAsync(req));

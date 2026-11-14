@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "case": "inspector-macos-stdio",
+  "scope": "in-process macOS host virtual memory; not physical RAM or Volatility",
+  "host": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "snapshot_sha256": "15437dd690761abdd75409e4f0503ad08d5c2d87b16c0a00ec304c487fd0201e",
+  "traffic_sha256": "498ba97193d91def7f0e12f1ccb55e64e5f6ed3099abcb950378240b6d511723",
+  "logged_messages": 9,
+  "distinct_logged_messages": 9,
+  "distinct_logged_messages_carved": 7,
+  "exact_wire_present_messages": 7,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 15,
+  "mcp_candidate_records": 14,
+  "classification_records": {
+    "generic-json-rpc": 1,
+    "mcp-candidate": 14
+  },
+  "unmatched_mcp_candidate_records": 0,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "method": "initialize",
+      "id": 0,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 0,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "notifications/initialized",
+      "id": null,
+      "wire_encodings": [],
+      "carved": false
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/list",
+      "id": 1,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 1,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/list",
+      "id": 2,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 2,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "client-to-server",
+      "method": "tools/call",
+      "id": 3,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 3,
+      "wire_encodings": [
+        "utf-8"
+      ],
+      "carved": true
+    }
+  ],
+  "anchor_limit_hits": 0,
+  "candidate_limit_hits": 0,
+  "pid": 38609,
+  "scanned_bytes": 36601856,
+  "private_writable_regions": 137,
+  "read_errors": 0,
+  "truncated_at_256_mib": false
+}

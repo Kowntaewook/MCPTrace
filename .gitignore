@@ -11,6 +11,8 @@ dist/
 *.dmp
 *.mem
 *.lime
+*.capture
+*.node
 *.vmsn
 *.vmss
 evidence/

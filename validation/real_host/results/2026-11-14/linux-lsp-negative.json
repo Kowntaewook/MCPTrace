@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "case": "lsp-linux-negative",
+  "scope": "live Linux process virtual memory; not physical RAM or Volatility",
+  "host": "Linux-6.8.0-147-generic-aarch64-with-glibc2.39",
+  "pid": 9919,
+  "process_command_sha256": "3a63fae01e88c700efd40a58cb31f768cb83a5aaa1e4c90cae832b82648246ab",
+  "traffic_sha256": "75b1d4c7fbc1211d2877accaed6f0d06f1a2d92ecdf9e4cfd5430312242d9333",
+  "snapshot_sha256": "c51735ca3dfcbe0c909cd588c7fe5e5578c3715ce7f41673f9eeab783bf62a50",
+  "logged_messages": 2,
+  "distinct_logged_messages": 2,
+  "distinct_logged_messages_carved": 2,
+  "exact_wire_present_messages": 0,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 17,
+  "mcp_candidate_records": 0,
+  "classification_records": {
+    "lsp-candidate": 8,
+    "generic-json-rpc": 9
+  },
+  "unmatched_mcp_candidate_records": 0,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "method": "initialize",
+      "id": 1,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 1,
+      "exact_wire_in_scanned_memory": false,
+      "wire_encodings": [],
+      "carved": true
+    }
+  ],
+  "scanned_bytes": 51605504,
+  "private_writable_maps": 45,
+  "read_errors": 0,
+  "truncated_at_256_mib": false,
+  "artifacts_reverified_at_virtual_address": 17,
+  "sse_prefixed_artifact_records": 0,
+  "content_length_framed_artifact_records": 5,
+  "anchor_limit_hits": 0,
+  "candidate_limit_hits": 0
+}

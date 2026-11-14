@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "case": "lsp-macos-negative",
+  "scope": "in-process macOS host virtual memory; not physical RAM or Volatility",
+  "host": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "snapshot_sha256": "ff083fdebd850692c49b85d5db421413ed6cd0171064292e06550128f126656f",
+  "traffic_sha256": "6c9e0ebf0671f2d2cb3fccc03f1c28736e37ad55d031ccaf51f2d12caed832ac",
+  "logged_messages": 2,
+  "distinct_logged_messages": 2,
+  "distinct_logged_messages_carved": 2,
+  "exact_wire_present_messages": 0,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 17,
+  "mcp_candidate_records": 0,
+  "classification_records": {
+    "lsp-candidate": 8,
+    "generic-json-rpc": 9
+  },
+  "unmatched_mcp_candidate_records": 0,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "method": "initialize",
+      "id": 1,
+      "wire_encodings": [],
+      "carved": true
+    },
+    {
+      "direction": "server-to-client",
+      "method": "response",
+      "id": 1,
+      "wire_encodings": [],
+      "carved": true
+    }
+  ],
+  "anchor_limit_hits": 0,
+  "candidate_limit_hits": 0,
+  "pid": 38879,
+  "scanned_bytes": 15826944,
+  "private_writable_regions": 61,
+  "read_errors": 0,
+  "truncated_at_256_mib": false
+}
