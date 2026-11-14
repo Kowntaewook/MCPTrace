@@ -8,6 +8,11 @@ The comparison uses the pinned public MCPRecon CLI, 27 archived Linux physical
 RAM captures, four preserved non-MCP process captures, and constructed protocol
 cases. Numeric reports and reproduction notes are in
 [`validation/mcprecon_comparison`](../../validation/mcprecon_comparison/README.md).
+The pinned MCPTrace scan was rerun on all 27 reconstructed RAM images: all new
+exports reproduced the archived exports byte-for-byte, and all 626 new artifact
+records were reread at their reported process virtual addresses. The primary
+251-versus-184 comparison counts carved JSON-RPC messages regardless of each
+tool's MCP label; the label counts are reported separately.
 The external traffic logs and raw memory images are separate evidence; readers
 cannot independently recompute every truth match from this repository alone.
 

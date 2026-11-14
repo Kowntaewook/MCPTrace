@@ -21,7 +21,9 @@ on MCPTrace's independently logged RAM fixture.
   [27-image HTTP/SSE rerun](../linux_x64_http_ram/README.md) were verified
   against each image, export, and separate server traffic log by SHA-256.
   The original experiment already reread all 626 artifacts at their reported
-  process virtual addresses. MCPTrace was **not rerun** for this comparison.
+  process virtual addresses. The initial comparison used those archived exports;
+  a later pinned-code rerun independently repeated the scan on all 27 images
+  and reread its new artifacts (see the rerun report below).
 - The 27 captures cover Node and two .NET HTTP protocol conditions, each at
   0, 5, and 30 seconds, three fresh client processes per delay. The same VM
   was reused. The server traffic log provides 342 transmitted messages;
@@ -63,6 +65,53 @@ Two MCPRecon runs were made on each image:
 | .NET 10, 2026-07-28 | 9 | 108 | 68 | 68 | 67 |
 | **Total** | **27** | **342** | **251** | **251** | **184** |
 
+The [archived-output accounting audit](results/2026-11-15-archived-breakdown.json)
+separates **carving** from each tool's **MCP label**. MCPTrace ran with
+`--include-rpc`, and MCPRecon's default CLI did not use `--mcp-only`. The table
+above therefore counts logged logical messages whose JSON objects were carved,
+regardless of their classifier labels. A label comparison is a different
+measurement, and the two classifiers do not have identical rules:
+
+| Measure on the derived client-byte streams | MCPTrace | MCPRecon |
+| --- | ---: | ---: |
+| Distinct logged messages carved, any label | 251 | 184 |
+| Distinct logged messages with at least one MCP-labeled copy | 233 | 94 |
+| All carved artifact records | 626 | 315 |
+| MCP-labeled artifact records | 583 | 192 |
+
+All **251** messages in the exact-wire-present denominator had a UTF-8 copy;
+**108** also had a UTF-16LE copy, and **none** existed only as UTF-16LE. Thus
+UTF-16LE-only presence does not explain the 251-versus-184 carving difference
+in this fixture. The other **91** transmitted messages had no exact wire bytes
+in the current client's readable VMAs. Neither client-scoped output matched
+any of those 91 by canonical JSON equality; this does not rule out partial or
+differently represented objects in other memory locations.
+
+| Requested delay after readiness | Sent | Exact wire present | MCPTrace carved | MCPRecon carved |
+| --- | ---: | ---: | ---: | ---: |
+| 0 s | 114 | 86 | 86 | 63 |
+| 5 s | 114 | 86 | 86 | 64 |
+| 30 s | 114 | 79 | 79 | 57 |
+
+The readiness poll was not synchronized to the exact final call, and these
+small groups cannot establish a time-decay curve. The audit also found that
+the **184** exact-wire-present logical messages matched by MCPRecon in native
+whole-RAM mode were exactly the same **184** found in the derived client-byte
+streams, capture by capture. Its additional 68 whole-RAM truth matches lacked
+exact wire bytes in the *current client's readable VMAs* and cannot be
+attributed to that client from the raw offset alone.
+
+The [pinned MCPTrace rerun](results/2026-11-15-mcptrace-rerun.json) reconstructed
+all 27 archived images, checked each SHA-256, scanned the original client PID
+with commit `ded4c002`, and reread all 626 new artifacts from their reported
+process virtual addresses. All 27 new JSONL exports reproduced the saved
+exports byte-for-byte; 251 of 251 exact-wire-present logical messages were
+carved, with zero scan limits hit. The rerun report contains counts and hashes
+only. The separate [accounting audit](results/2026-11-15-archived-breakdown.json)
+recomputes the encoding, label, and delay counts from hash-checked traffic and
+MCPTrace exports plus the retained MCPRecon outputs. It records the latter's
+SHA-256 values for future comparison.
+
 MCPRecon emitted 315 records from the derived client streams. Every record's
 raw bytes matched the reported offset in that stream. All 315 records matched
 a logical message in the traffic log. This does **not** measure specificity:
@@ -103,6 +152,18 @@ PYTHONPATH=. .venv/bin/python validation/mcprecon_comparison/run.py \
   --cache ../MCPTrace-evidence-private-2026-11-14/cache \
   --client-only \
   --report validation/mcprecon_comparison/results/2026-11-14-http-ram-rerun-client.json
+
+PYTHONPATH=. .venv/bin/python validation/mcprecon_comparison/rerun_mcptrace.py \
+  --evidence ../MCPTrace-evidence-private-2026-11-14 \
+  --symbols ../MCPTrace-evidence-private-2026-11-14/symbols \
+  --cache ../MCPTrace-evidence-private-2026-11-14/cache \
+  --vol .venv/bin/vol \
+  --checkpoint ../MCPTrace-evidence-private-2026-11-14/mcptrace-rerun-checkpoint.json \
+  --report validation/mcprecon_comparison/results/2026-11-15-mcptrace-rerun.json
+
+PYTHONPATH=. .venv/bin/python validation/mcprecon_comparison/analyze_existing.py \
+  --evidence ../MCPTrace-evidence-private-2026-11-14 \
+  --report validation/mcprecon_comparison/results/2026-11-15-archived-breakdown.json
 ```
 
 The matching Linux kernel ISF is the SHA-256-pinned file in the [HTTP RAM
