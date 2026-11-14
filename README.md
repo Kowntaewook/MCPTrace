@@ -343,6 +343,19 @@ general detection-rate estimate. The eight original captures are stored
 privately; [method and numeric reports](validation/real_host/README.md) are in
 the repository.
 
+A separate **Linux x86-64 full-RAM** follow-up ran the packaged MCP Inspector
+host inside QEMU with HTTP and stdio, plus live LSP and ordinary JSON-RPC
+controls. In one capture per condition, the Inspector exchanged 18 messages;
+exact wire bytes for nine remained in its readable process memory and MCPTrace
+carved all nine. Eight of those nine received an MCP label; an HTTP
+`initialize` response was carved as generic JSON-RPC. The two non-MCP controls
+had four exact-wire-present messages, all carved, with zero MCP-labeled
+records. All 28 artifact records were reread at their process virtual
+addresses from the full RAM images. The four compressed RAM images are
+hash-verified and retained privately; these single captures are not field
+detection or false-positive rates. See the
+[live-host physical RAM method and numeric reports](validation/linux_x64_real_host_ram/README.md).
+
 The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
@@ -375,4 +388,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Official Python SDK in Linux x86-64 physical RAM](validation/linux_x64_official/README.md)
 - [Node/.NET HTTP/SSE in Linux x86-64 physical RAM](validation/linux_x64_http_ram/README.md)
 - [Real MCP Inspector hosts on macOS and Linux](validation/real_host/README.md)
+- [Real MCP Inspector in Linux x86-64 physical RAM](validation/linux_x64_real_host_ram/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)

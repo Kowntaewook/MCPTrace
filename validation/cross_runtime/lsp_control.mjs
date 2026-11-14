@@ -1,6 +1,7 @@
 /** Content-Length framed LSP initialize control, exchanged over a real TCP socket. */
 import fs from 'node:fs';
 import net from 'node:net';
+import { createHash } from 'node:crypto';
 
 const workdir = process.argv[2];
 if (!workdir) throw new Error('usage: node lsp_control.mjs WORKDIR');
@@ -17,9 +18,13 @@ function frame(message) {
   const body = Buffer.from(JSON.stringify(message));
   return Buffer.concat([Buffer.from(`Content-Length: ${body.length}\r\n\r\n`), body]);
 }
-function log(direction, message) {
+function log(direction, message, body) {
   fs.appendFileSync(`${workdir}/lsp-traffic.jsonl`,
-    JSON.stringify({ direction, framing: 'content-length', message }) + '\n');
+    JSON.stringify({
+      direction, framing: 'content-length', message,
+      raw_base64: body.toString('base64'),
+      raw_sha256: createHash('sha256').update(body).digest('hex'),
+    }) + '\n');
 }
 function consume(socket, onMessage) {
   let pending = Buffer.alloc(0);
@@ -33,22 +38,22 @@ function consume(socket, onMessage) {
       if (!Number.isInteger(length) || pending.length < separator + 4 + length) break;
       const body = pending.subarray(separator + 4, separator + 4 + length);
       pending = pending.subarray(separator + 4 + length);
-      onMessage(JSON.parse(body.toString('utf8')));
+      onMessage(JSON.parse(body.toString('utf8')), body);
     }
   });
 }
 
 const server = net.createServer((socket) => {
-  consume(socket, (message) => {
-    log('client-to-server', message);
+  consume(socket, (message, body) => {
+    log('client-to-server', message, body);
     socket.write(frame(response));
   });
 });
 server.listen(0, '127.0.0.1', () => {
   const client = net.connect(server.address().port, '127.0.0.1');
-  consume(client, (message) => {
+  consume(client, (message, body) => {
     if (message.id !== request.id) throw new Error('response mismatch');
-    log('server-to-client', message);
+    log('server-to-client', message, body);
     fs.writeFileSync(`${workdir}/client-ready.json`, JSON.stringify({ pid: process.pid }));
   });
   client.on('connect', () => client.write(frame(request)));

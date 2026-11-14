@@ -21,6 +21,12 @@ The independent wire check searched the same captured bytes for complete UTF-8 a
 
 The Inspector client is an independent, packaged MCP host, while the peer server and controls are purpose-built for this test. A separate VS Code connection on macOS also exchanged real HTTP MCP discovery and tool-list traffic, but no VS Code process-memory result is included here. These controlled samples do not establish behavior for other hosts, versions, workloads, swap, unreadable maps, Windows, or full-machine acquisition.
 
+A later [Linux x86-64 full-RAM experiment](../linux_x64_real_host_ram/README.md)
+used the same packaged host family in a new QEMU guest, with HTTP, stdio,
+LSP, and JSON-RPC cases. Its four images are separate captures and are scored
+through Volatility's Linux process translation rather than these direct
+process-memory snapshots.
+
 Machine-readable reports: [macOS HTTP](results/2026-11-14/macos-http.json), [macOS stdio](results/2026-11-14/macos-stdio.json), [Linux HTTP](results/2026-11-14/linux-http.json), [Linux stdio](results/2026-11-14/linux-stdio.json), [macOS LSP](results/2026-11-14/macos-lsp-negative.json), [macOS JSON-RPC](results/2026-11-14/macos-jsonrpc-negative.json), [Linux LSP](results/2026-11-14/linux-lsp-negative.json), and [Linux JSON-RPC](results/2026-11-14/linux-jsonrpc-negative.json). Reports contain counts, hashes, protocol labels, and method names; no memory bytes or marker values are committed.
 
 ## Acquisition and replay

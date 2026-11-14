@@ -2,7 +2,7 @@
 
 `mcptrace_isdfs2027.tex` is an English IEEE conference draft by Taewook Kwon,
 Gyeongbuk Software Meister High School. It is **not submitted**. The current
-compiled PDF is five US-letter pages in IEEEtran's 10-point conference format.
+compiled PDF is six US-letter pages in IEEEtran's 10-point conference format.
 
 The comparison uses the pinned public MCPRecon CLI, 27 archived Linux physical
 RAM captures, four preserved non-MCP process captures, and constructed protocol
@@ -13,6 +13,11 @@ exports reproduced the archived exports byte-for-byte, and all 626 new artifact
 records were reread at their reported process virtual addresses. The primary
 251-versus-184 comparison counts carved JSON-RPC messages regardless of each
 tool's MCP label; the label counts are reported separately.
+An additional [four-image Linux physical-RAM experiment](../../validation/linux_x64_real_host_ram/README.md)
+ran the packaged MCP Inspector host over HTTP and stdio with LSP and ordinary
+JSON-RPC controls. Nine exact-wire-present Inspector messages were all carved;
+eight received an MCP label. Both controls had zero MCP-labeled records. This
+experiment is separate from the 27-image MCPRecon comparison.
 The external traffic logs and raw memory images are separate evidence; readers
 cannot independently recompute every truth match from this repository alone.
 

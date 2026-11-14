@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "scope": "Four single-capture Linux x86-64 full-RAM observations in one reused QEMU VM",
+  "cases": {
+    "inspector-http": {
+      "traffic_messages": 9,
+      "wire_present_any_encoding": 4,
+      "carved_logged_messages": 4,
+      "mcp_labeled_logged_messages": 3,
+      "confirmed_scan_misses": 0,
+      "artifact_records": 11,
+      "artifacts_reread_at_virtual_address": 11,
+      "mcp_candidate_records": 10,
+      "unmatched_artifact_records": 0,
+      "image_sha256": "6d548d3848cdbf1f0d8aac689b110846da428ccea248c1e79db2c3ff08bc5582",
+      "private_ram_archive_sha256": "c09fd55dfe09b9ea25a4a89ac11a01c4e05f43b522660e741afe6a4d18efc1da",
+      "archive_reconstructed_to_image_hash": true
+    },
+    "inspector-stdio": {
+      "traffic_messages": 9,
+      "wire_present_any_encoding": 5,
+      "carved_logged_messages": 5,
+      "mcp_labeled_logged_messages": 5,
+      "confirmed_scan_misses": 0,
+      "artifact_records": 5,
+      "artifacts_reread_at_virtual_address": 5,
+      "mcp_candidate_records": 5,
+      "unmatched_artifact_records": 0,
+      "image_sha256": "c8ebb0044a05e4078f28d81b261b0c5b3faa6c263aa40923974b89879192619d",
+      "private_ram_archive_sha256": "c778b61c719662b75d0998c38477097c0fa75987d4f35637e10a43cc886bd15a",
+      "archive_reconstructed_to_image_hash": true
+    },
+    "lsp-control": {
+      "traffic_messages": 2,
+      "wire_present_any_encoding": 2,
+      "carved_logged_messages": 2,
+      "mcp_labeled_logged_messages": 0,
+      "confirmed_scan_misses": 0,
+      "artifact_records": 8,
+      "artifacts_reread_at_virtual_address": 8,
+      "mcp_candidate_records": 0,
+      "unmatched_artifact_records": 0,
+      "image_sha256": "eb5cce61bb626ab3eb6cfff4d95d97c6af67ef25c4c26320c9069355a08b2b68",
+      "private_ram_archive_sha256": "788d659c267c65beffef19bca5ca4b9f3a70356bff546804bb83aee020fffbf5",
+      "archive_reconstructed_to_image_hash": true
+    },
+    "jsonrpc-control": {
+      "traffic_messages": 2,
+      "wire_present_any_encoding": 2,
+      "carved_logged_messages": 2,
+      "mcp_labeled_logged_messages": 0,
+      "confirmed_scan_misses": 0,
+      "artifact_records": 4,
+      "artifacts_reread_at_virtual_address": 4,
+      "mcp_candidate_records": 0,
+      "unmatched_artifact_records": 0,
+      "image_sha256": "0bb2576356313035124b5caa7b3afeffb48857e8d46fecee0f4b6fb8a10b35a0",
+      "private_ram_archive_sha256": "b0f85ce89346312a2de3a72360c86c57593e75be0b9188fd650c928e6245c22c",
+      "archive_reconstructed_to_image_hash": true
+    }
+  },
+  "real_mcp_host_total": {
+    "captures": 2,
+    "traffic_messages": 18,
+    "wire_present_any_encoding": 9,
+    "carved_logged_messages": 9,
+    "mcp_labeled_logged_messages": 8,
+    "confirmed_scan_misses": 0,
+    "artifact_records": 16,
+    "artifacts_reread_at_virtual_address": 16,
+    "mcp_candidate_records": 15,
+    "unmatched_artifact_records": 0
+  },
+  "non_mcp_controls_total": {
+    "captures": 2,
+    "traffic_messages": 4,
+    "wire_present_any_encoding": 4,
+    "carved_logged_messages": 4,
+    "mcp_labeled_logged_messages": 0,
+    "confirmed_scan_misses": 0,
+    "artifact_records": 12,
+    "artifacts_reread_at_virtual_address": 12,
+    "mcp_candidate_records": 0,
+    "unmatched_artifact_records": 0
+  },
+  "limitations": [
+    "One capture per condition in a reused VM does not estimate field detection or false-positive rates.",
+    "The positive cases use the same Inspector host family and one purpose-built official-SDK server.",
+    "MCP labels and JSON-RPC carving are distinct outputs; exact-wire presence is conditional on readable client VMAs.",
+    "Raw RAM and independent traffic journals are retained privately, not embedded in this numeric report."
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "scope": "one current client PID in a Linux x86-64 QEMU physical RAM image",
+  "case": "lsp-control",
+  "client_pid": 1909,
+  "image_sha256": "eb5cce61bb626ab3eb6cfff4d95d97c6af67ef25c4c26320c9069355a08b2b68",
+  "image_bytes": 1627523139,
+  "traffic_log_sha256": "d6f3295408d8196f02ed932cb1f622904cb2e418138ab6a1d2fff877000072ed",
+  "export_sha256": "79a01dbb87b232fc5f6bdb62f9da5e983fad1b669f357bfa983fc816c54e1abe",
+  "traffic_messages": 2,
+  "traffic_distinct_logical_messages": 2,
+  "wire_present_utf8": 2,
+  "wire_present_utf16le": 0,
+  "wire_present_any_encoding": 2,
+  "carved_logged_messages": 2,
+  "mcp_labeled_logged_messages": 0,
+  "confirmed_scan_misses": 0,
+  "artifact_records": 8,
+  "artifacts_reread_at_virtual_address": 8,
+  "mcp_candidate_records": 0,
+  "unmatched_artifact_records": 0,
+  "scan_limits_hit": [],
+  "scan_candidate_limit_hits": 0,
+  "scan_unreadable_bytes": 985481216,
+  "probe_regions_scanned": 112,
+  "probe_unreadable_bytes": 985481216,
+  "messages": [
+    {
+      "direction": "client-to-server",
+      "framing": "content-length",
+      "method": "initialize",
+      "raw_sha256": "5663d10984b865d0ef484b3bebf2ffa259069ce452d75a08805f06305ac1b36a",
+      "wire_present_utf8": true,
+      "wire_present_utf16le": false,
+      "carved": true,
+      "mcp_labeled_copy": false,
+      "confirmed_scan_miss": false
+    },
+    {
+      "direction": "server-to-client",
+      "framing": "content-length",
+      "method": "",
+      "raw_sha256": "6ae15ddc73f7623b9d0d5aca543bc5332c0cf3d67e9fed2f77437fb4f211782e",
+      "wire_present_utf8": true,
+      "wire_present_utf16le": false,
+      "carved": true,
+      "mcp_labeled_copy": false,
+      "confirmed_scan_miss": false
+    }
+  ],
+  "limitations": [
+    "Exact-wire presence and carving are scoped to this one readable client process at capture time.",
+    "Canonical JSON equality does not identify which memory copy crossed the transport.",
+    "The control server and control clients are purpose-built; a few captures do not estimate field rates."
+  ],
+  "qmp_pause_and_capture_seconds": 3.283,
+  "private_ram_archive_sha256": "788d659c267c65beffef19bca5ca4b9f3a70356bff546804bb83aee020fffbf5",
+  "private_ram_archive_bytes": 328844384
+}
