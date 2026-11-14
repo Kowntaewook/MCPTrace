@@ -7,6 +7,7 @@ evidence directory. The report contains only counts and hashes.
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import subprocess
@@ -59,7 +60,8 @@ def score_run(
     ):
         raise ValueError(f"{run_id}: RAM, traffic, or export hash mismatch")
 
-    truth = [row["message"] for row in lines(traffic)]
+    traffic_rows = lines(traffic)
+    truth = [row["message"] for row in traffic_rows]
     truth_keys = [canonical(row) for row in truth]
     if len(truth_keys) != len(set(truth_keys)) or len(truth) != capture["traffic_messages"]:
         raise ValueError(f"{run_id}: duplicate or inconsistent traffic truth")
@@ -89,6 +91,13 @@ def score_run(
         for key in ("bytes_read", "unreadable_bytes", "regions_scanned"):
             if pack_stats[key] != prior["wire_probe"][key]:
                 raise ValueError(f"{run_id}: packed client memory differs in {key}")
+        memory = packed.read_bytes()
+        for index, (row, expected) in enumerate(zip(traffic_rows, presence, strict=True)):
+            wire = base64.b64decode(row["wire_base64"], validate=True)
+            actual_utf8 = memory.find(wire) >= 0
+            actual_utf16 = memory.find(wire.decode("utf-8").encode("utf-16-le")) >= 0
+            if actual_utf8 != expected["wire_present_utf8"] or actual_utf16 != expected["wire_present_utf16le"]:
+                raise ValueError(f"{run_id}: packed byte stream differs from wire probe at message {index}")
         scan_input = packed
     try:
         with output.open("w", encoding="utf-8") as result, (output.with_suffix(".stderr")).open("w", encoding="utf-8") as errors:
@@ -129,6 +138,7 @@ def score_run(
         "mcprecon_flagged_mcp_records": sum(bool(row["mcp"]) for row in recon),
         "mcprecon_elapsed_seconds": round(elapsed, 3),
         "client_packed_bytes": pack_stats["packed_bytes"] if client_only else None,
+        "packed_wire_probe_messages_verified": len(traffic_rows) if client_only else None,
     }
 
 

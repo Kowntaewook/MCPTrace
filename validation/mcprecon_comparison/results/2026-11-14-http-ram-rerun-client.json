@@ -20,8 +20,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 0.415,
-      "client_packed_bytes": 158613504
+      "mcprecon_elapsed_seconds": 1.96,
+      "client_packed_bytes": 158613504,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d0-r2",
@@ -38,8 +39,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 0.441,
-      "client_packed_bytes": 153534464
+      "mcprecon_elapsed_seconds": 1.56,
+      "client_packed_bytes": 153534464,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d0-r3",
@@ -56,8 +58,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 0.375,
-      "client_packed_bytes": 140976128
+      "mcprecon_elapsed_seconds": 1.42,
+      "client_packed_bytes": 140976128,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d5-r1",
@@ -74,8 +77,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 0.406,
-      "client_packed_bytes": 147312640
+      "mcprecon_elapsed_seconds": 2.335,
+      "client_packed_bytes": 147312640,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d5-r2",
@@ -92,8 +96,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 2.398,
-      "client_packed_bytes": 147111936
+      "mcprecon_elapsed_seconds": 1.542,
+      "client_packed_bytes": 147111936,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d5-r3",
@@ -110,8 +115,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 1.829,
-      "client_packed_bytes": 140718080
+      "mcprecon_elapsed_seconds": 1.963,
+      "client_packed_bytes": 140718080,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d30-r1",
@@ -128,8 +134,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 1.781,
-      "client_packed_bytes": 142925824
+      "mcprecon_elapsed_seconds": 1.244,
+      "client_packed_bytes": 142925824,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d30-r2",
@@ -146,8 +153,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 1,
       "mcprecon_flagged_mcp_records": 1,
-      "mcprecon_elapsed_seconds": 1.796,
-      "client_packed_bytes": 123539456
+      "mcprecon_elapsed_seconds": 1.819,
+      "client_packed_bytes": 123539456,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "node-d30-r3",
@@ -164,8 +172,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 18,
       "mcprecon_flagged_mcp_records": 18,
-      "mcprecon_elapsed_seconds": 1.848,
-      "client_packed_bytes": 140603392
+      "mcprecon_elapsed_seconds": 2.048,
+      "client_packed_bytes": 140603392,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d0-r1",
@@ -182,8 +191,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 1.756,
-      "client_packed_bytes": 126078976
+      "mcprecon_elapsed_seconds": 1.445,
+      "client_packed_bytes": 126078976,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d0-r2",
@@ -200,8 +210,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.375,
-      "client_packed_bytes": 125640704
+      "mcprecon_elapsed_seconds": 2.413,
+      "client_packed_bytes": 125640704,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d0-r3",
@@ -218,8 +229,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 3.305,
-      "client_packed_bytes": 128544768
+      "mcprecon_elapsed_seconds": 1.155,
+      "client_packed_bytes": 128544768,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d5-r1",
@@ -236,8 +248,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.22,
-      "client_packed_bytes": 130375680
+      "mcprecon_elapsed_seconds": 3.256,
+      "client_packed_bytes": 130375680,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d5-r2",
@@ -254,8 +267,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.386,
-      "client_packed_bytes": 129056768
+      "mcprecon_elapsed_seconds": 2.292,
+      "client_packed_bytes": 129056768,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d5-r3",
@@ -272,8 +286,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 2.924,
-      "client_packed_bytes": 128864256
+      "mcprecon_elapsed_seconds": 1.935,
+      "client_packed_bytes": 128864256,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d30-r1",
@@ -290,8 +305,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.442,
-      "client_packed_bytes": 130670592
+      "mcprecon_elapsed_seconds": 3.676,
+      "client_packed_bytes": 130670592,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d30-r2",
@@ -308,8 +324,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 3.263,
-      "client_packed_bytes": 130019328
+      "mcprecon_elapsed_seconds": 3.318,
+      "client_packed_bytes": 130019328,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-legacy-d30-r3",
@@ -326,8 +343,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 2.884,
-      "client_packed_bytes": 130670592
+      "mcprecon_elapsed_seconds": 1.997,
+      "client_packed_bytes": 130670592,
+      "packed_wire_probe_messages_verified": 13
     },
     {
       "run_id": "dotnet-modern-d0-r1",
@@ -344,8 +362,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.077,
-      "client_packed_bytes": 125956096
+      "mcprecon_elapsed_seconds": 3.378,
+      "client_packed_bytes": 125956096,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d0-r2",
@@ -362,8 +381,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.427,
-      "client_packed_bytes": 128348160
+      "mcprecon_elapsed_seconds": 2.884,
+      "client_packed_bytes": 128348160,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d0-r3",
@@ -380,8 +400,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 1.714,
-      "client_packed_bytes": 126545920
+      "mcprecon_elapsed_seconds": 2.127,
+      "client_packed_bytes": 126545920,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d5-r1",
@@ -398,8 +419,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 9,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 3.421,
-      "client_packed_bytes": 129597440
+      "mcprecon_elapsed_seconds": 3.362,
+      "client_packed_bytes": 129597440,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d5-r2",
@@ -416,8 +438,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 3.001,
-      "client_packed_bytes": 131022848
+      "mcprecon_elapsed_seconds": 3.15,
+      "client_packed_bytes": 131022848,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d5-r3",
@@ -434,8 +457,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 2.871,
-      "client_packed_bytes": 129544192
+      "mcprecon_elapsed_seconds": 1.885,
+      "client_packed_bytes": 129544192,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d30-r1",
@@ -452,8 +476,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 2.911,
-      "client_packed_bytes": 131424256
+      "mcprecon_elapsed_seconds": 2.794,
+      "client_packed_bytes": 131424256,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d30-r2",
@@ -470,8 +495,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 2,
-      "mcprecon_elapsed_seconds": 3.913,
-      "client_packed_bytes": 131538944
+      "mcprecon_elapsed_seconds": 1.971,
+      "client_packed_bytes": 131538944,
+      "packed_wire_probe_messages_verified": 12
     },
     {
       "run_id": "dotnet-modern-d30-r3",
@@ -488,8 +514,9 @@
       "mcprecon_unmatched_records": 0,
       "mcprecon_file_offset_bytes_verified": 10,
       "mcprecon_flagged_mcp_records": 3,
-      "mcprecon_elapsed_seconds": 2.897,
-      "client_packed_bytes": 130908160
+      "mcprecon_elapsed_seconds": 3.698,
+      "client_packed_bytes": 130908160,
+      "packed_wire_probe_messages_verified": 12
     }
   ],
   "by_case": {

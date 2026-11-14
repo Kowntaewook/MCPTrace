@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "scope": "Four preserved non-MCP host process-memory captures, macOS and Linux; derived byte stream for MCPRecon",
+  "mcprecon_source_git_blob": "5f03a84bc855a69173eedf5a8963c32509a468b5",
+  "cases": [
+    {
+      "case": "macos-lsp-negative",
+      "capture_sha256": "ff083fdebd850692c49b85d5db421413ed6cd0171064292e06550128f126656f",
+      "traffic_sha256": "6c9e0ebf0671f2d2cb3fccc03f1c28736e37ad55d031ccaf51f2d12caed832ac",
+      "logged_nonmcp_messages": 2,
+      "mcptrace_records": 17,
+      "mcptrace_mcp_candidate_records": 0,
+      "mcptrace_truth_messages_carved": 2,
+      "mcprecon_records": 17,
+      "mcprecon_mcp_flagged_records": 0,
+      "mcprecon_truth_messages_carved": 2,
+      "mcprecon_file_offset_bytes_verified": 17,
+      "segments": 332,
+      "source_bytes": 15826944,
+      "packed_bytes": 27754496
+    },
+    {
+      "case": "macos-jsonrpc-negative",
+      "capture_sha256": "28eb393bcde0fecc0fc00e15118da4b3a1378f30fa2ebf796f298a6fde366dd1",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "logged_nonmcp_messages": 2,
+      "mcptrace_records": 5,
+      "mcptrace_mcp_candidate_records": 0,
+      "mcptrace_truth_messages_carved": 2,
+      "mcprecon_records": 5,
+      "mcprecon_mcp_flagged_records": 0,
+      "mcprecon_truth_messages_carved": 2,
+      "mcprecon_file_offset_bytes_verified": 5,
+      "segments": 329,
+      "source_bytes": 15564800,
+      "packed_bytes": 27688960
+    },
+    {
+      "case": "linux-lsp-negative",
+      "capture_sha256": "c51735ca3dfcbe0c909cd588c7fe5e5578c3715ce7f41673f9eeab783bf62a50",
+      "traffic_sha256": "75b1d4c7fbc1211d2877accaed6f0d06f1a2d92ecdf9e4cfd5430312242d9333",
+      "logged_nonmcp_messages": 2,
+      "mcptrace_records": 17,
+      "mcptrace_mcp_candidate_records": 0,
+      "mcptrace_truth_messages_carved": 2,
+      "mcprecon_records": 17,
+      "mcprecon_mcp_flagged_records": 0,
+      "mcprecon_truth_messages_carved": 2,
+      "mcprecon_file_offset_bytes_verified": 17,
+      "segments": 800,
+      "source_bytes": 51605504,
+      "packed_bytes": 54358016
+    },
+    {
+      "case": "linux-jsonrpc-negative",
+      "capture_sha256": "3b4d0681e818e4e534d145e5f24984929874a72c6963895b91238742be069273",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "logged_nonmcp_messages": 2,
+      "mcptrace_records": 4,
+      "mcptrace_mcp_candidate_records": 0,
+      "mcptrace_truth_messages_carved": 2,
+      "mcprecon_records": 4,
+      "mcprecon_mcp_flagged_records": 0,
+      "mcprecon_truth_messages_carved": 2,
+      "mcprecon_file_offset_bytes_verified": 4,
+      "segments": 821,
+      "source_bytes": 52944896,
+      "packed_bytes": 55959552
+    }
+  ],
+  "totals": {
+    "logged_nonmcp_messages": 8,
+    "mcptrace_records": 43,
+    "mcptrace_mcp_candidate_records": 0,
+    "mcptrace_truth_messages_carved": 8,
+    "mcprecon_records": 43,
+    "mcprecon_mcp_flagged_records": 0,
+    "mcprecon_truth_messages_carved": 8,
+    "mcprecon_file_offset_bytes_verified": 43
+  },
+  "limitations": [
+    "These four captured processes are known non-MCP controls, not a random sample of deployed software.",
+    "The packed stream removes capture headers and adds NUL separators at noncontiguous regions; MCPRecon's native workflow is whole-image scanning.",
+    "Zero MCP labels in these controls would not establish a zero population false-positive rate.",
+    "A separate constructed generic JSON-RPC tools-list response is an MCPTrace MCP candidate despite its non-MCP source; candidate status alone does not establish protocol origin."
+  ]
+}

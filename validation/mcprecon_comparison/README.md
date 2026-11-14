@@ -46,8 +46,10 @@ Two MCPRecon runs were made on each image:
    VMAs as the original independent probe. Contiguous readable chunks were
    concatenated and 64 KiB of NUL bytes inserted at gaps and VMA boundaries.
    The extracted byte count, unreadable byte count, and VMA count matched the
-   original probe for every image. MCPRecon scanned this **derived byte
-   stream**, which changes physical layout, file offsets, and potentially
+   original probe for every image. A second pass checked every one of the 342
+   traffic rows: UTF-8 and UTF-16LE exact-wire presence in the derived stream
+   matched the original independent probe message by message. MCPRecon scanned
+   this **derived byte stream**, which changes physical layout, file offsets, and potentially
    session grouping. The [client-only numeric report](results/2026-11-14-http-ram-rerun-client.json)
    is the closer byte-scope comparison, but it is not MCPRecon's native
    whole-image workflow.
@@ -120,3 +122,32 @@ runtime superiority, or performance on other hosts and capture conditions.
 The tools' original workflows and provenance outputs differ. A paper should
 report both the scope-matched and whole-image runs and keep those differences
 explicit.
+
+## Non-MCP controls (2026-11-15)
+
+Four preserved process-memory captures from the [real-host validation](../real_host/README.md)
+were rescanned: LSP and ordinary JSON-RPC clients on macOS and Linux. The
+capture and separate traffic-log SHA-256 values were checked against the
+original reports. For MCPRecon, the capture headers were removed and
+noncontiguous memory chunks were separated with 64 KiB of NUL bytes. MCPTrace
+was rerun directly over the captured chunks; its 43 artifact records and zero
+MCP candidates matched the saved reports.
+
+| Control group | Captures | Logged non-MCP messages | MCPTrace MCP-labeled records | MCPRecon MCP-labeled records |
+| --- | ---: | ---: | ---: | ---: |
+| macOS and Linux LSP, JSON-RPC | 4 | 8 | 0 of 43 | 0 of 43 |
+
+Both tools carved all eight logged logical messages. MCPRecon's 43 output
+records were verified at their offsets in the derived streams. The
+[captured-control numeric report](results/2026-11-15-negative-controls.json)
+contains counts and hashes only. Four purpose-built controls do not establish
+a population false-positive rate.
+
+The [constructed protocol corpus](../protocol_corpus/README.md) provides
+eight explicitly non-MCP-origin cases, including hard negatives. Both tools
+marked **one of eight** as MCP: a generic JSON-RPC response whose `result`
+contains a `tools` list. This is a protocol-origin counterexample to treating
+MCP-shaped bytes as proof of MCP transport. The [constructed-control report](results/2026-11-15-constructed-controls.json)
+also shows MCPRecon did not carve the UTF-16LE LSP case, while MCPTrace carved
+it without an MCP label. These tiny constructed buffers are useful boundary
+tests, not field accuracy estimates.
