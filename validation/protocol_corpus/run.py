@@ -30,7 +30,7 @@ class Case:
 
     def buffer(self) -> bytes:
         if self.message is None:
-            return b"noise only: {\"method\":\"tools/call\"}"
+            return b'noise only: {"method":"tools/call"}'
         raw = json.dumps(self.message, ensure_ascii=False, separators=(",", ":")).encode(
             self.encoding
         )
@@ -87,27 +87,41 @@ CASES = (
     Case("sse-tool-call", TOOL, True, "mcp-candidate", frame="sse"),
     Case("framed-legacy", LEGACY, True, "mcp-candidate", frame="content-length"),
     Case(
-        "lsp-workspace", LSP, False, "lsp-candidate", frame="content-length",
+        "lsp-workspace",
+        LSP,
+        False,
+        "lsp-candidate",
+        frame="content-length",
         source_protocol="lsp",
     ),
     Case(
-        "utf16-lsp-workspace", LSP, False, "lsp-candidate", encoding="utf-16-le",
+        "utf16-lsp-workspace",
+        LSP,
+        False,
+        "lsp-candidate",
+        encoding="utf-16-le",
         source_protocol="lsp",
     ),
     Case(
         "shared-initialize-fields",
-        {"jsonrpc": "2.0", "id": 4, "method": "initialize", "params": {
-            "clientInfo": {"name": "editor"}, "capabilities": {}
-        }},
+        {
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "initialize",
+            "params": {"clientInfo": {"name": "editor"}, "capabilities": {}},
+        },
         False,
         "generic-json-rpc",
         source_protocol="generic-json-rpc",
     ),
     Case(
         "framed-shared-fields",
-        {"jsonrpc": "2.0", "id": 4, "method": "initialize", "params": {
-            "clientInfo": {"name": "editor"}, "capabilities": {}
-        }},
+        {
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "initialize",
+            "params": {"clientInfo": {"name": "editor"}, "capabilities": {}},
+        },
         False,
         "lsp-candidate",
         frame="content-length",
@@ -161,9 +175,9 @@ CASES = (
 
 
 def load_core(ref: str) -> types.ModuleType:
-    source = subprocess.check_output(
-        ["git", "show", f"{ref}:mcptrace/core.py"], cwd=ROOT
-    ).decode("utf-8")
+    source = subprocess.check_output(["git", "show", f"{ref}:mcptrace/core.py"], cwd=ROOT).decode(
+        "utf-8"
+    )
     name = f"mcptrace_corpus_{ref.replace('.', '_').replace('-', '_')}"
     module = types.ModuleType(name)
     module.__file__ = f"{ref}:mcptrace/core.py"
@@ -207,7 +221,8 @@ def score(ref: str) -> dict:
         "mcp_candidate_matches": sum(row["mcp_candidate_matches_expectation"] for row in rows),
         "hint_matches": (
             sum(row["hint_matches_expectation"] for row in rows)
-            if hasattr(core, "classify_with_evidence") else None
+            if hasattr(core, "classify_with_evidence")
+            else None
         ),
         "non_mcp_source_labeled_mcp": sum(
             row["observed_mcp_candidate"] is True
@@ -229,8 +244,7 @@ def main() -> int:
     result = {
         "schema_version": 1,
         "scope": (
-            "constructed byte buffers scanned by core.scan_chunks; "
-            "no physical RAM or Volatility"
+            "constructed byte buffers scanned by core.scan_chunks; no physical RAM or Volatility"
         ),
         "interpretation": (
             "MCP candidacy describes recovered bytes, not transmission or execution; "
@@ -239,7 +253,8 @@ def main() -> int:
         "baseline": baseline,
         "current": current,
         "changed_cases": [
-            row["case"] for before, row in zip(baseline["cases"], current["cases"], strict=True)
+            row["case"]
+            for before, row in zip(baseline["cases"], current["cases"], strict=True)
             if before["observed_mcp_candidate"] != row["observed_mcp_candidate"]
         ],
     }
@@ -247,10 +262,9 @@ def main() -> int:
     args.report.write_text(
         json.dumps(result, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
-    all_expected = (
-        current["mcp_candidate_matches"] == len(CASES)
-        and current["hint_matches"] == len(CASES)
-    )
+    all_expected = current["mcp_candidate_matches"] == len(CASES) and current[
+        "hint_matches"
+    ] == len(CASES)
     return 0 if all_expected else 1
 
 

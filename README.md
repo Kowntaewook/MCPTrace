@@ -322,7 +322,17 @@ on 2026-07-28. These fractions describe exact wire presence in this fixture,
 not general recovery rates. The .NET cases also had 108 overlapping UTF-16LE
 wire copies. See the [HTTP physical RAM procedure and numeric result](validation/linux_x64_http_ram/README.md).
 
-The current source passed **160 local automated tests** and Ruff checks. The
+A separate 27-capture rerun retained exact wire bytes for 251/342 transmitted
+messages, all 251 of which MCPTrace carved. Its 626 artifact records were
+verified at their reported virtual addresses; there were no confirmed scan
+misses or unmatched artifacts. The first experiment's 27 RAM images had already
+been deleted. The new 27 images have distinct hashes and were preserved as one
+full compressed image plus 26 lossless patch assets, each locally reconstructed
+and hash-checked. The complete bundle is private; 11 assets are staged in a
+draft release and publication of the remaining 16 awaits approval. See the
+[rerun procedure and numeric manifest](validation/linux_x64_http_ram/README.md).
+
+The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
 performance.
