@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "runs": 27,
+  "totals": {
+    "traffic_messages": 342,
+    "wire_present": 251,
+    "mcptrace_records_verified": 626,
+    "mcptrace_carved": 251,
+    "mcptrace_mcp_labeled": 233,
+    "mcprecon_records_verified": 315,
+    "mcprecon_carved": 184,
+    "mcprecon_mcp_labeled": 94,
+    "mcptrace_unmatched_records": 0,
+    "mcprecon_unmatched_records": 0
+  }
+}

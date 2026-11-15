@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "run_id": "node-d5-r1",
+  "case": "node",
+  "image_sha256": "6c0f5e51a76f3ed3fc66e8ed21d46493ea98cd12d6e9f30a2b51fda980c3ec76",
+  "traffic_log_sha256": "b55ccb3045125bfc3e0bf641966d5a893237e1ee4b37f3f2435138f4cd6cbcef",
+  "traffic_messages": 13,
+  "present_utf8": 13,
+  "present_utf16le": 0,
+  "wire_present": 13,
+  "mcptrace_records_verified": 41,
+  "mcptrace_carved": 13,
+  "mcptrace_mcp_labeled": 12,
+  "mcprecon_records_verified": 18,
+  "mcprecon_carved": 6,
+  "mcprecon_mcp_labeled": 6,
+  "mcptrace_unmatched_records": 0,
+  "mcprecon_unmatched_records": 0,
+  "packed_client_bytes": 147312640,
+  "scan_limits_hit": []
+}

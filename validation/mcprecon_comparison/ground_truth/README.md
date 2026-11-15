@@ -1,4 +1,4 @@
-# Release-ready synthetic wire ground truth for the 27-image comparison
+# Public synthetic wire ground truth for the 27-image comparison
 
 The 27 `traffic/*.jsonl` files are **byte-for-byte copies** of the independent
 server's original JSON-body journals from the preserved Node/.NET HTTP/SSE
@@ -48,6 +48,22 @@ Repeat `run` for each manifest ID and its matching image, then aggregate:
 ```sh
 PYTHONPATH=. .venv/bin/python validation/mcprecon_comparison/replay_public.py aggregate \
   --reports /PRIVATE/reports --report /PRIVATE/replayed-totals.json
+```
+
+For a serial replay of all 27 assets, use the wrapper below. It verifies each
+asset against the published archive digest, verifies each reconstructed image,
+and retains only numeric JSON reports. It streams the compressed base into
+each patch reconstruction, so the base and a later raw image do not have to
+coexist on disk. Valid reports are reused if the process is interrupted. The
+asset directory must contain the downloaded base `.zst` and all 26
+`.patch.tar` files.
+
+```sh
+PYTHONPATH=. .venv/bin/python validation/mcprecon_comparison/replay_all_public.py \
+  --assets /PRIVATE/release-assets --symbols /PRIVATE/symbols \
+  --cache /PRIVATE/cache --vol .venv/bin/vol \
+  --mcprecon /PRIVATE/mcprecon.py --reports /PRIVATE/reports \
+  --scratch /PRIVATE/replay-scratch
 ```
 
 The `run` command scans the original image with MCPTrace for the published

@@ -187,7 +187,8 @@ def audit_public_truth() -> dict:
 def aggregate(directory: Path) -> dict:
     manifest = json.loads((TRUTH / "manifest.json").read_text())
     required = {row["run_id"]: row for row in manifest["runs"]}
-    rows = [json.loads(path.read_text(encoding="utf-8")) for path in directory.glob("*.json")]
+    rows = [json.loads(path.read_text(encoding="utf-8")) for path in directory.glob("*.json")
+            if path.name != "replayed-totals.json"]
     if len(rows) != 27 or {row["run_id"] for row in rows} != set(required):
         raise ValueError("aggregate needs one report for each of the 27 distinct runs")
     for row in rows:

@@ -131,15 +131,17 @@ the tested serialization**, not a universal claim about MCPRecon.
 
 ## Reproduction
 
-The [release-ready synthetic wire ground truth](ground_truth/README.md) now includes
+The [public synthetic wire ground truth](ground_truth/README.md) includes
 byte-identical copies of all 27 original external traffic journals, their
-SHA-256 values, client PIDs, and a replay script. Once this research branch is
-published, readers can use these files with the [RAM evidence
+SHA-256 values, client PIDs, and replay scripts. Readers can use these files
+with the [RAM evidence
 release](https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14)
 to rerun both scanners and recompute the 251-versus-184 client-byte
-comparison. Original scanner exports and unrelated guest secrets remain in
-the private evidence bundle. The numeric JSON reports contain no raw messages
-or memory bytes. The separate four live-host RAM captures are still private.
+comparison. A full serial replay of all 27 published images reproduced the
+[per-image numeric reports and aggregate](results/public_replay_2026-11-16/README.md)
+on 2026-11-16. Original scanner exports and unrelated guest secrets remain in
+the private evidence bundle. The numeric reports contain no raw messages or
+memory bytes. The separate four live-host RAM captures are still private.
 
 The [replay instructions](ground_truth/README.md) are the independent
 path. The commands below describe the original private analysis and require

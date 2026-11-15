@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "run_id": "dotnet-modern-d30-r1",
+  "case": "dotnet-modern",
+  "image_sha256": "0b4e6f5d8275bf413f2f0950ca8b5bdae758ecce2ecfded0ef999a79ce2f04a3",
+  "traffic_log_sha256": "25ac9a5a515d4070cc5f2d37a2da7ecaa7c89d2aac46306f35390446bb070c98",
+  "traffic_messages": 12,
+  "present_utf8": 8,
+  "present_utf16le": 6,
+  "wire_present": 8,
+  "mcptrace_records_verified": 16,
+  "mcptrace_carved": 8,
+  "mcptrace_mcp_labeled": 8,
+  "mcprecon_records_verified": 10,
+  "mcprecon_carved": 8,
+  "mcprecon_mcp_labeled": 3,
+  "mcptrace_unmatched_records": 0,
+  "mcprecon_unmatched_records": 0,
+  "packed_client_bytes": 131424256,
+  "scan_limits_hit": []
+}

@@ -18,10 +18,11 @@ ran the packaged MCP Inspector host over HTTP and stdio with LSP and ordinary
 JSON-RPC controls. Nine exact-wire-present Inspector messages were all carved;
 eight received an MCP label. Both controls had zero MCP-labeled records. This
 experiment is separate from the 27-image MCPRecon comparison.
-The 27-image comparison now has [release-ready synthetic wire logs and a client-byte
+The 27-image comparison has [public synthetic wire logs and a client-byte
 replay procedure](../../validation/mcprecon_comparison/ground_truth/README.md)
-in this research branch, alongside the already released RAM archives. Publish
-this branch before claiming external reproducibility. The separate four live-host/control RAM
+in this public research branch, alongside the already released RAM archives.
+The [27-image serial replay](../../validation/mcprecon_comparison/results/public_replay_2026-11-16/README.md)
+reproduced the comparison counts. The separate four live-host/control RAM
 images and their traffic journals remain private; readers cannot independently
 recompute those four image-level truth matches from the public bundle.
 
