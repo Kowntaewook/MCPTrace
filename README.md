@@ -330,8 +330,10 @@ been deleted. The new 27 images have distinct hashes and were preserved as one
 full compressed image plus 26 lossless patch assets, each locally reconstructed
 and hash-checked. All 27 assets are available in the
 [RAM evidence release](https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14),
-and a local copy is retained privately. See the
-[rerun procedure and numeric manifest](validation/linux_x64_http_ram/README.md).
+and a local copy is retained privately. The [synthetic external wire logs and
+public replay procedure](validation/mcprecon_comparison/ground_truth/README.md)
+permit the 251-versus-184 client-byte comparison to be recomputed from the
+released RAM. See the [rerun procedure and numeric manifest](validation/linux_x64_http_ram/README.md).
 
 An additional live-host check used the official MCP Inspector client on
 macOS ARM64 and Linux ARM64 with both HTTP and stdio. Of 36 transmitted MCP

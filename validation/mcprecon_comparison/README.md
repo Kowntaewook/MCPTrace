@@ -131,12 +131,19 @@ the tested serialization**, not a universal claim about MCPRecon.
 
 ## Reproduction
 
-The raw RAM and traffic logs remain outside Git. The [public evidence
+The [release-ready synthetic wire ground truth](ground_truth/README.md) now includes
+byte-identical copies of all 27 original external traffic journals, their
+SHA-256 values, client PIDs, and a replay script. Once this research branch is
+published, readers can use these files with the [RAM evidence
 release](https://github.com/Kowntaewook/MCPTrace/releases/tag/evidence-http-ram-2026-11-14)
-contains the 27 RAM assets; the original external traffic logs and MCPTrace
-exports are retained in the private local evidence bundle. The numeric JSON
-reports do not contain raw messages, memory bytes, SSH material, or process
-addresses.
+to rerun both scanners and recompute the 251-versus-184 client-byte
+comparison. Original scanner exports and unrelated guest secrets remain in
+the private evidence bundle. The numeric JSON reports contain no raw messages
+or memory bytes. The separate four live-host RAM captures are still private.
+
+The [replay instructions](ground_truth/README.md) are the independent
+path. The commands below describe the original private analysis and require
+files that are not part of the public bundle.
 
 Run from the MCPTrace repository root, with the separate evidence bundle next
 to the repository and the exact MCPRecon source in a separate local directory:

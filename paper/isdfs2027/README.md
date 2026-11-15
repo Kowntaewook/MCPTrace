@@ -18,8 +18,12 @@ ran the packaged MCP Inspector host over HTTP and stdio with LSP and ordinary
 JSON-RPC controls. Nine exact-wire-present Inspector messages were all carved;
 eight received an MCP label. Both controls had zero MCP-labeled records. This
 experiment is separate from the 27-image MCPRecon comparison.
-The external traffic logs and raw memory images are separate evidence; readers
-cannot independently recompute every truth match from this repository alone.
+The 27-image comparison now has [release-ready synthetic wire logs and a client-byte
+replay procedure](../../validation/mcprecon_comparison/ground_truth/README.md)
+in this research branch, alongside the already released RAM archives. Publish
+this branch before claiming external reproducibility. The separate four live-host/control RAM
+images and their traffic journals remain private; readers cannot independently
+recompute those four image-level truth matches from the public bundle.
 
 Compile with Tectonic and inspect the resulting pages before submission:
 
@@ -28,5 +32,5 @@ tectonic --outdir output/pdf paper/isdfs2027/mcptrace_isdfs2027.tex
 ```
 
 Before submission, review all claims and references, obtain any required
-author or school approval, check the current ISDFS instructions, and consider
-publishing a sanitized truth manifest that permits independent rescoring.
+author or school approval, check the current ISDFS instructions, and request
+an independent rerun of the published 27-image comparison when feasible.
