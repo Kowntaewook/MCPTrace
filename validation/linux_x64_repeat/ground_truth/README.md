@@ -38,3 +38,12 @@ reported HTTP timing pilot; all **21 RAM archives** remain private. The
 [20-image primary summary](../results/2026-11-16-same-cell-summary.json)
 excludes that pilot and requires access to both private evidence roots for
 image-level verification.
+
+The [byte-free reviewer manifest](reviewer_manifest.json) and [handoff
+guide](REVIEWER_HANDOFF.md) enumerate the exact 20 private archives, four
+private Codex journals, public truth, symbol requirement, scratch space,
+and independent replay command. The [author-run replay result](replay_2026-11-16.json)
+records a fresh Volatility scan and complete score comparison for all 20
+planned images. It matched all measured fields, but is **not** an external
+reviewer's run. A recipient and restricted transfer method have not been
+arranged.

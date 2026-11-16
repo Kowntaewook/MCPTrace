@@ -379,6 +379,10 @@ The sent/present/carved/MCP-labeled counts matched across the two independent
 processes in every cell. The reused VM, synthetic tool, and small sample do
 not provide a general detection or false-positive rate. The original RAM
 archives remain private; 17 reviewed non-Codex wire journals are public.
+An [author-run replay of all 20 original images](validation/linux_x64_repeat/ground_truth/replay_2026-11-16.json)
+matched every measured field after fresh Volatility scans. The [reviewer
+handoff guide](validation/linux_x64_repeat/ground_truth/REVIEWER_HANDOFF.md)
+lists the private inputs needed for another person to repeat the check.
 
 The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,

@@ -58,7 +58,10 @@ recomputation.
 The [second-phase summary](../../validation/linux_x64_repeat/results/2026-11-16-same-cell-summary.json)
 rechecks all 20 planned images from both phases. The second phase adds ten
 private RAM archives and eight public non-Codex wire journals; its two Codex
-journals remain private. An external independent replay is still outstanding.
+journals remain private. A [fresh author-run replay of all 20 original images](../../validation/linux_x64_repeat/ground_truth/replay_2026-11-16.json)
+matched every measured field and per-message flag. The [20-image reviewer
+manifest and handoff procedure](../../validation/linux_x64_repeat/ground_truth/REVIEWER_HANDOFF.md)
+are prepared; an external independent replay is still outstanding.
 The manuscript's [worked image-to-wire case](../../validation/mcprecon_comparison/ground_truth/worked_case_node_d30_r2.md)
 uses one archived Node capture to distinguish a verified response artifact
 from an exact-wire-absent request. The MCPRecon discussion acknowledges that

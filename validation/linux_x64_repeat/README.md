@@ -144,14 +144,25 @@ exports against the public numeric reports, checks distinct PIDs and image
 hashes, and verifies the primary/pilot grouping.
 [`summarize_same_cell.py`](summarize_same_cell.py) rechecks both evidence roots
 and verifies exactly two captures in every case/timing cell.
+The [reviewer handoff guide](ground_truth/REVIEWER_HANDOFF.md) and
+[byte-free manifest](ground_truth/reviewer_manifest.json) identify exactly
+which 20 original archives and four private Codex journals a reviewer needs.
+The [author-run full replay](ground_truth/replay_2026-11-16.json) independently
+restored and rescanned every planned image with the pinned scanner, then
+matched every measured field and per-message flag against its public report:
+20/20 images, 116 sent, 90 present, 90 carved, 68 MCP-labeled, 264 artifact
+records, and zero confirmed scan misses or unmatched artifact records. It
+deleted the temporary ELF and raw exports after each image. This is an author
+rerun, not an external independent reproduction. The author run resumed from
+a hash-bound numeric checkpoint after macOS storage/startup interruptions;
+each of the 20 original images was still restored and freshly scanned.
 
 The [17 public non-Codex wire journals](ground_truth/README.md) contain 97
 byte-identical synthetic JSON bodies, including the pilot. The four Codex
 journals remain private because original wire messages include runtime
 session/turn/window identifiers. All 21 full-RAM archives remain private;
 public files alone cannot reproduce their image-level scores. Reviewer
-transfer requires a separate restricted-access handoff, as in the [six-image
-evidence guide](../linux_x64_real_host_ram/ground_truth/README.md).
+transfer requires a restricted-access handoff under the [20-image guide](ground_truth/REVIEWER_HANDOFF.md).
 
 ## Interpretation boundary
 
