@@ -18,7 +18,8 @@ from validation.linux_x64_official.score import probe_wire
 from validation.linux_x64_positive.score import canonical, sha256, verify_exports
 
 
-CASES = {"inspector-http", "inspector-stdio", "lsp-control", "jsonrpc-control"}
+CASES = {"inspector-http", "inspector-stdio", "lsp-control", "jsonrpc-control",
+         "codex-stdio"}
 
 
 def read_traffic(path: Path) -> list[dict]:
@@ -104,7 +105,7 @@ def score(*, case: str, image: Path, symbols: Path, cache: Path, config: Path,
         "limitations": [
             "Exact-wire presence and carving are scoped to this one readable client process at capture time.",
             "Canonical JSON equality does not identify which memory copy crossed the transport.",
-            "The control server and control clients are purpose-built; a few captures do not estimate field rates.",
+            "The MCP peer server and protocol controls are purpose-built; a few captures do not estimate field rates.",
         ],
     }
 

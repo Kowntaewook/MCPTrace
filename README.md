@@ -358,6 +358,15 @@ hash-verified and retained privately; these single captures are not field
 detection or false-positive rates. See the
 [live-host physical RAM method and numeric reports](validation/linux_x64_real_host_ram/README.md).
 
+A second packaged host, **Codex CLI 0.159.3**, was then run in the Linux x86-64
+VM against an official-SDK stdio server. A local deterministic model endpoint
+triggered one real `tools/call`, and two full-RAM captures of the still-running
+Codex PID were taken 123 seconds apart. At each capture, five of seven logged
+wire bodies remained byte-for-byte in readable client memory; MCPTrace carved
+and MCP-labeled all five. Six artifact records per image were address-verified.
+This is one controlled tool exchange observed twice, not a broader detection
+rate. See the [Codex host method and numeric reports](validation/linux_x64_codex_ram/README.md).
+
 The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
@@ -391,4 +400,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Node/.NET HTTP/SSE in Linux x86-64 physical RAM](validation/linux_x64_http_ram/README.md)
 - [Real MCP Inspector hosts on macOS and Linux](validation/real_host/README.md)
 - [Real MCP Inspector in Linux x86-64 physical RAM](validation/linux_x64_real_host_ram/README.md)
+- [Codex CLI in Linux x86-64 physical RAM](validation/linux_x64_codex_ram/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)
