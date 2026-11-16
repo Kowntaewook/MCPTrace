@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "scope": "exact synthetic JSON bodies for nine non-Codex Linux repeat images",
+  "public_journals": 9,
+  "public_messages": 53,
+  "codex_journals_private": 2,
+  "ram_images_private": 11,
+  "runs": [
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-http-r1-delayed.json",
+      "case": "inspector-http",
+      "run_id": "http-fast-1",
+      "client_pid": 1017,
+      "image_sha256": "be7137dcc5c23614afeaba3dabe9335513fc20061209abcaf336d5812f8178fb",
+      "traffic_sha256": "2e7a3c653faa57252077ce53dbdb01c45d18770cd085a6966ed103f31ce3b79c",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-http-r1-delayed.jsonl",
+      "report_sha256": "2c22ed44e234944ae2b7556016de97471c30c47c5eeec43405ad3aa5f04985ab"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-http-r2-fast.json",
+      "case": "inspector-http",
+      "run_id": "inspector-http-r2-fast",
+      "client_pid": 1529,
+      "image_sha256": "e5de1540fc8ad5d89029ff24be2faf6a656baf35c1fc132e7e4784d1d5565fe2",
+      "traffic_sha256": "f684caed18128c71e15e8bc69f74fa26f019e01fec498820e11388b73aa1f4f3",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-http-r2-fast.jsonl",
+      "report_sha256": "aa765c8c01c245bca8a1b93619e83889845c7f65d6ef48753492936b5463ca33"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-http-r3-delayed.json",
+      "case": "inspector-http",
+      "run_id": "inspector-http-r3-delayed",
+      "client_pid": 4668,
+      "image_sha256": "5ab3c0f6b83e4aca7d5fafe57cb7ab23c98dc5fadeab04072a23f3ef8efb1a1c",
+      "traffic_sha256": "274daed97d269b5494c5420faf8a860ba219fa1a0a17945b533345bf2387607e",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-http-r3-delayed.jsonl",
+      "report_sha256": "00769e9f2bd8de8627a350b8173d2ce6e71c02d2f36e8ee7aa2beea396e1cea7"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-stdio-r1-fast.json",
+      "case": "inspector-stdio",
+      "run_id": "inspector-stdio-r1-fast",
+      "client_pid": 2070,
+      "image_sha256": "508fa428cc600a8921e445b9c995334c1d314360a397a5df6137550f3e975b68",
+      "traffic_sha256": "a946cf1cbbd5cdca8f983e20b241cb9c60c1208dcc3ceb4bb03fb54afc69bdd6",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-stdio-r1-fast.jsonl",
+      "report_sha256": "1f4747af09e443983a8ff824d2d6271cb141f0a00e70f1eaace4fc12ae816586"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-stdio-r2-delayed.json",
+      "case": "inspector-stdio",
+      "run_id": "inspector-stdio-r2-delayed",
+      "client_pid": 2357,
+      "image_sha256": "96ff39f000b1d78f587a950683a9612503c3476abd9177d8f61417b9ecea6a49",
+      "traffic_sha256": "fc2f81cd4c036de2b708bcb8f52fd2ec19563fdf089867422187f088b1a2e1cd",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-stdio-r2-delayed.jsonl",
+      "report_sha256": "29b20ae843f89e9474944cbfaa5904765a1a3580bcd3bcb995577b0e6545eebb"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-lsp-r1-fast.json",
+      "case": "lsp-control",
+      "run_id": "lsp-r1-fast",
+      "client_pid": 2641,
+      "image_sha256": "d11e5cbd096e54ddb48dc462520158da1d21cc686cdb7c8c5b3fcae9af23e9a7",
+      "traffic_sha256": "25efac2e45852121ce343b94b12938af5057968ce330599b91e5ed626b7bc786",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/lsp-r1-fast.jsonl",
+      "report_sha256": "891b8233a3ee2b073e25664369d547c3b307353ed77218270fc11c5161ba3062"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-lsp-r2-delayed.json",
+      "case": "lsp-control",
+      "run_id": "lsp-r2-delayed",
+      "client_pid": 2873,
+      "image_sha256": "4ce646f4442c21196973db085d94510182709536196405079916aaa3777007f3",
+      "traffic_sha256": "e5a1d50c812f4a807592b05b9eefb9f7fb0deb364d19ee1fb53ab6701c003ba5",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/lsp-r2-delayed.jsonl",
+      "report_sha256": "a04077afcf16d61b968afc871405fdcad5f7c183b310f33a86d0510065b652fb"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-jsonrpc-r1-fast.json",
+      "case": "jsonrpc-control",
+      "run_id": "jsonrpc-r1-fast",
+      "client_pid": 3107,
+      "image_sha256": "b5a8a15cc62f7f40f01040d7022d2975ad1f99e9a901e50723fa735c2fe72019",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/jsonrpc-r1-fast.jsonl",
+      "report_sha256": "ede16febe3b105639908591a7e9cc91ecccef69c474c5c3e60f8da9b4123d8d4"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-jsonrpc-r2-delayed.json",
+      "case": "jsonrpc-control",
+      "run_id": "jsonrpc-r2-delayed",
+      "client_pid": 3337,
+      "image_sha256": "25601cf6e4c208248165f4566dc19fe6e6903b169b0599cd37caed33b74803d4",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/jsonrpc-r2-delayed.jsonl",
+      "report_sha256": "99b60d07ed005ddfbd1978d2059fa42bbdf3a590418de1ad80e0c33292099247"
+    }
+  ]
+}

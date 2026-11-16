@@ -28,6 +28,13 @@ logged messages were exact-wire-present, carved, and MCP-labeled in each
 image; all six artifact records per image were address-verified. These are
 two observations of one exchange, not independent trials or ordinary model
 behavior. MCPRecon was not evaluated on these live-host images.
+The later [fresh-process Linux full-RAM repeats](../../validation/linux_x64_repeat/README.md)
+added ten planned independent-PID images, one early and one at least 90-second
+delayed run for each of Inspector HTTP, Inspector stdio, Codex stdio, LSP, and
+ordinary JSON-RPC. Across those images, 45 of 58 logged message observations
+were exact-wire-present and all 45 were carved. The MCP-host subset had 34
+MCP-labeled copies among 37 present messages; eight present control messages
+had no MCP labels. An exploratory HTTP timing pilot is reported separately.
 The 27-image comparison has [public synthetic wire logs and a client-byte
 replay procedure](../../validation/mcprecon_comparison/ground_truth/README.md)
 in this public research branch, alongside the already released RAM archives.
@@ -41,6 +48,11 @@ metadata. Readers still cannot independently recompute the six image-level
 truth matches from public files alone. An [author-run six-image replay](../../validation/linux_x64_real_host_ram/ground_truth/replay_2026-11-16.json)
 matched every measured field and per-message flag in the original numeric
 reports; independent external replay remains outstanding.
+The [repeat summary](../../validation/linux_x64_repeat/results/2026-11-16-repeat-summary.json)
+records the eleven new images and their private archive hashes; nine reviewed
+non-Codex wire journals are public. The eleven raw RAM archives and two Codex
+wire journals remain private, so their image-level results also lack public
+recomputation.
 The manuscript's [worked image-to-wire case](../../validation/mcprecon_comparison/ground_truth/worked_case_node_d30_r2.md)
 uses one archived Node capture to distinguish a verified response artifact
 from an exact-wire-absent request. The MCPRecon discussion acknowledges that

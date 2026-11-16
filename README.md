@@ -367,6 +367,18 @@ and MCP-labeled all five. Six artifact records per image were address-verified.
 This is one controlled tool exchange observed twice, not a broader detection
 rate. See the [Codex host method and numeric reports](validation/linux_x64_codex_ram/README.md).
 
+A [fresh-process Linux full-RAM repeat study](validation/linux_x64_repeat/README.md)
+then added ten planned captures: early and at least 90-second delayed runs of
+Inspector HTTP, Inspector stdio, Codex stdio, LSP, and ordinary JSON-RPC, with
+a separate timing pilot. Across the ten planned images, 58 message
+observations were logged; 45 exact wire bodies remained in readable client
+memory and all 45 were carved. Of 37 present MCP-host messages, 34 received an
+MCP label; eight present non-MCP control messages received none. The 141
+artifact records were address-verified. Each run used a fresh PID and
+exchange, but the reused VM, synthetic tool, and small sample do not provide
+a general detection or false-positive rate. The original RAM archives remain
+private; nine reviewed non-Codex wire journals are public.
+
 The current source passed **161 local automated tests** and Ruff checks. The
 new classifier has not been rerun on the earlier acquired Windows RAM images,
 and these small controlled studies do not establish Windows recovery or runtime
@@ -401,4 +413,5 @@ prove transmission, tool execution, session membership, or compromise.
 - [Real MCP Inspector hosts on macOS and Linux](validation/real_host/README.md)
 - [Real MCP Inspector in Linux x86-64 physical RAM](validation/linux_x64_real_host_ram/README.md)
 - [Codex CLI in Linux x86-64 physical RAM](validation/linux_x64_codex_ram/README.md)
+- [Fresh-process Linux physical-RAM repeats](validation/linux_x64_repeat/README.md)
 - [Repeated benchmark procedure](validation/windows_positive/BENCHMARK.md)

@@ -75,3 +75,6 @@ checks the retained Codex journals and archive hashes against these public
 reports. The original Codex JSON-RPC `params._meta` includes runtime session,
 turn, and window identifiers, so its exact wire journals remain private. A
 redacted copy would not be byte-identical to the messages searched in RAM.
+The later [fresh-process repeat study](../linux_x64_repeat/README.md) adds two
+separate Codex tool exchanges and same-VM non-MCP controls; these are distinct
+from this original two-image observation of one exchange.
