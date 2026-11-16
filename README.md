@@ -383,7 +383,7 @@ An [author-run replay of all 20 original images](validation/linux_x64_repeat/gro
 matched every measured field after fresh Volatility scans. The [reviewer
 handoff guide](validation/linux_x64_repeat/ground_truth/REVIEWER_HANDOFF.md)
 lists the private inputs needed for another person to repeat the check.
-[한국어 검토 안내와 요청 문구](validation/linux_x64_repeat/ground_truth/REVIEWER_HANDOFF_KO.md)도
+[한국어 검토 안내](validation/linux_x64_repeat/ground_truth/REVIEWER_HANDOFF_KO.md)도
 같은 범위를 설명합니다.
 
 The current source passed **161 local automated tests** and Ruff checks. The
