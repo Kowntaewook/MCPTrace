@@ -1,5 +1,8 @@
 # Live-host Linux RAM evidence: truth and replay boundary
 
+한국어 설명은 [검토자 안내](../../linux_x64_repeat/ground_truth/REVIEWER_HANDOFF_KO.md)에
+기존 6개와 새 반복 20개를 구분해 정리했습니다.
+
 This directory maps the four Inspector/control captures and two Codex captures
 to their original image, archive, traffic, export, and numeric-report hashes.
 It does **not** contain a physical-RAM image. The [27-image MCPRecon comparison](../../mcprecon_comparison/ground_truth/README.md)

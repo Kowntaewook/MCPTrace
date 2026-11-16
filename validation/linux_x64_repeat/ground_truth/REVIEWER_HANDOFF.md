@@ -1,5 +1,7 @@
 # Reviewer handoff for 20 independent Linux full-RAM repeats
 
+For a Korean reviewer, see the [한국어 검토 안내](REVIEWER_HANDOFF_KO.md).
+
 This guide covers the **20 planned** images in the two-phase Inspector,
 Codex CLI, LSP, and ordinary JSON-RPC experiment. The exploratory Inspector
 HTTP timing pilot is excluded. The [reviewer manifest](reviewer_manifest.json)
