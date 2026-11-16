@@ -25,6 +25,12 @@ The [27-image serial replay](../../validation/mcprecon_comparison/results/public
 reproduced the comparison counts. The separate four live-host/control RAM
 images and their traffic journals remain private; readers cannot independently
 recompute those four image-level truth matches from the public bundle.
+The manuscript's [worked image-to-wire case](../../validation/mcprecon_comparison/ground_truth/worked_case_node_d30_r2.md)
+uses one archived Node capture to distinguish a verified response artifact
+from an exact-wire-absent request. The MCPRecon discussion acknowledges that
+its published method already retains PID, VMA, and offset provenance; the
+251-versus-184 figure is limited to its pinned public CLI on derived client
+bytes.
 
 Compile with Tectonic and inspect the resulting pages before submission:
 

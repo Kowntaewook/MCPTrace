@@ -31,3 +31,8 @@ derived client-byte stream, not its native whole-RAM workflow. All files here
 contain counts and hashes only. They contain no RAM bytes, recovered messages,
 or guest secrets. The separate four-image live-host RAM experiment is outside
 this replay and remains privately archived.
+
+The `node-d30-r2.json` report also includes `worked_case_verified: true`.
+Its [case note](../../ground_truth/worked_case_node_d30_r2.md) explains the
+address reread, external wire match, and exact-wire-absent request. This extra
+field does not change the 27-image aggregate.

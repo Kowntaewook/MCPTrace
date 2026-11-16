@@ -75,6 +75,13 @@ at VMA gaps; this is a controlled **client-byte** comparison, not MCPRecon's
 native whole-image workflow. Temporary raw exports and packed bytes are removed
 after scoring; the report contains counts and hashes only.
 
+The [worked `node-d30-r2` case](worked_case_node_d30_r2.md) has a
+[machine-readable audit](worked_case_node_d30_r2.json). Replaying that image
+checks an externally logged but exact-wire-absent request, a response whose
+original bytes are reread at its reported client virtual address, and the
+scan's readable/unreadable coverage counts. A successful run adds
+`worked_case_verified: true` to its numeric report.
+
 Across the 27 captures, the expected audit totals are 342 sent, 251 with exact
 wire bytes in readable client memory, 251 carved by MCPTrace, and 184 carved by
 MCPRecon's default CLI on the derived client stream. The two scanners' MCP

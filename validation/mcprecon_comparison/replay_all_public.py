@@ -104,7 +104,8 @@ def valid_saved_report(path: Path, row: dict, reference: dict) -> bool:
         "mcprecon_unmatched_records": 0,
     }
     return (all(saved.get(key) == value for key, value in expected.items())
-            and saved.get("scan_limits_hit") == [])
+            and saved.get("scan_limits_hit") == []
+            and (row["run_id"] != "node-d30-r2" or saved.get("worked_case_verified") is True))
 
 
 def main() -> None:

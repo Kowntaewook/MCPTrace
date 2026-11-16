@@ -60,6 +60,57 @@ def git_blob(path: Path) -> str:
     return hashlib.sha1(f"blob {len(data)}\0".encode() + data).hexdigest()
 
 
+def verify_worked_case(info: dict, traffic: list[dict], flags: list[dict],
+                       artifacts: list[dict], scan: dict, result: dict) -> bool:
+    """Check one address audit and one exact-wire absence in the public image."""
+    if info["run_id"] != "node-d30-r2":
+        return False
+    case = json.loads((TRUTH / "worked_case_node_d30_r2.json").read_text(encoding="utf-8"))
+    request = case["transmitted_request"]
+    response = case["recovered_response"]
+    request_row = traffic[request["traffic_row_zero_based"]]
+    response_row = traffic[response["traffic_row_zero_based"]]
+    matches = [row for row in artifacts
+               if row["virtual_address"] == response["virtual_address"]]
+    if len(matches) != 1:
+        raise ValueError("worked-case response address is missing or duplicated")
+    artifact = matches[0]
+    raw = base64.b64decode(artifact["raw_base64"], validate=True)
+    if (case["image_sha256"] != info["image_sha256"]
+            or case["traffic_log_sha256"] != info["traffic_log_sha256"]
+            or case["client_pid"] != info["client_pid"]
+            or case["traffic_messages"] != result["traffic_messages"]
+            or case["exact_wire_present"] != result["wire_present"]
+            or case["mcptrace_carved"] != result["mcptrace_carved"]
+            or case["mcprecon_client_carved"] != result["mcprecon_carved"]
+            or scan["bytes_read"] != case["scan"]["readable_bytes"]
+            or scan["unreadable_bytes"] != case["scan"]["unreadable_vma_bytes"]
+            or scan["regions_scanned"] != case["scan"]["regions_scanned"]
+            or scan["limits_hit"] != case["scan"]["limits_hit"]
+            or request_row["direction"] != request["direction"]
+            or request_row["message"].get("method") != request["method"]
+            or request_row["message"].get("id") != request["jsonrpc_id"]
+            or hashlib.sha256(request_row["raw"]).hexdigest() != request["wire_sha256"]
+            or request["exact_wire_present_in_readable_client_vmas"] is not False
+            or flags[request["traffic_row_zero_based"]]["utf8"]
+            or flags[request["traffic_row_zero_based"]]["utf16le"]
+            or any(row["message"] == request_row["message"] for row in artifacts)
+            or response_row["direction"] != response["direction"]
+            or response_row["framing"] != response["framing"]
+            or response_row["message"].get("id") != response["jsonrpc_id"]
+            or not flags[response["traffic_row_zero_based"]]["utf8"]
+            or artifact["pid"] != case["client_pid"]
+            or artifact["vma_start"] != response["vma_start"]
+            or artifact["byte_length"] != response["byte_length"]
+            or artifact["encoding"] != response["encoding"]
+            or artifact["kind"] != response["kind"]
+            or artifact["relation"] != response["relation"]
+            or artifact["raw_sha256"] != response["raw_sha256"]
+            or raw != response_row["raw"]):
+        raise ValueError("worked-case metadata, memory artifact, and wire truth disagree")
+    return True
+
+
 def score_run(args: argparse.Namespace) -> dict:
     info, traffic = load_run(args.run_id)
     if args.image.stat().st_size != info["image_bytes"] or sha256(args.image) != info["image_sha256"]:
@@ -140,6 +191,8 @@ def score_run(args: argparse.Namespace) -> dict:
             "packed_client_bytes": pack_stats["packed_bytes"],
             "scan_limits_hit": scans[0]["summary"]["limits_hit"],
         }
+        if verify_worked_case(info, traffic, flags, artifacts, scans[0]["summary"], result):
+            result["worked_case_verified"] = True
     reference = next(row for row in json.loads(REFERENCE.read_text(encoding="utf-8"))["captures"]
                      if row["run_id"] == args.run_id)
     comparisons = {

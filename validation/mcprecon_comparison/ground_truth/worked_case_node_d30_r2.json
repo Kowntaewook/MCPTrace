@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "run_id": "node-d30-r2",
+  "image_sha256": "732b9dd9a9b0278bacd98a7e79a740637e08ab5be07773831958f771758467e4",
+  "traffic_log_sha256": "b8f32b4e40126a69bebdf7a71af1311eb0241401ec40e01f9c46e806e73bec21",
+  "client_pid": 4361,
+  "traffic_messages": 13,
+  "exact_wire_present": 8,
+  "mcptrace_carved": 8,
+  "mcprecon_client_carved": 1,
+  "scan": {
+    "readable_bytes": 77991936,
+    "unreadable_vma_bytes": 11742543872,
+    "regions_scanned": 196,
+    "limits_hit": []
+  },
+  "transmitted_request": {
+    "traffic_row_zero_based": 5,
+    "direction": "client-to-server",
+    "method": "tools/call",
+    "jsonrpc_id": 2,
+    "wire_sha256": "acc6ca55519dd81b50c466230d6b40dcc60aafd21550d96347fb3d286dde7977",
+    "exact_wire_present_in_readable_client_vmas": false
+  },
+  "recovered_response": {
+    "traffic_row_zero_based": 6,
+    "direction": "server-to-client",
+    "framing": "sse",
+    "jsonrpc_id": 2,
+    "vma_start": 713314304,
+    "virtual_address": 714722585,
+    "byte_length": 91,
+    "encoding": "utf-8",
+    "kind": "response",
+    "relation": "unpaired",
+    "raw_sha256": "e9bb1671e80a5ee0b24cdfd5a3a09e856d57bcb9d987412a7e492dcdc0e12e73"
+  }
+}

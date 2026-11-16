@@ -117,7 +117,19 @@ raw bytes matched the reported offset in that stream. All 315 records matched
 a logical message in the traffic log. This does **not** measure specificity:
 these are positive, purpose-built client captures, with no non-MCP control in
 this comparison. A file offset in the packed stream also does not provide the
-original PID and virtual address that MCPTrace exports.
+original PID and virtual address that MCPTrace exports. The published
+[MCPRecon paper](https://dfrws.org/wp-content/uploads/2026/04/DFRWS_USA_2026_Camera_Ready_Paper_82.pdf)
+already retains PID, VMA range, and byte offset in its Volatility-based
+workflow; the packed-offset distinction here applies to the tested public
+raw-file CLI output, not to all forms of MCPRecon provenance.
+
+The [worked `node-d30-r2` case](ground_truth/worked_case_node_d30_r2.md)
+shows the evidence-handling difference without treating an unpaired response
+as proof of an executed call. Its external log contains a `tools/call` request
+and response with ID 2; the request's exact wire body was not found in readable
+client VMAs, while the response was reread at a stated process virtual address
+and matched to the log. The scan's unreadable virtual-range count is also
+reported, so absence is not overstated.
 
 For the 67 truth messages present in client memory but absent from MCPRecon's
 default output, 63 were in the Node cases: 9 `initialize` requests and 54

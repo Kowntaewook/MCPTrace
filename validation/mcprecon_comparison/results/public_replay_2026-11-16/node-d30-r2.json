@@ -17,5 +17,6 @@
   "mcptrace_unmatched_records": 0,
   "mcprecon_unmatched_records": 0,
   "packed_client_bytes": 123539456,
-  "scan_limits_hit": []
+  "scan_limits_hit": [],
+  "worked_case_verified": true
 }
