@@ -69,3 +69,9 @@ stdio scenario. Existing LSP and ordinary JSON-RPC controls belong to the
 separate Inspector experiment; no new control or HTTP Codex run is claimed
 here. This experiment does not estimate detection across apps or ordinary
 agent use.
+
+The [six-capture evidence manifest and reviewer replay guide](../linux_x64_real_host_ram/ground_truth/README.md)
+checks the retained Codex journals and archive hashes against these public
+reports. The original Codex JSON-RPC `params._meta` includes runtime session,
+turn, and window identifiers, so its exact wire journals remain private. A
+redacted copy would not be byte-identical to the messages searched in RAM.

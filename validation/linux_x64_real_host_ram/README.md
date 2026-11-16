@@ -116,6 +116,14 @@ contain ephemeral guest keys, daemon tokens, or other runtime state and were
 **not uploaded**. Their original traffic journals are also required to
 recompute the conditional matches; a public report alone cannot do that.
 
+The four original **synthetic traffic journals** have since been content-audited
+and released byte-for-byte with a six-capture hash manifest and private replay
+instructions in [ground truth](ground_truth/README.md). The RAM archives and
+raw scanner exports remain private, so the four image-level results still
+cannot be independently recomputed from public files alone. The two Codex
+traffic journals remain private because their wire bodies include session
+metadata.
+
 There was one capture per condition and no synchronized call-to-acquisition
 delay measurement. The purpose-built peer server and controls, reused VM, and
 single Inspector host family prevent a general host or field detection-rate

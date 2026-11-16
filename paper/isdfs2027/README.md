@@ -32,10 +32,13 @@ The 27-image comparison has [public synthetic wire logs and a client-byte
 replay procedure](../../validation/mcprecon_comparison/ground_truth/README.md)
 in this public research branch, alongside the already released RAM archives.
 The [27-image serial replay](../../validation/mcprecon_comparison/results/public_replay_2026-11-16/README.md)
-reproduced the comparison counts. The separate four Inspector/control and two
-Codex live-host RAM images and their traffic journals remain private; readers
-cannot independently recompute those six image-level truth matches from the
-public bundle.
+reproduced the comparison counts. A [six-capture live-host evidence
+manifest](../../validation/linux_x64_real_host_ram/ground_truth/README.md)
+now publishes the exact synthetic traffic journals for the four Inspector and
+control images. Their RAM archives remain private. The two Codex journals and
+RAM archives remain private because the original wire messages contain session
+metadata. Readers still cannot independently recompute the six image-level
+truth matches from public files alone.
 The manuscript's [worked image-to-wire case](../../validation/mcprecon_comparison/ground_truth/worked_case_node_d30_r2.md)
 uses one archived Node capture to distinguish a verified response artifact
 from an exact-wire-absent request. The MCPRecon discussion acknowledges that
