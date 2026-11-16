@@ -129,5 +129,6 @@ delay measurement. The purpose-built peer server and controls, reused VM, and
 single Inspector host family prevent a general host or field detection-rate
 claim. MCPRecon was not run on these four new images; its 27-image comparison
 remains [separate](../mcprecon_comparison/README.md).
-The later [fresh-process repeats](../linux_x64_repeat/README.md) add two new
-captures per condition with a measured guest completion-marker age.
+The later [fresh-process repeats](../linux_x64_repeat/README.md) add four new
+captures per condition, two in each timing window, with a measured guest
+completion-marker age.

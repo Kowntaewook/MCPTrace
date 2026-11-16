@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -79,7 +80,9 @@ def main() -> None:
                    "--private-dir", str(capture_dir), "--symbols", str(args.symbols),
                    "--cache", str(args.cache), "--vol", str(args.vol),
                    "--report", str(args.report)]
-        subprocess.run(command, cwd=ROOT, check=True, timeout=1800)
+        environment = os.environ.copy()
+        environment["PYTHONPATH"] = str(ROOT)
+        subprocess.run(command, cwd=ROOT, env=environment, check=True, timeout=1800)
         report = json.loads(args.report.read_text())
         report["run_id"] = args.run_id
         report["planned_minimum_event_age_seconds"] = args.min_age_seconds

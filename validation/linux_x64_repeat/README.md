@@ -1,7 +1,9 @@
 # Independent-process Linux live-host RAM repeats
 
-This 2026-11-16 follow-up adds **10 primary full-RAM captures**: one early and
-one at least 90-second delayed capture for each of five cases. Each capture
+The first 2026-11-16 phase added **10 primary full-RAM captures**: one early
+and one at least 90-second delayed capture for each of five cases. A second
+phase added **10 more**, giving two independent captures in each case/timing
+cell. Each capture
 uses a fresh client PID and a new exchange in the same reused Ubuntu x86-64
 QEMU VM. A separate Inspector HTTP timing pilot is retained but excluded from
 the primary totals. The hosts are MCP Inspector `mcpdo` 2.15.0 over HTTP and
@@ -47,6 +49,47 @@ in each HTTP image and the early stdio image. The controls produced no MCP
 labels in these specific snapshots; neither result estimates a field error
 rate.
 
+## Same-condition replication
+
+The second phase repeated each of the ten planned case/timing cells with a new
+client process and exchange. The pair's **sent / present / carved / MCP-labeled**
+counts matched in every cell. Ages are the two observed guest marker ages, not
+exact network-byte-to-snapshot delays.
+The ordered per-message direction, framing, method, presence, carving, and
+classification flags also matched, ignoring expected run-specific byte hashes.
+
+| Case and timing | Marker ages (s) | Counts in each independent image |
+| --- | --- | --- |
+| Inspector HTTP, early | 18.340, 9.943 | 9 / 9 / 9 / 8 |
+| Inspector HTTP, delayed | 101.209, 91.350 | 9 / 4 / 4 / 3 |
+| Inspector stdio, early | 1.251, 1.314 | 9 / 9 / 9 / 8 |
+| Inspector stdio, delayed | 103.534, 104.758 | 9 / 5 / 5 / 5 |
+| LSP, early | 1.289, 1.311 | 2 / 2 / 2 / 0 |
+| LSP, delayed | 93.333, 102.326 | 2 / 2 / 2 / 0 |
+| Ordinary JSON-RPC, early | 1.295, 10.666 | 2 / 2 / 2 / 0 |
+| Ordinary JSON-RPC, delayed | 103.838, 102.267 | 2 / 2 / 2 / 0 |
+| Codex stdio, early | 1.603, 7.902 | 7 / 5 / 5 / 5 |
+| Codex stdio, delayed | 93.526, 101.461 | 7 / 5 / 5 / 5 |
+
+Across **20 primary images**, there were 116 separately logged message
+observations: 90 exact wire bodies remained in readable client VMAs, all 90
+were carved, and 68 had an MCP-labeled copy. The 12 MCP-host images account
+for 100 sent, 74 present, 74 carved, and 68 MCP-labeled observations. The
+eight control images account for 16 sent/present/carved observations and zero
+MCP labels. All **264 exported artifact records** were reread at their
+reported virtual addresses; no image had a confirmed scan miss, unmatched
+artifact record, or scan-limit hit. Archive, reconstructed image, journal,
+and export hashes were checked against each report. The [same-cell summary](results/2026-11-16-same-cell-summary.json)
+lists both runs in every cell and keeps the exploratory HTTP pilot separate.
+Artifact-record counts sometimes differed even where logical message counts
+matched, so copies in RAM are not themselves repeatable message totals.
+
+One attempted second-phase stdio run stopped before QMP acquisition because
+the runner had not passed its Python import path to the capture subprocess.
+No RAM image or report was produced for that attempt. The runner was fixed,
+and a new run ID and client process supplied its replacement. This aborted
+setup attempt is excluded from all counts.
+
 ## Acquisition and verification
 
 The guest booted Ubuntu Minimal 24.04 with kernel 6.8.0-146-generic and the
@@ -87,6 +130,10 @@ PYTHONPATH=. .venv/bin/python validation/linux_x64_repeat/run_case.py \
 
 PYTHONPATH=. .venv/bin/python validation/linux_x64_repeat/summarize.py \
   --private-root /PRIVATE/repeats
+
+PYTHONPATH=. .venv/bin/python validation/linux_x64_repeat/summarize_same_cell.py \
+  --first-private-root /PRIVATE/repeats \
+  --second-private-root /PRIVATE/same-cell-repeats
 ```
 
 The example names describe the recorded run; a new replay must use a **new
@@ -95,22 +142,26 @@ run ID and output path** because the runner refuses to overwrite evidence.
 archives and reconstructed ELF images, checks the retained journals and raw
 exports against the public numeric reports, checks distinct PIDs and image
 hashes, and verifies the primary/pilot grouping.
+[`summarize_same_cell.py`](summarize_same_cell.py) rechecks both evidence roots
+and verifies exactly two captures in every case/timing cell.
 
-The [nine public non-Codex wire journals](ground_truth/README.md) contain 53
-byte-identical synthetic JSON bodies, including the pilot. The two Codex
+The [17 public non-Codex wire journals](ground_truth/README.md) contain 97
+byte-identical synthetic JSON bodies, including the pilot. The four Codex
 journals remain private because original wire messages include runtime
-session/turn/window identifiers. All 11 full-RAM archives remain private;
+session/turn/window identifiers. All 21 full-RAM archives remain private;
 public files alone cannot reproduce their image-level scores. Reviewer
 transfer requires a separate restricted-access handoff, as in the [six-image
 evidence guide](../linux_x64_real_host_ram/ground_truth/README.md).
 
 ## Interpretation boundary
 
-These are controlled observations in one reused VM, two MCP host families,
+These are controlled observations in one reused VM lineage, two MCP host families,
 one synthetic tool, two transports, and two planned time ranges. The guest
 RAM size differs from the earlier 1536 MiB Inspector captures. The existing
-Codex pilot's two images were of the same exchange; these two new Codex runs
-are separate processes/exchanges. The results establish repeatability under
-these conditions but do not estimate detection or false-positive rates across
-apps, workloads, or real-world memory lifetimes. MCPRecon was not run on these
-new images, so the 27-image 251-versus-184 comparison remains separate.
+Codex pilot's two images were of the same exchange; the four new Codex runs
+are separate processes/exchanges. Equal logical counts in two runs per cell
+support repeatability for these controlled conditions; they do not estimate
+detection or false-positive rates across apps, workloads, or real-world memory
+lifetimes. Early and delayed images use different processes, so a timing
+effect is not isolated. MCPRecon was not run on these new images, so the
+27-image 251-versus-184 comparison remains separate.

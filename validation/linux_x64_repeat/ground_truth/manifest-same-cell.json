@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "scope": "second-phase exact synthetic JSON bodies from eight non-Codex images",
+  "public_journals": 8,
+  "public_messages": 44,
+  "codex_journals_private": 2,
+  "ram_images_private": 10,
+  "runs": [
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-http-r4-fast.json",
+      "case": "inspector-http",
+      "run_id": "inspector-http-r4-fast",
+      "client_pid": 603,
+      "image_sha256": "300de31796e28db774c84db375ba43ee7d78e32dd71330caed3cb5d4a9ccd3d1",
+      "traffic_sha256": "f684caed18128c71e15e8bc69f74fa26f019e01fec498820e11388b73aa1f4f3",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-http-r4-fast.jsonl",
+      "report_sha256": "5965977b0c91407181eef20cd5a4bef1ff5a77c8717b0bc850b09eb0d0805084"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-http-r5-delayed.json",
+      "case": "inspector-http",
+      "run_id": "inspector-http-r5-delayed",
+      "client_pid": 2175,
+      "image_sha256": "fdc4f00bb01676da75dbc52a6de870898bfdf21d4add21d4e20791711046227a",
+      "traffic_sha256": "e5b5c413af883534116aa5ed5f77c4856cc5b1e3df713eb2321d9fa127c0f87d",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-http-r5-delayed.jsonl",
+      "report_sha256": "f3f9cd5d6f6a5629792e2b77c01334c252b5ef616374fd296d5312765ce3b3bd"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-stdio-r5-fast.json",
+      "case": "inspector-stdio",
+      "run_id": "inspector-stdio-r5-fast",
+      "client_pid": 1053,
+      "image_sha256": "d1058b3c827d4ac3f277f357877bfac3e52abb70d16899f80b92c505dcab2030",
+      "traffic_sha256": "416f52003a70b37b8e27611b8939c5ca747ab8bb33ea68b3a9a4d7c675800ce5",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-stdio-r5-fast.jsonl",
+      "report_sha256": "1fc3e3ccc02922de777906fc15f82fda6c1c5ebb9e2ad992e84b8b4f72844949"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-inspector-stdio-r4-delayed.json",
+      "case": "inspector-stdio",
+      "run_id": "inspector-stdio-r4-delayed",
+      "client_pid": 2451,
+      "image_sha256": "08e1a0405c7f0ef5a1cc58f3147a452d71cd39ed4635ba523e8b9c792b6cfe90",
+      "traffic_sha256": "95b0082643f3decefb92602382859fc81e2a69681528116d92ce96032ff9a4d0",
+      "traffic_messages": 9,
+      "traffic_path": "traffic/inspector-stdio-r4-delayed.jsonl",
+      "report_sha256": "a63322de9276ed589c441a46c097345021f9386b032a098240a16854e2689a2a"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-lsp-r3-fast.json",
+      "case": "lsp-control",
+      "run_id": "lsp-r3-fast",
+      "client_pid": 1332,
+      "image_sha256": "bb7f1f54622c43f231a241b7509f3f98836bc994c3c4192ab5a2056ecb010ac6",
+      "traffic_sha256": "39e48fb8a9629b2d1a87981c276f3f8697ca9d022333b64f251d1f5d6fba1f6b",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/lsp-r3-fast.jsonl",
+      "report_sha256": "a09527f809a93c45c19808cf61bf8313f8379a8d72f336b8a2c960f7073bd8eb"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-lsp-r4-delayed.json",
+      "case": "lsp-control",
+      "run_id": "lsp-r4-delayed",
+      "client_pid": 2733,
+      "image_sha256": "1e2bf937a5b948dee444ef5cb1e419d19405725b16f9070244f1f1a024a65dff",
+      "traffic_sha256": "d0405986e02a11cc171ea22eafdf0d7f3bac9999cc9a071a4073a1abedbdd153",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/lsp-r4-delayed.jsonl",
+      "report_sha256": "ebb702f2936761b08a47f6208e66edeade17f551c20524368d237de334fbc836"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-jsonrpc-r3-fast.json",
+      "case": "jsonrpc-control",
+      "run_id": "jsonrpc-r3-fast",
+      "client_pid": 1563,
+      "image_sha256": "ea9e8d36208a72c24b453930fd572582bd9521e6589a97f315452bb336ddc923",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/jsonrpc-r3-fast.jsonl",
+      "report_sha256": "b8a41db2d5a39fd1746b669aff14b7b9c78707b2e4be76a4a17be96068d07bf6"
+    },
+    {
+      "report": "validation/linux_x64_repeat/results/2026-11-16-jsonrpc-r4-delayed.json",
+      "case": "jsonrpc-control",
+      "run_id": "jsonrpc-r4-delayed",
+      "client_pid": 2970,
+      "image_sha256": "a5e5d6d6b5b3ec737e0aeb0487dec314e8fb4dc7a432110a0f6e26ec98f1e347",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "traffic_messages": 2,
+      "traffic_path": "traffic/jsonrpc-r4-delayed.jsonl",
+      "report_sha256": "aebf077467a2d3fe6818f3753941ae80bac458fcdbefdeb60cc74c3ee52fbc96"
+    }
+  ]
+}
