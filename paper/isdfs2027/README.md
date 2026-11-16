@@ -38,7 +38,9 @@ now publishes the exact synthetic traffic journals for the four Inspector and
 control images. Their RAM archives remain private. The two Codex journals and
 RAM archives remain private because the original wire messages contain session
 metadata. Readers still cannot independently recompute the six image-level
-truth matches from public files alone.
+truth matches from public files alone. An [author-run six-image replay](../../validation/linux_x64_real_host_ram/ground_truth/replay_2026-11-16.json)
+matched every measured field and per-message flag in the original numeric
+reports; independent external replay remains outstanding.
 The manuscript's [worked image-to-wire case](../../validation/mcprecon_comparison/ground_truth/worked_case_node_d30_r2.md)
 uses one archived Node capture to distinguish a verified response artifact
 from an exact-wire-absent request. The MCPRecon discussion acknowledges that

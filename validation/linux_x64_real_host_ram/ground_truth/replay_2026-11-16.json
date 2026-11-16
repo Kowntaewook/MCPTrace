@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-16",
+  "provenance": "author-run replay from the six original private RAM archives",
+  "scanner_source_commit": "ded4c00235f5c41222f72e8529f3dbd617bc3c9f",
+  "comparison": "all measured score fields and per-message flags matched; prose limitations excluded",
+  "captures": [
+    {
+      "case": "inspector-http",
+      "matches_published_score": true,
+      "image_sha256": "6d548d3848cdbf1f0d8aac689b110846da428ccea248c1e79db2c3ff08bc5582",
+      "traffic_sha256": "f3567b0c9b6197ad0bee8e7d79bcfdf002fc1d4fe104b0f37a2d62f87af09e1f",
+      "artifact_records": 11,
+      "wire_present_any_encoding": 4,
+      "carved_logged_messages": 4,
+      "mcp_labeled_logged_messages": 3
+    },
+    {
+      "case": "inspector-stdio",
+      "matches_published_score": true,
+      "image_sha256": "c8ebb0044a05e4078f28d81b261b0c5b3faa6c263aa40923974b89879192619d",
+      "traffic_sha256": "2331ebf914dd6ac4bf8a297890d2cb367e2528fdd21323857fc5a6b57bc3c631",
+      "artifact_records": 5,
+      "wire_present_any_encoding": 5,
+      "carved_logged_messages": 5,
+      "mcp_labeled_logged_messages": 5
+    },
+    {
+      "case": "lsp-control",
+      "matches_published_score": true,
+      "image_sha256": "eb5cce61bb626ab3eb6cfff4d95d97c6af67ef25c4c26320c9069355a08b2b68",
+      "traffic_sha256": "d6f3295408d8196f02ed932cb1f622904cb2e418138ab6a1d2fff877000072ed",
+      "artifact_records": 8,
+      "wire_present_any_encoding": 2,
+      "carved_logged_messages": 2,
+      "mcp_labeled_logged_messages": 0
+    },
+    {
+      "case": "jsonrpc-control",
+      "matches_published_score": true,
+      "image_sha256": "0bb2576356313035124b5caa7b3afeffb48857e8d46fecee0f4b6fb8a10b35a0",
+      "traffic_sha256": "0dbfff4eed20601ddb0181b6a22d35602edecd2f15f00b9cade8ec23c35b676d",
+      "artifact_records": 4,
+      "wire_present_any_encoding": 2,
+      "carved_logged_messages": 2,
+      "mcp_labeled_logged_messages": 0
+    },
+    {
+      "case": "codex-first",
+      "matches_published_score": true,
+      "image_sha256": "62c2caf866bf6e9d98965f24486c69af16521a86a26206a5610e46a030cf1967",
+      "traffic_sha256": "d2f7150608cbef145186491aef3bee7a6546ea6d3da5352a5ba7797c0b97c05e",
+      "artifact_records": 6,
+      "wire_present_any_encoding": 5,
+      "carved_logged_messages": 5,
+      "mcp_labeled_logged_messages": 5
+    },
+    {
+      "case": "codex-later",
+      "matches_published_score": true,
+      "image_sha256": "a4d5316e30a1051cc80333d8607ea517d366a196d2b287f8c9e86ebb74a002e0",
+      "traffic_sha256": "d2f7150608cbef145186491aef3bee7a6546ea6d3da5352a5ba7797c0b97c05e",
+      "artifact_records": 6,
+      "wire_present_any_encoding": 5,
+      "carved_logged_messages": 5,
+      "mcp_labeled_logged_messages": 5
+    }
+  ],
+  "scope_note": "Codex first/later are two images of the same PID and single tool exchange; no independent external reviewer has run this replay."
+}

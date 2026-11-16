@@ -109,9 +109,11 @@ def main() -> None:
         measured = score(case="codex-stdio" if args.case.startswith("codex-") else args.case,
                          image=image, symbols=args.symbols, cache=args.cache, config=config,
                          ready=ready, traffic=traffic, export=export)
+        # The scorer's prose limitation text was revised after acquisition;
+        # compare every measured field and per-message flag, not that prose.
         differences = {key: {"expected": reference[key], "observed": value}
                        for key, value in measured.items()
-                       if key in reference and reference[key] != value}
+                       if key in reference and key != "limitations" and reference[key] != value}
         if differences:
             raise ValueError(f"replay differs in: {', '.join(sorted(differences))}")
         result = {"case": args.case, "matches_published_score": True,
